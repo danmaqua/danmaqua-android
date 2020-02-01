@@ -4,6 +4,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import moe.feng.danmaqua.api.DanmakuApi
 import moe.feng.danmaqua.api.DanmakuListener
+import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.util.ext.toJson
 import org.junit.Test
 
@@ -23,8 +24,12 @@ class DanmakuApiTest {
             override fun onHeartbeat(online: Int) {
                 println("onHeartBeat: online=$online")
             }
-            override fun onMessage(data: Any) {
-                println(if (data is String) data else data.toString())
+            override fun onMessage(msg: BiliChatMessage) {
+                println(msg.toJson())
+            }
+
+            override fun onFailure(t: Throwable) {
+                throw t
             }
         })
         runBlocking {

@@ -1,7 +1,9 @@
 package moe.feng.danmaqua.api
 
 import kotlinx.coroutines.*
+import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.util.HttpUtils
+import moe.feng.danmaqua.util.ext.toJson
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -24,7 +26,9 @@ class DanmakuListener internal constructor(
 
         fun onHeartbeat(online: Int)
 
-        fun onMessage(data: Any)
+        fun onMessage(msg: BiliChatMessage)
+
+        fun onFailure(t: Throwable)
 
     }
 
@@ -109,12 +113,16 @@ class DanmakuListener internal constructor(
                         callback.onConnect()
                     }
                     Protocol.OP_HEARTBEAT_RESPONSE -> {
-                        val online = data as Int
+                        val online = data as? Int ?: (data as? Long)?.toInt() ?: 0
                         scheduleNextHeartbeat()
                         callback.onHeartbeat(online)
                     }
                     Protocol.OP_MESSAGE -> {
-                        callback.onMessage(data)
+                        callback.onMessage(when (data) {
+                            is Map<*, *> -> BiliChatMessage.from(data)
+                            is String -> BiliChatMessage.from(data)
+                            else -> BiliChatMessage.from(data.toJson())
+                        })
                     }
                 }
             }
@@ -123,6 +131,7 @@ class DanmakuListener internal constructor(
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         close()
+        callback.onFailure(t)
     }
 
 }
