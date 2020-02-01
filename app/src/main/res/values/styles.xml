@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Theme.Danmaqua" parent="BaseTheme"></style>
+
+    <style name="Theme.Danmaqua.NoActionBar" parent="Theme.Danmaqua">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>
