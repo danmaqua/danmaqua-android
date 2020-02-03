@@ -1,3 +1,11 @@
 <resources>
+
     <string name="app_name">FloatingCaption</string>
+
+    <string name="action_connect">Connect</string>
+    <string name="action_disconnect">Disconnect</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="action_add_streamer">Add streamer…</string>
+
 </resources>

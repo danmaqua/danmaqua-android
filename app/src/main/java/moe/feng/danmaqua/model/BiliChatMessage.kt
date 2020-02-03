@@ -3,7 +3,7 @@ package moe.feng.danmaqua.model
 import com.google.gson.annotations.SerializedName
 import moe.feng.danmaqua.util.JsonUtils
 
-open class BiliChatMessage(val cmd: String, val timestamp: Double) {
+open class BiliChatMessage(val cmd: String, val timestamp: Long) {
 
     companion object {
 
@@ -24,20 +24,20 @@ open class BiliChatMessage(val cmd: String, val timestamp: Double) {
                     SendGift(
                         command,
                         data["giftName"] as? String ?: "",
-                        data["num"] as? Int ?: 0,
+                        (data["num"] as? Number)?.toInt() ?: 0,
                         data["uname"] as? String ?: "",
                         data["face"] as? String ?: "",
-                        data["uid"] as? Long ?: 0L,
-                        data["timestamp"] as? Double ?: 0.0,
-                        data["giftId"] as? Int ?: 0,
-                        data["giftType"] as? Int ?: 0,
+                        (data["uid"] as? Number)?.toLong() ?: 0L,
+                        (data["timestamp"] as? Number)?.toLong() ?: 0L,
+                        (data["giftId"] as? Number)?.toInt() ?: 0,
+                        (data["giftType"] as? Number)?.toInt() ?: 0,
                         data["action"] as? String ?: "",
-                        data["super"] as? Int ?: 0,
-                        data["super_gift_num"] as? Int ?: 0,
-                        data["super_batch_gift_num"] as? Int ?: 0,
-                        data["price"] as? Int ?: 0,
+                        (data["super"] as? Number)?.toInt() ?: 0,
+                        (data["super_gift_num"] as? Number)?.toInt() ?: 0,
+                        (data["super_batch_gift_num"] as? Number)?.toInt() ?: 0,
+                        (data["price"] as? Number)?.toInt() ?: 0,
                         data["coin_type"] as? String ?: "",
-                        data["total_coin"] as? Int ?: 0
+                        (data["total_coin"] as? Number)?.toInt() ?: 0
                     )
                 }
                 CMD_DANMAKU -> {
@@ -52,10 +52,10 @@ open class BiliChatMessage(val cmd: String, val timestamp: Double) {
                         text,
                         senderName,
                         senderUid,
-                        tsInfo["ts"] as? Double ?: 0.0
+                        (tsInfo["ts"] as? Number)?.toLong() ?: 0L
                     )
                 }
-                else -> BiliChatMessage(command, 0.0)
+                else -> BiliChatMessage(command, 0L)
             }
         }
 
@@ -68,7 +68,7 @@ open class BiliChatMessage(val cmd: String, val timestamp: Double) {
         @SerializedName("uname") val username: String,
         val face: String,
         val uid: Long,
-        timestamp: Double,
+        timestamp: Long,
         val giftId: Int,
         val giftType: Int,
         val action: String,
@@ -78,14 +78,38 @@ open class BiliChatMessage(val cmd: String, val timestamp: Double) {
         val price: Int,
         @SerializedName("coin_type") val coinType: String,
         @SerializedName("total_coin") val totalCoin: Int
-    ) : BiliChatMessage(cmd, timestamp)
+    ) : BiliChatMessage(cmd, timestamp) {
+
+        override fun toString(): String {
+            return "BiliChatMessage.SendGift[cmd: $cmd, " +
+                    "sender: $username($uid), " +
+                    "gift: $giftName*$giftNum, " +
+                    "timestamp: $timestamp, " +
+                    "action: $action, " +
+                    "coin: $coinType*$totalCoin]"
+        }
+
+    }
 
     class Danmaku(
         cmd: String,
         val text: String,
         val senderName: String,
         val senderUid: Long,
-        timestamp: Double
-    ) : BiliChatMessage(cmd, timestamp)
+        timestamp: Long
+    ) : BiliChatMessage(cmd, timestamp) {
+
+        override fun toString(): String {
+            return "BiliChatMessage.Danmaku[cmd: $cmd, " +
+                    "sender: $senderName($senderUid), " +
+                    "text: $text, " +
+                    "timestamp: $timestamp]"
+        }
+
+    }
+
+    override fun toString(): String {
+        return "BiliChatMessage[cmd: $cmd, timestamp: $timestamp, (Unrecognized data)]"
+    }
 
 }

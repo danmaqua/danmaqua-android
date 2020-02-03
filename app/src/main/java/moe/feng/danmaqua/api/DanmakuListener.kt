@@ -18,11 +18,13 @@ class DanmakuListener internal constructor(
     val roomId: Long,
     val callback: Callback,
     val address: String? = "broadcastlv.chat.bilibili.com"
-) : WebSocketListener(), CoroutineScope by MainScope() {
+) : WebSocketListener(), CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO) {
 
     interface Callback {
 
         fun onConnect()
+
+        fun onDisconnect(userReason: Boolean)
 
         fun onHeartbeat(online: Int)
 
@@ -34,34 +36,42 @@ class DanmakuListener internal constructor(
 
     private var webSocket: WebSocket? = null
     private var heartbeatTimer: Timer? = null
+    private var userReasonClose: Boolean = false
     var isConnected: Boolean = false
         private set
     var isClosed: Boolean = false
         private set
+    var realRoomId: Long = 0L
+        private set
 
     init {
-        connect()
+        launch {
+            connect()
+        }
     }
 
-    private fun connect() {
+    private suspend fun connect() = withContext(Dispatchers.IO) {
         if (roomId <= 0) {
             throw IllegalArgumentException("Non-positive room id")
         }
         if (isClosed) {
             throw IllegalStateException("DanmakuListener is closed. Please recreate a new one.")
         }
+        val roomInfo = RoomApi.getRoomInfo(roomId)
+        realRoomId = roomInfo.data.roomId
+        if (realRoomId <= 0) {
+            throw IllegalStateException("Cannot get real room id")
+        }
         val request = Request.Builder()
             .url("wss://$address/sub")
             .build()
-        webSocket = HttpUtils.client.newWebSocket(request, this)
+        webSocket = HttpUtils.client.newWebSocket(request, this@DanmakuListener)
     }
 
-    private fun heartbeat() {
+    private suspend fun heartbeat() = withContext(Dispatchers.IO) {
         webSocket?.let {
-            launch(Dispatchers.IO) {
-                val heartbeatPacket = Protocol.encodePacket(Protocol.OP_HEARTBEAT)
-                it.send(heartbeatPacket.toByteString())
-            }
+            val heartbeatPacket = Protocol.encodePacket(Protocol.OP_HEARTBEAT)
+            it.send(heartbeatPacket.toByteString())
         }
     }
 
@@ -69,30 +79,61 @@ class DanmakuListener internal constructor(
         heartbeatTimer?.cancel()
         heartbeatTimer = Timer().also {
             it.schedule(30 * 1000) {
-                heartbeat()
+                launch {
+                    heartbeat()
+                }
             }
         }
     }
 
-    fun close() {
+    private fun internalClose() {
         if (isClosed) {
-            throw IllegalStateException("DanmakuListener is closed.")
+            return
         }
         webSocket?.close(1000, null)
         heartbeatTimer?.cancel()
         isClosed = true
     }
 
+    private fun callOnConnect() = launch(Dispatchers.Main) {
+        callback.onConnect()
+    }
+
+    private fun callOnDisconnect(userReason: Boolean) = launch(Dispatchers.Main) {
+        callback.onDisconnect(userReason)
+    }
+
+    private fun callOnHeartbeat(online: Int) = launch(Dispatchers.Main) {
+        callback.onHeartbeat(online)
+    }
+
+    private fun callOnMessage(msg: BiliChatMessage) = launch(Dispatchers.Main) {
+        callback.onMessage(msg)
+    }
+
+    private fun callOnFailure(t: Throwable) = launch(Dispatchers.Main) {
+        callback.onFailure(t)
+    }
+
+    fun close() {
+        if (isClosed) {
+            throw IllegalStateException("DanmakuListener is closed.")
+        }
+        userReasonClose = true
+        internalClose()
+    }
+
     override fun onOpen(webSocket: WebSocket, response: Response) {
         launch(Dispatchers.IO) {
             val joinPacket = Protocol.encodeJsonPacket(
-                Protocol.OP_JOIN, Protocol.buildJoinMessageBody(roomId))
+                Protocol.OP_JOIN, Protocol.buildJoinMessageBody(realRoomId))
             webSocket.send(joinPacket.toByteString())
         }
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         heartbeatTimer?.cancel()
+        callOnDisconnect(userReasonClose)
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -110,15 +151,15 @@ class DanmakuListener internal constructor(
                     Protocol.OP_WELCOME -> {
                         isConnected = true
                         heartbeat()
-                        callback.onConnect()
+                        callOnConnect()
                     }
                     Protocol.OP_HEARTBEAT_RESPONSE -> {
                         val online = data as? Int ?: (data as? Long)?.toInt() ?: 0
                         scheduleNextHeartbeat()
-                        callback.onHeartbeat(online)
+                        callOnHeartbeat(online)
                     }
                     Protocol.OP_MESSAGE -> {
-                        callback.onMessage(when (data) {
+                        callOnMessage(when (data) {
                             is Map<*, *> -> BiliChatMessage.from(data)
                             is String -> BiliChatMessage.from(data)
                             else -> BiliChatMessage.from(data.toJson())
@@ -130,8 +171,8 @@ class DanmakuListener internal constructor(
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        close()
-        callback.onFailure(t)
+        internalClose()
+        callOnFailure(t)
     }
 
 }

@@ -21,13 +21,16 @@ class DanmakuApiTest {
             override fun onConnect() {
                 println("onConnect")
             }
+
+            override fun onDisconnect(userReason: Boolean) {
+                println("onDisconnect: userReason=$userReason")
+            }
             override fun onHeartbeat(online: Int) {
                 println("onHeartBeat: online=$online")
             }
             override fun onMessage(msg: BiliChatMessage) {
-                println(msg.toJson())
+                println("onMessage: $msg")
             }
-
             override fun onFailure(t: Throwable) {
                 throw t
             }

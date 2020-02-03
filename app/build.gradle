@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -13,6 +14,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.incremental": "true",
+                        "room.expandProjection": "true"
+                ]
+            }
+        }
     }
 
     buildTypes {
@@ -20,6 +31,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -30,15 +50,23 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version"
 
     implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.fragment:fragment-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0-rc02'
+
+    implementation "androidx.room:room-runtime:$room_library_version"
+    kapt "androidx.room:room-compiler:$room_library_version"
+    implementation "androidx.room:room-ktx:$room_library_version"
+
+    implementation 'com.drakeet.multitype:multitype:4.2.0'
 
     implementation 'com.squareup.okhttp3:okhttp:4.3.1'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.tencent:mmkv-static:1.0.24'
 
     testImplementation 'junit:junit:4.13'
+    testImplementation "androidx.room:room-testing:$room_library_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
