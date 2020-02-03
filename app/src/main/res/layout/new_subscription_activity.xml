@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/roomIdEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/room_id_edit_hint"
+        android:imeOptions="actionGo"
+        android:inputType="numberDecimal"
+        android:textColorHint="?android:attr/textColorHint" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/subscribeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/material_purple_500"
+        android:text="@string/action_subscribe"/>
+
+</LinearLayout>

@@ -30,8 +30,4 @@ class SubscriptionAddItemViewDelegate(var callback: Callback? = null)
 
     override fun onBindViewHolder(holder: ViewHolder, item: Item) {}
 
-    override fun onViewRecycled(holder: ViewHolder) {
-        holder.onRecycled()
-    }
-
 }

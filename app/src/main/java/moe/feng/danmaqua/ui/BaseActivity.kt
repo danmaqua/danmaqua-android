@@ -1,6 +1,7 @@
 package moe.feng.danmaqua.ui
 
 import android.content.SharedPreferences
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +19,14 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
     override fun onDestroy() {
         super.onDestroy()
         this.cancel()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

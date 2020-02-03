@@ -14,8 +14,4 @@ abstract class BaseViewHolder(itemView: View)
         return lazy { itemView.findViewById<T>(id) }
     }
 
-    fun onRecycled() {
-        this.cancel()
-    }
-
 }

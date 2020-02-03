@@ -6,6 +6,11 @@
     <string name="action_disconnect">Disconnect</string>
     <string name="action_settings">Settings</string>
 
-    <string name="action_add_streamer">Add streamer…</string>
+    <string name="action_new_subscription">Subscribe streamer…</string>
+
+    <string name="new_subscription_title">New subscription</string>
+    <string name="room_id_edit_hint">Enter Room ID here…</string>
+    <string name="action_subscribe">Subscribe</string>
+    <string name="toast_invalid_room_id">Invalid Room ID. Please input a positive number.</string>
 
 </resources>

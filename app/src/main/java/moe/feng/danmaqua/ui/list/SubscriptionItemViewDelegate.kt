@@ -1,6 +1,7 @@
 package moe.feng.danmaqua.ui.list
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.util.HttpUtils
+import moe.feng.danmaqua.util.ext.TAG
 
 class SubscriptionItemViewDelegate(var callback: Callback? = null)
     : ItemViewDelegate<Subscription, SubscriptionItemViewDelegate.ViewHolder>() {
@@ -56,14 +58,16 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
         })
         avatarRing.isVisible = item.selected
 
+        Log.i(TAG, "pos=$adapterPosition name=${item.username}")
         avatarLoadTask?.cancel()
         avatarLoadTask = launch {
+            Log.i(TAG, "pos=$adapterPosition name=${item.username} avatar=${item.avatar}")
             avatarView.setImageBitmap(HttpUtils.loadBitmapWithCache(item.avatar))
         }
     }
 
-    override fun onViewRecycled(holder: ViewHolder) {
-        holder.onRecycled()
+    override fun onBindViewHolder(holder: ViewHolder, item: Subscription, payloads: List<Any>) {
+        super.onBindViewHolder(holder, item, payloads)
     }
 
 }

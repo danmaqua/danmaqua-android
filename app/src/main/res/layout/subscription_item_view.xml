@@ -5,16 +5,18 @@
     android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="8dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    android:paddingStart="16dp"
+    android:paddingStart="@dimen/subscription_item_view_background_radius"
+    android:paddingEnd="@dimen/subscription_item_view_background_radius"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
-    android:paddingEnd="@dimen/subscription_item_view_background_radius"
     android:focusable="true"
     android:clickable="true"
-    android:background="@drawable/subscription_item_background_selected">
+    android:background="@drawable/subscription_item_background_selected"
+    tools:ignore="RtlHardcoded">
 
     <FrameLayout
         android:layout_width="56dp"

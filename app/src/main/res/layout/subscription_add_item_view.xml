@@ -34,6 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textColor="?android:attr/textColorPrimary"
-        android:text="@string/action_add_streamer"/>
+        android:text="@string/action_new_subscription"/>
 
 </LinearLayout>

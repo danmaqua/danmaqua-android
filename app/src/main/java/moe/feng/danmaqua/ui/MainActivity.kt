@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import kotlinx.android.synthetic.main.main_activity.*
@@ -96,6 +97,7 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
 
     override fun onSubscriptionChange(current: Subscription) {
         Log.d(TAG, "onSubscriptionChange -> $current")
+        drawerLayout.closeDrawer(GravityCompat.START)
     }
 
 }

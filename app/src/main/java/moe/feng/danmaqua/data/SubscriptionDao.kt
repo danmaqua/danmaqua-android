@@ -1,9 +1,6 @@
 package moe.feng.danmaqua.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import moe.feng.danmaqua.model.Subscription
 
 @Dao
@@ -11,6 +8,9 @@ interface SubscriptionDao {
 
     @Insert
     suspend fun add(vararg items: Subscription)
+
+    @Update
+    suspend fun update(vararg items: Subscription)
 
     @Delete
     suspend fun delete(item: Subscription)
