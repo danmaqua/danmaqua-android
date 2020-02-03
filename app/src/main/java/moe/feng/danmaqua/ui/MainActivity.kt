@@ -7,24 +7,34 @@ import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmakuApi
 import moe.feng.danmaqua.api.DanmakuListener
 import moe.feng.danmaqua.api.RoomApi
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.model.Subscription
+import moe.feng.danmaqua.ui.list.SimpleDanmakuItemViewDelegate
 import moe.feng.danmaqua.util.ext.TAG
 
 class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragment.Callback {
 
     private var danmakuListener: DanmakuListener? = null
 
+    private val danmakuList: MutableList<BiliChatMessage.Danmaku> = mutableListOf()
+    private val danmakuAdapter: SimpleDanmakuAdapter = SimpleDanmakuAdapter().also {
+        it.items = danmakuList
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
         setSupportActionBar(toolbar)
+
+        recyclerView.adapter = danmakuAdapter
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -60,7 +70,14 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_connect -> {
-                danmakuListener = DanmakuApi.listen(RoomApi.MINATO_AQUA_ROOM_ID, this)
+                launch {
+                    val current = database.subscriptions().getAll().firstOrNull { it.selected }
+                    if (current != null) {
+                        danmakuListener = DanmakuApi.listen(current.roomId, this@MainActivity)
+                    } else {
+                        Log.e(TAG, "No subscriptions selected.")
+                    }
+                }
                 true
             }
             R.id.action_disconnect -> {
@@ -89,6 +106,10 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
 
     override fun onMessage(msg: BiliChatMessage) {
         Log.d(TAG, "DanmakuListener: onMessage: $msg")
+        if (msg is BiliChatMessage.Danmaku) {
+            danmakuList += msg
+            danmakuAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onFailure(t: Throwable) {
@@ -98,6 +119,14 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
     override fun onSubscriptionChange(current: Subscription) {
         Log.d(TAG, "onSubscriptionChange -> $current")
         drawerLayout.closeDrawer(GravityCompat.START)
+    }
+
+    private class SimpleDanmakuAdapter : MultiTypeAdapter() {
+
+        init {
+            register(SimpleDanmakuItemViewDelegate())
+        }
+
     }
 
 }
