@@ -9,6 +9,7 @@ import android.os.IBinder
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
@@ -124,7 +126,6 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     }
 
     override fun onSubscriptionChange(current: Subscription) {
-        Log.d(TAG, "onSubscriptionChange -> $current")
         drawerLayout.closeDrawer(GravityCompat.START)
         launch {
             val needReconnect = withContext(IO) {
@@ -138,6 +139,9 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
     private fun startBindService() {
         val serviceIntent = Intent(this, DanmakuListenerService::class.java)
+        serviceIntent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_START)
+        ContextCompat.startForegroundService(this, serviceIntent)
+
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 if (binder == null) {

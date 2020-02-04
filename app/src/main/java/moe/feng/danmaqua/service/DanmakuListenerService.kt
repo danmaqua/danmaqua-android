@@ -1,27 +1,54 @@
 package moe.feng.danmaqua.service
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.content.getSystemService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
+import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
+import moe.feng.danmaqua.Danmaqua.NOTI_ID_LISTENER_STATUS
+import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_ENTER_MAIN
+import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_STOP
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
+import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmakuApi
 import moe.feng.danmaqua.api.DanmakuListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
+import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.util.ext.TAG
+import moe.feng.danmaqua.util.ext.getDanmaquaDatabase
+import java.lang.Exception
 
 class DanmakuListenerService :
     Service(), CoroutineScope by MainScope(), DanmakuListener.Callback {
 
+    companion object {
+
+        const val ACTION_START = "start"
+        const val ACTION_STOP = "stop"
+
+    }
+
     private val binder: AidlInterfaceImpl = AidlInterfaceImpl()
+    private val notificationManager by lazy { getSystemService<NotificationManager>()!! }
 
     private var danmakuListener: DanmakuListener? = null
     private val serviceCallbacks: MutableList<CallbackHolder> = mutableListOf()
+
+    private lateinit var notification: Notification
+    private val notificationBuilder: NotificationCompat.Builder =
+        NotificationCompat.Builder(this, NOTI_CHANNEL_ID_STATUS)
 
     override fun onBind(intent: Intent?): IBinder? {
         return binder
@@ -30,12 +57,60 @@ class DanmakuListenerService :
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "Called onCreate")
+
+        // Initialize status notification
+        val enterIntent = Intent(this, MainActivity::class.java)
+        val enterPi = PendingIntent.getActivity(
+            this,
+            PENDING_INTENT_REQUEST_ENTER_MAIN,
+            enterIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        val stopIntent = Intent(this, DanmakuListenerService::class.java)
+        stopIntent.putExtra(EXTRA_ACTION, ACTION_STOP)
+        val stopPi = PendingIntent.getService(
+            this,
+            PENDING_INTENT_REQUEST_STOP,
+            stopIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        with (notificationBuilder) {
+            setSmallIcon(R.drawable.ic_noti_subtitles_24)
+            setContentTitle(getString(R.string.listener_service_noti_title))
+            setContentText(getString(R.string.listener_service_noti_text_no_connected))
+            setOngoing(true)
+            setShowWhen(false)
+            setContentIntent(enterPi)
+            addAction(
+                R.drawable.ic_noti_action_stop_24,
+                getString(R.string.listener_service_noti_stop),
+                stopPi
+            )
+        }
+        notification = notificationBuilder.build()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "Called onDestroy")
         this.cancel()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val action = intent?.getStringExtra(EXTRA_ACTION)
+        Log.d(TAG, "onStartCommand: action=$action")
+        when (action) {
+            ACTION_START -> {
+                startForeground(NOTI_ID_LISTENER_STATUS, notification)
+            }
+            ACTION_STOP -> {
+                disconnect()
+                stopForeground(true)
+                stopSelf()
+                return START_NOT_STICKY
+            }
+        }
+        return START_STICKY
     }
 
     private fun connect(roomId: Long) {
@@ -48,11 +123,28 @@ class DanmakuListenerService :
 
     private fun disconnect() {
         Log.d(TAG, "disconnect")
-        danmakuListener?.close()
+        try {
+            danmakuListener?.close()
+        } catch (e: Exception) {
+
+        }
     }
 
     override fun onConnect() {
         danmakuListener?.let {
+            launch {
+                val current = getDanmaquaDatabase().subscriptions().findByRoomId(it.roomId)
+                val username = current?.username ?: it.roomId.toString()
+
+                notificationBuilder.setContentText(getString(
+                    R.string.listener_service_noti_text_connected,
+                    username,
+                    it.roomId
+                ))
+                notification = notificationBuilder.build()
+                notificationManager.notify(NOTI_ID_LISTENER_STATUS, notification)
+            }
+
             for ((callback, _) in serviceCallbacks) {
                 callback.onConnect(it.roomId)
             }
@@ -60,6 +152,11 @@ class DanmakuListenerService :
     }
 
     override fun onDisconnect(userReason: Boolean) {
+        notificationBuilder.setContentText(
+            getString(R.string.listener_service_noti_text_no_connected))
+        notification = notificationBuilder.build()
+        notificationManager.notify(NOTI_ID_LISTENER_STATUS, notification)
+
         for ((callback, _) in serviceCallbacks) {
             callback.onDisconnect()
         }
@@ -75,6 +172,7 @@ class DanmakuListenerService :
         if (msg !is BiliChatDanmaku) {
             return
         }
+        Log.d(TAG, "onMessage: $msg")
         for ((callback, _) in serviceCallbacks) {
             // TODO Implement filter
             callback.onReceiveDanmaku(msg)
