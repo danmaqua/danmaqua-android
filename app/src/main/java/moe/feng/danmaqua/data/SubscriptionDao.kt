@@ -15,8 +15,14 @@ interface SubscriptionDao {
     @Delete
     suspend fun delete(item: Subscription)
 
+    @Query("SELECT COUNT(*) FROM subscription")
+    suspend fun count(): Int
+
     @Query("SELECT * FROM subscription")
     suspend fun getAll(): List<Subscription>
+
+    @Query("SELECT * FROM subscription WHERE selected = 1 LIMIT 1")
+    suspend fun findSelected(): Subscription?
 
     @Query("SELECT * FROM subscription WHERE uid = :uid")
     suspend fun findByUid(uid: Long): Subscription?

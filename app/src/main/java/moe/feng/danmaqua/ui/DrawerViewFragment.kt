@@ -61,7 +61,13 @@ class DrawerViewFragment : BaseFragment() {
                     launch {
                         val dao = DanmaquaApplication.getDatabase(requireContext()).subscriptions()
                         if (dao.findByUid(subscription.uid) == null) {
+                            if (dao.findSelected() == null) {
+                                subscription.selected = true
+                            }
                             dao.add(subscription)
+                            if (subscription.selected) {
+                                callback?.onSubscriptionChange(subscription)
+                            }
                             updateAdapterData()
                         }
                     }
