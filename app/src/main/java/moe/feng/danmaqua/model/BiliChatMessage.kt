@@ -1,9 +1,10 @@
 package moe.feng.danmaqua.model
 
-import com.google.gson.annotations.SerializedName
+import android.os.Parcel
+import android.os.Parcelable
 import moe.feng.danmaqua.util.JsonUtils
 
-open class BiliChatMessage(val cmd: String, val timestamp: Long) {
+open class BiliChatMessage(val cmd: String, val timestamp: Long) : Parcelable {
 
     companion object {
 
@@ -21,7 +22,7 @@ open class BiliChatMessage(val cmd: String, val timestamp: Long) {
             return when (command) {
                 CMD_SEND_GIFT -> {
                     val data = map["data"] as? Map<*, *> ?: emptyMap<String, Any>()
-                    SendGift(
+                    BiliChatSendGift(
                         command,
                         data["giftName"] as? String ?: "",
                         (data["num"] as? Number)?.toInt() ?: 0,
@@ -47,7 +48,7 @@ open class BiliChatMessage(val cmd: String, val timestamp: Long) {
                     val senderUid = senderInfo[0] as? Long ?: 0L
                     val senderName = senderInfo[1] as? String ?: ""
                     val tsInfo = info[9] as? Map<*, *> ?: emptyMap<String, Any>()
-                    Danmaku(
+                    BiliChatDanmaku(
                         command,
                         text,
                         senderName,
@@ -59,57 +60,37 @@ open class BiliChatMessage(val cmd: String, val timestamp: Long) {
             }
         }
 
-    }
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<BiliChatMessage> {
+            override fun createFromParcel(parcel: Parcel): BiliChatMessage {
+                return BiliChatMessage(parcel)
+            }
 
-    class SendGift(
-        cmd: String,
-        val giftName: String,
-        @SerializedName("num") val giftNum: Int,
-        @SerializedName("uname") val username: String,
-        val face: String,
-        val uid: Long,
-        timestamp: Long,
-        val giftId: Int,
-        val giftType: Int,
-        val action: String,
-        @SerializedName("super") val superGift: Int,
-        @SerializedName("super_gift_num") val superGiftNum: Int,
-        @SerializedName("super_batch_gift_num") val superBatchGiftNum: Int,
-        val price: Int,
-        @SerializedName("coin_type") val coinType: String,
-        @SerializedName("total_coin") val totalCoin: Int
-    ) : BiliChatMessage(cmd, timestamp) {
-
-        override fun toString(): String {
-            return "BiliChatMessage.SendGift[cmd: $cmd, " +
-                    "sender: $username($uid), " +
-                    "gift: $giftName*$giftNum, " +
-                    "timestamp: $timestamp, " +
-                    "action: $action, " +
-                    "coin: $coinType*$totalCoin]"
+            override fun newArray(size: Int): Array<BiliChatMessage?> {
+                return arrayOfNulls(size)
+            }
         }
 
     }
 
-    class Danmaku(
-        cmd: String,
-        val text: String,
-        val senderName: String,
-        val senderUid: Long,
-        timestamp: Long
-    ) : BiliChatMessage(cmd, timestamp) {
-
-        override fun toString(): String {
-            return "BiliChatMessage.Danmaku[cmd: $cmd, " +
-                    "sender: $senderName($senderUid), " +
-                    "text: $text, " +
-                    "timestamp: $timestamp]"
-        }
-
-    }
+    constructor(src: Parcel) : this(
+        src.readString()!!,
+        src.readLong()
+    )
 
     override fun toString(): String {
         return "BiliChatMessage[cmd: $cmd, timestamp: $timestamp, (Unrecognized data)]"
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        with(parcel) {
+            writeString(cmd)
+            writeLong(timestamp)
+        }
+    }
+
+    override fun describeContents(): Int {
+        return 0
     }
 
 }

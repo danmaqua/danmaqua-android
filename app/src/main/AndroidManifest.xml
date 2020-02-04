@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".DanmaquaApplication"
@@ -28,6 +29,11 @@
             android:name=".ui.NewSubscriptionActivity"
             android:label="@string/new_subscription_title"
             android:theme="@style/Theme.Danmaqua"
+            android:exported="false"/>
+
+        <service
+            android:name=".service.DanmakuListenerService"
+            android:label="@string/listener_service_label"
             android:exported="false"/>
 
     </application>

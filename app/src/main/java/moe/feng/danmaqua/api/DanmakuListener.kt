@@ -37,6 +37,7 @@ class DanmakuListener internal constructor(
     private var webSocket: WebSocket? = null
     private var heartbeatTimer: Timer? = null
     private var userReasonClose: Boolean = false
+    private var calledOnDisconnect: Boolean = false
     var isConnected: Boolean = false
         private set
     var isClosed: Boolean = false
@@ -86,21 +87,16 @@ class DanmakuListener internal constructor(
         }
     }
 
-    private fun internalClose() {
-        if (isClosed) {
-            return
-        }
-        webSocket?.close(1000, null)
-        heartbeatTimer?.cancel()
-        isClosed = true
-    }
-
     private fun callOnConnect() = launch(Dispatchers.Main) {
         callback.onConnect()
     }
 
     private fun callOnDisconnect(userReason: Boolean) = launch(Dispatchers.Main) {
+        if (calledOnDisconnect) {
+            return@launch
+        }
         callback.onDisconnect(userReason)
+        calledOnDisconnect = true
     }
 
     private fun callOnHeartbeat(online: Int) = launch(Dispatchers.Main) {
@@ -113,6 +109,17 @@ class DanmakuListener internal constructor(
 
     private fun callOnFailure(t: Throwable) = launch(Dispatchers.Main) {
         callback.onFailure(t)
+    }
+
+    private fun internalClose() {
+        if (isClosed) {
+            return
+        }
+        webSocket?.close(1000, null)
+        heartbeatTimer?.cancel()
+        isConnected = false
+        isClosed = true
+        callOnDisconnect(userReasonClose)
     }
 
     fun close() {
@@ -133,6 +140,7 @@ class DanmakuListener internal constructor(
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         heartbeatTimer?.cancel()
+        isConnected = false
         callOnDisconnect(userReasonClose)
     }
 

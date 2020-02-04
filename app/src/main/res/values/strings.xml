@@ -13,4 +13,10 @@
     <string name="action_subscribe">Subscribe</string>
     <string name="toast_invalid_room_id">Invalid Room ID. Please input a positive number.</string>
 
+    <string name="listener_service_label">Danmaku Background Service</string>
+    <string name="listener_service_noti_title">Danmaqua is listening danmaku for you.</string>
+    <string name="listener_service_noti_text_no_connect">No room entered. Click here to open main page.</string>
+    <string name="listener_service_noti_text_connected">Connected room: %1$s(%2$d)</string>
+    <string name="listener_service_noti_stop">Stop</string>
+
 </resources>

@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import com.drakeet.multitype.ItemViewDelegate
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.model.BiliChatMessage.Danmaku
+import moe.feng.danmaqua.model.BiliChatDanmaku
 
 class SimpleDanmakuItemViewDelegate :
-    ItemViewDelegate<Danmaku, SimpleDanmakuItemViewDelegate.ViewHolder>() {
+    ItemViewDelegate<BiliChatDanmaku, SimpleDanmakuItemViewDelegate.ViewHolder>() {
 
     class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
@@ -24,7 +24,7 @@ class SimpleDanmakuItemViewDelegate :
             .inflate(R.layout.danmaku_simple_item_view, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, item: Danmaku) = with(holder) {
+    override fun onBindViewHolder(holder: ViewHolder, item: BiliChatDanmaku) = with(holder) {
         textView.text = HtmlCompat.fromHtml("<b>${item.senderName}</b> ${item.text}", 0)
     }
 

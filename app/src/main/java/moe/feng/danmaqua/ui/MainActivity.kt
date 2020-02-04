@@ -1,6 +1,11 @@
 package moe.feng.danmaqua.ui
 
+import android.app.Service
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -9,21 +14,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import moe.feng.danmaqua.IDanmakuListenerCallback
+import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.DanmakuApi
-import moe.feng.danmaqua.api.DanmakuListener
-import moe.feng.danmaqua.api.RoomApi
-import moe.feng.danmaqua.model.BiliChatMessage
+import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.Subscription
+import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.list.SimpleDanmakuItemViewDelegate
 import moe.feng.danmaqua.util.ext.TAG
 
-class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragment.Callback {
+class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
-    private var danmakuListener: DanmakuListener? = null
+    private val danmakuListenerCallback: IDanmakuListenerCallback = DanmakuListenerCallbackImpl()
 
-    private val danmakuList: MutableList<BiliChatMessage.Danmaku> = mutableListOf()
+    private var service: IDanmakuListenerService? = null
+    private var serviceConnection: ServiceConnection? = null
+
+    private val danmakuList: MutableList<BiliChatDanmaku> = mutableListOf()
     private val danmakuAdapter: SimpleDanmakuAdapter = SimpleDanmakuAdapter().also {
         it.items = danmakuList
     }
@@ -39,6 +49,19 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 replace(R.id.drawerView, DrawerViewFragment())
+            }
+        }
+
+        startBindService()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        serviceConnection?.let {
+            try {
+                unbindService(it)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -57,7 +80,7 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val connectItem = menu.findItem(R.id.action_connect)
         val disconnectItem = menu.findItem(R.id.action_disconnect)
-        if (danmakuListener?.isConnected == true) {
+        if (service?.isConnected == true) {
             connectItem.isVisible = false
             disconnectItem.isVisible = true
         } else {
@@ -73,7 +96,11 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
                 launch {
                     val current = database.subscriptions().getAll().firstOrNull { it.selected }
                     if (current != null) {
-                        danmakuListener = DanmakuApi.listen(current.roomId, this@MainActivity)
+                        try {
+                            service?.connect(current.roomId)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     } else {
                         Log.e(TAG, "No subscriptions selected.")
                     }
@@ -81,8 +108,14 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
                 true
             }
             R.id.action_disconnect -> {
-                if (danmakuListener?.isClosed == false) {
-                    danmakuListener?.close()
+                launch {
+                    if (withContext(IO) { service?.isConnected } == true) {
+                        try {
+                            service?.disconnect()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
                 }
                 true
             }
@@ -90,35 +123,61 @@ class MainActivity : BaseActivity(), DanmakuListener.Callback, DrawerViewFragmen
         }
     }
 
-    override fun onConnect() {
-        Log.i(TAG, "DanmakuListener: onConnect")
-        invalidateOptionsMenu()
-    }
-
-    override fun onDisconnect(userReason: Boolean) {
-        Log.i(TAG, "DanmakuListener: onDisconnect: userReason=$userReason")
-        invalidateOptionsMenu()
-    }
-
-    override fun onHeartbeat(online: Int) {
-        Log.d(TAG, "DanmakuListener: onHeartbeat: online=$online")
-    }
-
-    override fun onMessage(msg: BiliChatMessage) {
-        Log.d(TAG, "DanmakuListener: onMessage: $msg")
-        if (msg is BiliChatMessage.Danmaku) {
-            danmakuList += msg
-            danmakuAdapter.notifyDataSetChanged()
-        }
-    }
-
-    override fun onFailure(t: Throwable) {
-        Log.e(TAG, "DanmakuListener: onFailure", t)
-    }
-
     override fun onSubscriptionChange(current: Subscription) {
         Log.d(TAG, "onSubscriptionChange -> $current")
         drawerLayout.closeDrawer(GravityCompat.START)
+        launch {
+            val needReconnect = withContext(IO) {
+                service?.isConnected == true && service?.roomId != current.roomId
+            }
+            if (needReconnect) {
+                service?.connect(current.roomId)
+            }
+        }
+    }
+
+    private fun startBindService() {
+        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
+        val serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                if (binder == null) {
+                    return
+                }
+                service = IDanmakuListenerService.Stub.asInterface(binder)
+                service?.registerCallback(danmakuListenerCallback, false)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                service = null
+                invalidateOptionsMenu()
+            }
+        }
+        this.serviceConnection = serviceConnection
+        bindService(serviceIntent, serviceConnection, Service.BIND_AUTO_CREATE)
+    }
+
+    private inner class DanmakuListenerCallbackImpl : IDanmakuListenerCallback.Stub() {
+        override fun onConnect(roomId: Long) {
+            Log.i(TAG, "DanmakuListener: onConnect")
+            invalidateOptionsMenu()
+        }
+
+        override fun onDisconnect() {
+            Log.i(TAG, "DanmakuListener: onDisconnect")
+            invalidateOptionsMenu()
+        }
+
+        override fun onReceiveDanmaku(msg: BiliChatDanmaku?) {
+            Log.d(TAG, "DanmakuListener: onReceiveDanmaku: $msg")
+            if (msg is BiliChatDanmaku) {
+                danmakuList += msg
+                danmakuAdapter.notifyDataSetChanged()
+            }
+        }
+
+        override fun onHeartbeat(online: Int) {
+            Log.d(TAG, "DanmakuListener: onHeartbeat: online=$online")
+        }
     }
 
     private class SimpleDanmakuAdapter : MultiTypeAdapter() {
