@@ -93,6 +93,12 @@ class DanmakuListenerService :
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "Called onDestroy")
+        try {
+            stopForeground(true)
+            notificationManager.cancel(NOTI_ID_LISTENER_STATUS)
+        } catch (e: Exception) {
+
+        }
         this.cancel()
     }
 
@@ -191,6 +197,10 @@ class DanmakuListenerService :
 
         override fun disconnect() {
             this@DanmakuListenerService.disconnect()
+        }
+
+        override fun requestHeartbeat() {
+            danmakuListener?.requestHeartbeat()
         }
 
         override fun isConnected(): Boolean {

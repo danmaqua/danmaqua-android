@@ -8,6 +8,8 @@ interface IDanmakuListenerService {
 
     void disconnect();
 
+    void requestHeartbeat();
+
     boolean isConnected();
 
     long getRoomId();

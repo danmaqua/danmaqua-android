@@ -122,6 +122,13 @@ class DanmakuListener internal constructor(
         callOnDisconnect(userReasonClose)
     }
 
+    fun requestHeartbeat() {
+        launch {
+            heartbeat()
+            scheduleNextHeartbeat()
+        }
+    }
+
     fun close() {
         if (isClosed) {
             throw IllegalStateException("DanmakuListener is closed.")

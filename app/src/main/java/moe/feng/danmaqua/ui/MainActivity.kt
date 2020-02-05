@@ -34,6 +34,8 @@ import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.list.SimpleDanmakuItemViewDelegate
 import moe.feng.danmaqua.util.HttpUtils
 import moe.feng.danmaqua.util.ext.TAG
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
@@ -79,11 +81,15 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
         updateAvatarAndNameViews()
         updateStatusViews()
-        startBindService()
+        checkServiceStatus()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        service?.unregisterCallback(danmakuListenerCallback)
+        if (service?.isConnected != true) {
+            stopListenerService()
+        }
         serviceConnection?.let {
             try {
                 unbindService(it)
@@ -123,11 +129,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 launch {
                     val current = database.subscriptions().getAll().firstOrNull { it.selected }
                     if (current != null) {
-                        try {
-                            service?.connect(current.roomId)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+                        connectRoom(current.roomId)
                     } else {
                         Log.e(TAG, "No subscriptions selected.")
                     }
@@ -158,23 +160,84 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 service?.isConnected == true && service?.roomId != current.roomId
             }
             if (needReconnect) {
-                service?.connect(current.roomId)
+                connectRoom(current.roomId)
             }
         }
     }
 
-    private fun startBindService() {
+    private suspend fun connectRoom(roomId: Long) = withContext(IO) {
+        if (service == null) {
+            startForegroundListenerService()
+            service = suspendCoroutine<IDanmakuListenerService> { c ->
+                bindListenerService { c.resume(it) }
+            }
+        }
+        try {
+            service?.connect(roomId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkServiceStatus() {
+        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
+        val serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                if (binder == null) {
+                    return
+                }
+                val service = IDanmakuListenerService.Stub.asInterface(binder)
+                if (service?.isConnected == true) {
+                    bindListenerService()
+                }
+                unbindService(this)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {}
+        }
+        if (!bindService(serviceIntent, serviceConnection, Service.BIND_AUTO_CREATE)) {
+            unbindService(serviceConnection)
+        }
+    }
+
+    private fun startForegroundListenerService() {
         val serviceIntent = Intent(this, DanmakuListenerService::class.java)
         serviceIntent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_START)
         ContextCompat.startForegroundService(this, serviceIntent)
+    }
+
+    private fun stopListenerService() {
+        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
+        serviceIntent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_STOP)
+        startService(serviceIntent)
+
+        serviceConnection?.let {
+            try {
+                unbindService(it)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        service = null
+        serviceConnection = null
+    }
+
+    private fun bindListenerService(onConnected: (IDanmakuListenerService) -> Unit = {}) {
+        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
 
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 if (binder == null) {
                     return
                 }
-                service = IDanmakuListenerService.Stub.asInterface(binder)
-                service?.registerCallback(danmakuListenerCallback, false)
+                service = IDanmakuListenerService.Stub.asInterface(binder).also {
+                    it.requestHeartbeat()
+                    it.registerCallback(danmakuListenerCallback, false)
+                    if (it.isConnected) {
+                        updateStatusViews()
+                    }
+                    onConnected(it)
+                }
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
@@ -183,7 +246,9 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             }
         }
         this.serviceConnection = serviceConnection
-        bindService(serviceIntent, serviceConnection, Service.BIND_AUTO_CREATE)
+        if (!bindService(serviceIntent, serviceConnection, 0)) {
+            startForegroundListenerService()
+        }
     }
 
     private fun updateAvatarAndNameViews() = launch {
