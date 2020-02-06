@@ -9,7 +9,7 @@
     <string name="action_open_a_floating_window">Open a floating window</string>
     <string name="action_open_stream">Watch stream</string>
     <string name="action_room_info">Room info</string>
-    <string name="action_back_to_top">Back to top</string>
+    <string name="action_back_to_latest">Back to latest</string>
 
     <string name="sys_msg_connected_to_room"><![CDATA[
     <b>Connected to room:</b> %d

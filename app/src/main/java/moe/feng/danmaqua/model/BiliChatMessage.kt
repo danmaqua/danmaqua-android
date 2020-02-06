@@ -45,7 +45,7 @@ open class BiliChatMessage(val cmd: String, val timestamp: Long) : Parcelable {
                     val info = map["info"] as? List<*> ?: emptyList<Any>()
                     val text = info[1] as? String ?: ""
                     val senderInfo = info[2] as? List<*> ?: emptyList<Any>()
-                    val senderUid = senderInfo[0] as? Long ?: 0L
+                    val senderUid = (senderInfo[0] as? Number)?.toLong() ?: 0L
                     val senderName = senderInfo[1] as? String ?: ""
                     val tsInfo = info[9] as? Map<*, *> ?: emptyMap<String, Any>()
                     BiliChatDanmaku(

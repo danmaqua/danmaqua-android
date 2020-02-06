@@ -54,11 +54,11 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     private var online: Int = 0
 
     private val messageAdapter: MessageListAdapter = MessageListAdapter(onItemAdded = {
-        if (!isFinishing && autoScrollToTop) {
+        if (!isFinishing && autoScrollToLatest) {
             recyclerView.smoothScrollToPosition(it.itemCount)
         }
     })
-    private var autoScrollToTop: Boolean = true
+    private var autoScrollToLatest: Boolean = true
 
     private lateinit var toolbarView: View
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
@@ -80,29 +80,42 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             drawerLayout.openDrawer(GravityCompat.START)
         }
         supportActionBar?.customView = toolbarView
-        backToTopButton.isGone = true
+        backToLatestButton.isGone = true
 
         recyclerView.adapter = messageAdapter
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var state: Int = RecyclerView.SCROLL_STATE_IDLE
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                state = newState
                 when (newState) {
                     RecyclerView.SCROLL_STATE_IDLE -> {
                         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                         val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
                         val itemCount = layoutManager.itemCount
-                        if (lastPos == layoutManager.itemCount - 1) {
-                            autoScrollToTop = true
-                        }
-
-                        if (itemCount < 3 || ((itemCount - 1) - lastPos < 3)) {
-                            backToTopButton.isGone = true
-                        } else {
-                            backToTopButton.isVisible = true
+                        if (lastPos == itemCount - 1) {
+                            autoScrollToLatest = true
                         }
                     }
                     RecyclerView.SCROLL_STATE_DRAGGING -> {
-                        autoScrollToTop = false
+                        autoScrollToLatest = false
                     }
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 5) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
+                    val itemCount = layoutManager.itemCount
+
+                    if (itemCount < 3 || ((itemCount - 1) - lastPos < 3)) {
+                        backToLatestButton.isGone = true
+                    } else if (state == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        backToLatestButton.isVisible = true
+                    }
+                } else if (dy < 0) {
+                    backToLatestButton.isGone = true
                 }
             }
         })
@@ -113,7 +126,8 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         setFilterButton.setOnClickListener {
             PreferenceActivity.launch(this, FilterSettingsFragment.ACTION)
         }
-        backToTopButton.setOnClickListener {
+        backToLatestButton.setOnClickListener {
+            backToLatestButton.isGone = true
             recyclerView.smoothScrollToPosition(messageAdapter.itemCount - 1)
         }
 

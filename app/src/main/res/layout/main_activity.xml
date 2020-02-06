@@ -35,30 +35,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="56dp"
-            app:reverseLayout="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?android:attr/actionBarSize">
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="?android:attr/actionBarSize">
 
             <TextView
-                android:id="@+id/backToTopButton"
+                android:id="@+id/backToLatestButton"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/back_to_top_button_height"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="@dimen/back_to_latest_button_height"
+                android:layout_gravity="center_vertical|end"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:stateListAnimator="@animator/back_to_latest_button_list_animator"
                 android:gravity="center"
                 android:paddingStart="14sp"
-                android:paddingEnd="14sp"
-                android:background="@drawable/back_to_top_button_background"
-                android:text="@string/action_back_to_top"
+                android:paddingEnd="18sp"
+                android:background="@drawable/back_to_latest_button_background"
+                android:text="@string/action_back_to_latest"
                 android:textSize="14sp"
                 android:textColor="?android:textColorSecondary"
-                android:elevation="@dimen/back_to_top_button_elevation"/>
+                android:drawableStart="@drawable/ic_arrow_drop_down_24"
+                android:drawableTint="?android:attr/textColorSecondary"
+                android:drawablePadding="4dp"
+                android:drawableTintMode="src_in"
+                android:elevation="@dimen/back_to_latest_button_elevation" />
 
         </FrameLayout>
 

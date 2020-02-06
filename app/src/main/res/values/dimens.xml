@@ -6,8 +6,8 @@
     <dimen name="subscription_item_view_background_radius">16dp</dimen>
     <dimen name="subscription_list_raised_view_elevation">16dp</dimen>
 
-    <dimen name="back_to_top_button_height">32sp</dimen>
-    <dimen name="back_to_top_button_radius">16sp</dimen>
-    <dimen name="back_to_top_button_elevation">4dp</dimen>
+    <dimen name="back_to_latest_button_height">36sp</dimen>
+    <dimen name="back_to_latest_button_radius">18sp</dimen>
+    <dimen name="back_to_latest_button_elevation">4dp</dimen>
 
 </resources>
