@@ -11,4 +11,10 @@
         android:key="filter_pattern"
         android:title="@string/filter_settings_pattern_title"/>
 
+    <Preference
+        android:key="filter_blocked_users"
+        android:title="@string/filter_settings_blocked_users_title"
+        android:summary="@string/filter_settings_blocked_users_summary_format"
+        android:enabled="false"/>
+
 </androidx.preference.PreferenceScreen>

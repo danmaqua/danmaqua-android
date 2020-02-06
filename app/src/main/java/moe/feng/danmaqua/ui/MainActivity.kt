@@ -20,7 +20,8 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import com.drakeet.multitype.MultiTypeAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.bottom_toolbar_layout.*
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -34,7 +35,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
-import moe.feng.danmaqua.ui.list.SimpleDanmakuItemViewDelegate
+import moe.feng.danmaqua.ui.list.MessageListAdapter
 import moe.feng.danmaqua.util.HttpUtils
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.TAG
@@ -52,10 +53,12 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
     private var online: Int = 0
 
-    private val danmakuList: MutableList<BiliChatDanmaku> = mutableListOf()
-    private val danmakuAdapter: SimpleDanmakuAdapter = SimpleDanmakuAdapter().also {
-        it.items = danmakuList
-    }
+    private val messageAdapter: MessageListAdapter = MessageListAdapter(onItemAdded = {
+        if (!isFinishing && autoScrollToTop) {
+            recyclerView.smoothScrollToPosition(it.itemCount)
+        }
+    })
+    private var autoScrollToTop: Boolean = true
 
     private lateinit var toolbarView: View
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
@@ -71,19 +74,47 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             it.setDisplayShowTitleEnabled(false)
             it.setDisplayShowCustomEnabled(true)
         }
-        toolbarView = LayoutInflater.from(this).inflate(R.layout.main_toolbar_layout, null)
+        toolbarView = LayoutInflater.from(this)
+            .inflate(R.layout.main_toolbar_layout, toolbar, false)
         toolbarView.findViewById<View>(R.id.titleButton).setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
         }
         supportActionBar?.customView = toolbarView
+        backToTopButton.isGone = true
 
-        recyclerView.adapter = danmakuAdapter
+        recyclerView.adapter = messageAdapter
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_IDLE -> {
+                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                        val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
+                        val itemCount = layoutManager.itemCount
+                        if (lastPos == layoutManager.itemCount - 1) {
+                            autoScrollToTop = true
+                        }
+
+                        if (itemCount < 3 || ((itemCount - 1) - lastPos < 3)) {
+                            backToTopButton.isGone = true
+                        } else {
+                            backToTopButton.isVisible = true
+                        }
+                    }
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+                        autoScrollToTop = false
+                    }
+                }
+            }
+        })
 
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
 
         connectButton.setOnClickListener(this::onConnectButtonClick)
         setFilterButton.setOnClickListener {
             PreferenceActivity.launch(this, FilterSettingsFragment.ACTION)
+        }
+        backToTopButton.setOnClickListener {
+            recyclerView.smoothScrollToPosition(messageAdapter.itemCount - 1)
         }
 
         if (savedInstanceState == null) {
@@ -292,11 +323,13 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     private inner class DanmakuListenerCallbackImpl : IDanmakuListenerCallback.Stub() {
         override fun onConnect(roomId: Long) {
             Log.i(TAG, "DanmakuListener: onConnect")
+            messageAdapter.addSystemMessage(getString(R.string.sys_msg_connected_to_room, roomId))
             updateStatusViews()
         }
 
         override fun onDisconnect() {
             Log.i(TAG, "DanmakuListener: onDisconnect")
+            messageAdapter.addSystemMessage(getString(R.string.sys_msg_disconnected))
             updateStatusViews()
         }
 
@@ -318,8 +351,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                         return@launch
                     }
                 }
-                danmakuList += msg
-                danmakuAdapter.notifyItemInserted(danmakuList.size - 1)
+                messageAdapter.addDanmaku(msg)
             }
         }
 
@@ -328,14 +360,6 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             this@MainActivity.online = online
             updateStatusViews()
         }
-    }
-
-    private class SimpleDanmakuAdapter : MultiTypeAdapter() {
-
-        init {
-            register(SimpleDanmakuItemViewDelegate())
-        }
-
     }
 
 }

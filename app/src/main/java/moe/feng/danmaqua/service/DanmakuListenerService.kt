@@ -122,7 +122,11 @@ class DanmakuListenerService :
 
     private fun connect(roomId: Long) {
         Log.d(TAG, "connect roomId=$roomId")
-        danmakuListener?.close()
+        try {
+            danmakuListener?.close()
+        } catch (ignored: Exception) {
+
+        }
         danmakuListener = DanmakuApi.listen(roomId, this)
 
         // TODO Save local history

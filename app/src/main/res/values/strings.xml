@@ -9,6 +9,14 @@
     <string name="action_open_a_floating_window">Open a floating window</string>
     <string name="action_open_stream">Watch stream</string>
     <string name="action_room_info">Room info</string>
+    <string name="action_back_to_top">Back to top</string>
+
+    <string name="sys_msg_connected_to_room"><![CDATA[
+    <b>Connected to room:</b> %d
+    ]]></string>
+    <string name="sys_msg_disconnected"><![CDATA[
+    Disconnected from stream room.
+    ]]></string>
 
     <string name="chooser_title_choose_apps_to_watch_stream">Choose apps to watch stream</string>
 
@@ -28,7 +36,9 @@
 
     <string name="listener_service_label">Danmaku Background Service</string>
     <string name="listener_service_noti_title">Danmaqua is listening messages for you.</string>
-    <string name="listener_service_noti_text_no_connected">No room entered. Click here to open main page.</string>
+    <string name="listener_service_noti_text_no_connected"><![CDATA[
+    No room entered. Click here to open main page.
+    ]]></string>
     <string name="listener_service_noti_text_connected">Connected room: %1$s(%2$d)</string>
     <string name="listener_service_noti_stop">Stop</string>
 
@@ -38,6 +48,12 @@
     <string name="filter_settings_enabled_title">Show filtered danmaku only</string>
     <string name="filter_settings_enabled_summary">Help you easier to read translation</string>
     <string name="filter_settings_pattern_title">Filter Pattern</string>
-    <string name="filter_settings_pattern_summary_format">Translation danmaku will be filtered with this pattern: %s</string>
+    <string name="filter_settings_pattern_summary_format"><![CDATA[
+    Translation danmaku will be filtered with this pattern: %s
+    ]]></string>
+    <string name="filter_settings_blocked_users_title">Blocked users</string>
+    <string name="filter_settings_blocked_users_summary_format"><![CDATA[
+    Danmaku sent by blocked users will not be displayed whether filter is on or off.
+    ]]></string>
 
 </resources>
