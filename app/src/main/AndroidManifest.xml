@@ -32,6 +32,12 @@
             android:theme="@style/Theme.Danmaqua"
             android:exported="false"/>
 
+        <activity
+            android:name=".ui.PreferenceActivity"
+            android:label="@string/settings_title"
+            android:theme="@style/Theme.Danmaqua"
+            android:exported="true"/>
+
         <service
             android:name=".service.DanmakuListenerService"
             android:label="@string/listener_service_label"

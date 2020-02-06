@@ -22,6 +22,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:text="@string/action_set_filter"
-        android:drawableStart="@drawable/ic_filter_list_24"/>
+        android:drawableEnd="@drawable/ic_filter_list_24"/>
 
 </FrameLayout>

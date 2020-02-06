@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.SwitchPreference
+        android:key="filter_enabled"
+        android:title="@string/filter_settings_enabled_title"
+        android:summary="@string/filter_settings_enabled_summary"/>
+
+    <androidx.preference.EditTextPreference
+        android:key="filter_pattern"
+        android:title="@string/filter_settings_pattern_title"/>
+
+</androidx.preference.PreferenceScreen>

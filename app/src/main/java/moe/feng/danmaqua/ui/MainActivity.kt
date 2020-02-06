@@ -15,7 +15,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -28,6 +27,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
+import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
@@ -39,6 +39,7 @@ import moe.feng.danmaqua.util.HttpUtils
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
+import java.util.regex.Pattern
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -81,6 +82,9 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
 
         connectButton.setOnClickListener(this::onConnectButtonClick)
+        setFilterButton.setOnClickListener {
+            PreferenceActivity.launch(this, FilterSettingsFragment.ACTION)
+        }
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -296,11 +300,26 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             updateStatusViews()
         }
 
-        override fun onReceiveDanmaku(msg: BiliChatDanmaku?) {
+        override fun onReceiveDanmaku(msg: BiliChatDanmaku) {
             Log.d(TAG, "DanmakuListener: onReceiveDanmaku: $msg")
-            if (msg is BiliChatDanmaku) {
+            launch {
+                if (Settings.Filter.enabled) {
+                    val ignored = withContext(IO) {
+                        try {
+                            val pattern = Pattern.compile(Settings.Filter.pattern)
+                            val matcher = pattern.matcher(msg.text)
+                            !matcher.matches()
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Filter pattern might be invalid.")
+                            true
+                        }
+                    }
+                    if (ignored) {
+                        return@launch
+                    }
+                }
                 danmakuList += msg
-                danmakuAdapter.notifyDataSetChanged()
+                danmakuAdapter.notifyItemInserted(danmakuList.size - 1)
             }
         }
 
