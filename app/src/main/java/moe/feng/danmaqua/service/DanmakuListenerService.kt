@@ -28,6 +28,7 @@ import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.getDanmaquaDatabase
+import java.io.EOFException
 import java.lang.Exception
 
 class DanmakuListenerService :
@@ -186,6 +187,10 @@ class DanmakuListenerService :
     }
 
     override fun onFailure(t: Throwable) {
+        if (t is EOFException) {
+            // Ignore EOF
+            return
+        }
         Log.e(TAG, "onFailure", t)
     }
 

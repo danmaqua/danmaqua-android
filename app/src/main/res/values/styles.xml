@@ -15,4 +15,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Widget.Danmaqua.IconTextButton" parent="Widget.MaterialComponents.TextView">
+        <item name="android:clickable">true</item>
+        <item name="android:selectable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:gravity">center</item>
+        <item name="android:drawableTint">?android:attr/textColorPrimary</item>
+        <item name="android:drawableTintMode">src_in</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
 </resources>

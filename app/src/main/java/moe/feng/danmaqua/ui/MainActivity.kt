@@ -13,13 +13,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.drakeet.multitype.MultiTypeAdapter
+import kotlinx.android.synthetic.main.bottom_toolbar_layout.*
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -33,7 +36,9 @@ import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.list.SimpleDanmakuItemViewDelegate
 import moe.feng.danmaqua.util.HttpUtils
+import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.TAG
+import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -73,6 +78,10 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
         recyclerView.adapter = danmakuAdapter
 
+        TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
+
+        connectButton.setOnClickListener(this::onConnectButtonClick)
+
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 replace(R.id.drawerView, DrawerViewFragment())
@@ -110,40 +119,14 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val connectItem = menu.findItem(R.id.action_connect)
-        val disconnectItem = menu.findItem(R.id.action_disconnect)
-        if (service?.isConnected == true) {
-            connectItem.isVisible = false
-            disconnectItem.isVisible = true
-        } else {
-            connectItem.isVisible = true
-            disconnectItem.isVisible = false
-        }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_connect -> {
+            R.id.action_open_stream -> {
                 launch {
                     val current = database.subscriptions().getAll().firstOrNull { it.selected }
                     if (current != null) {
-                        connectRoom(current.roomId)
-                    } else {
-                        Log.e(TAG, "No subscriptions selected.")
-                    }
-                }
-                true
-            }
-            R.id.action_disconnect -> {
-                launch {
-                    if (withContext(IO) { service?.isConnected } == true) {
-                        try {
-                            service?.disconnect()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+                        startActivity(IntentUtils.openBilibiliLive(
+                            this@MainActivity, current.roomId))
                     }
                 }
                 true
@@ -161,6 +144,26 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             }
             if (needReconnect) {
                 connectRoom(current.roomId)
+            }
+        }
+    }
+
+    private fun onConnectButtonClick(view: View) {
+        launch {
+            if (withContext(IO) { service?.isConnected } == true) {
+                try {
+                    service?.disconnect()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    updateStatusViews()
+                }
+            } else {
+                val current = database.subscriptions().getAll().firstOrNull { it.selected }
+                if (current != null) {
+                    connectRoom(current.roomId)
+                } else {
+                    Log.e(TAG, "No subscriptions selected.")
+                }
             }
         }
     }
@@ -264,9 +267,15 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
     private fun updateStatusViews() = launch {
         if (withContext(IO) { service?.isConnected } == true) {
+            connectButton.setText(R.string.action_disconnect)
+            connectButton.compoundDrawableStartRes = R.drawable.ic_stop_24
+
             statusView.isVisible = true
             statusView.text = getString(R.string.status_connected_with_popularity, online)
         } else {
+            connectButton.setText(R.string.action_connect)
+            connectButton.compoundDrawableStartRes = R.drawable.ic_play_circle_filled_24
+
             if (database.subscriptions().findSelected() == null) {
                 statusView.isGone = true
             } else {
@@ -274,7 +283,6 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 statusView.setText(R.string.status_disconnected)
             }
         }
-        invalidateOptionsMenu()
     }
 
     private inner class DanmakuListenerCallbackImpl : IDanmakuListenerCallback.Stub() {

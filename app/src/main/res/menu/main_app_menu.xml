@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_connect"
-        android:title="@string/action_connect"
-        app:showAsAction="never"/>
+        android:id="@+id/action_open_stream"
+        android:title="@string/action_open_stream"
+        android:icon="@drawable/ic_action_open_in_browser_24"
+        app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_disconnect"
-        android:title="@string/action_disconnect"
+        android:id="@+id/action_room_info"
+        android:title="@string/action_room_info"
         app:showAsAction="never"/>
 
 </menu>

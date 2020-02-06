@@ -3,7 +3,6 @@ package moe.feng.danmaqua.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +16,9 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.DanmaquaApplication
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
+import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
-import moe.feng.danmaqua.util.ext.TAG
 
 class DrawerViewFragment : BaseFragment() {
 
@@ -48,7 +47,29 @@ class DrawerViewFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val context = view.context
+
         drawerList.adapter = drawerListAdapter
+        drawerList.addOnScrollListener(RaisedViewScrollListener(
+            bottomBar,
+            context.resources.getDimension(R.dimen.subscription_list_raised_view_elevation),
+            0F,
+            context.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        ))
+        drawerList.scrollToPosition(0)
+
+        val appName = getString(R.string.app_name)
+        var versionName = "Unknown"
+        var versionCode = 0
+        try {
+            val packInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            versionName = packInfo.versionName
+            versionCode = packInfo.versionCode
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        appVersionView.text = getString(R.string.app_name_with_version_text_format,
+            appName, versionName, versionCode)
 
         updateAdapterData()
     }

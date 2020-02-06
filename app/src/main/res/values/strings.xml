@@ -3,10 +3,17 @@
     <string name="app_name">FloatingCaption</string>
 
     <string name="action_connect">Connect</string>
-    <string name="action_disconnect">Disconnect</string>
+    <string name="action_disconnect">Stop</string>
     <string name="action_settings">Settings</string>
+    <string name="action_set_filter">Filter</string>
+    <string name="action_open_a_floating_window">Open a floating window</string>
+    <string name="action_open_stream">Watch stream</string>
+    <string name="action_room_info">Room info</string>
+
+    <string name="chooser_title_choose_apps_to_watch_stream">Choose apps to watch stream</string>
 
     <string name="action_new_subscription">Subscribe streamer…</string>
+    <string name="app_name_with_version_text_format">%s · Version %s (%d)</string>
 
     <string name="no_streamer_selected_title">No streamer selected</string>
     <string name="status_disconnected">Disconnected</string>
