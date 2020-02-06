@@ -10,7 +10,13 @@ interface IDanmakuListenerService {
 
     void requestHeartbeat();
 
+    void showFloating();
+
+    void hideFloating();
+
     boolean isConnected();
+
+    boolean isFloatingShowing();
 
     long getRoomId();
 

@@ -13,6 +13,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -38,6 +40,7 @@ import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.list.MessageListAdapter
 import moe.feng.danmaqua.util.HttpUtils
 import moe.feng.danmaqua.util.IntentUtils
+import moe.feng.danmaqua.util.WindowUtils
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
 import java.util.regex.Pattern
@@ -45,6 +48,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
+
+    companion object {
+
+        const val REQUEST_CODE_OVERLAY_PERMISSION = 10
+
+    }
 
     private val danmakuListenerCallback: IDanmakuListenerCallback = DanmakuListenerCallbackImpl()
 
@@ -130,6 +139,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             backToLatestButton.isGone = true
             recyclerView.smoothScrollToPosition(messageAdapter.itemCount - 1)
         }
+        fab.setOnClickListener(this::onFabClick)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -160,6 +170,17 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     override fun onAttachFragment(fragment: Fragment) {
         if (fragment is DrawerViewFragment) {
             fragment.callback = this
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_CODE_OVERLAY_PERMISSION -> {
+                if (WindowUtils.canDrawOverlays(this)) {
+                    launch { showFloatingWindow() }
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -194,6 +215,47 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             if (needReconnect) {
                 connectRoom(current.roomId)
             }
+        }
+    }
+
+    private fun onFabClick(view: View) {
+        launch {
+            val activity = this@MainActivity
+            if (withContext(IO) { service?.isConnected } != true) {
+                Toast.makeText(
+                    activity,
+                    R.string.toast_connect_room_before_opening_float,
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@launch
+            }
+            if (!WindowUtils.canDrawOverlays(activity)) {
+                AlertDialog.Builder(activity)
+                    .setTitle(R.string.overlay_permission_request_title)
+                    .setMessage(R.string.overlay_permission_request_message)
+                    .setPositiveButton(R.string.action_allow) { _, _ ->
+                        WindowUtils.requestOverlayPermission(
+                            activity, REQUEST_CODE_OVERLAY_PERMISSION)
+                    }
+                    .setNegativeButton(R.string.action_deny, null)
+                    .show()
+                return@launch
+            }
+            showFloatingWindow()
+        }
+    }
+
+    private suspend fun showFloatingWindow() = withContext(IO) {
+        if (service == null) {
+            startForegroundListenerService()
+            service = suspendCoroutine<IDanmakuListenerService> { c ->
+                bindListenerService { c.resume(it) }
+            }
+        }
+        try {
+            service?.showFloating()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

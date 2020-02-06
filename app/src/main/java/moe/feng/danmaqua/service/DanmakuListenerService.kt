@@ -5,8 +5,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.graphics.PixelFormat
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams
+import android.widget.TextView
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import kotlinx.coroutines.CoroutineScope
@@ -43,9 +51,24 @@ class DanmakuListenerService :
 
     private val binder: AidlInterfaceImpl = AidlInterfaceImpl()
     private val notificationManager by lazy { getSystemService<NotificationManager>()!! }
+    private val windowManager by lazy { getSystemService<WindowManager>()!! }
 
     private var danmakuListener: DanmakuListener? = null
     private val serviceCallbacks: MutableList<CallbackHolder> = mutableListOf()
+
+    private var isFloatingShowing: Boolean = false
+    private var floatingLayout: View? = null
+    private var captionView: TextView? = null
+    private var floatingLayoutParams: LayoutParams = LayoutParams().apply {
+        type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            LayoutParams.TYPE_SYSTEM_OVERLAY
+        }
+        width = LayoutParams.WRAP_CONTENT
+        height = LayoutParams.WRAP_CONTENT
+        format = PixelFormat.TRANSPARENT
+    }
 
     private lateinit var notification: Notification
     private val notificationBuilder: NotificationCompat.Builder =
@@ -94,6 +117,7 @@ class DanmakuListenerService :
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "Called onDestroy")
+        destroyFloatingView()
         try {
             stopForeground(true)
             notificationManager.cancel(NOTI_ID_LISTENER_STATUS)
@@ -118,6 +142,35 @@ class DanmakuListenerService :
             }
         }
         return START_STICKY
+    }
+
+    private fun createFloatingView() = launch {
+        Log.d(TAG, "createFloatingView")
+        if (floatingLayout == null) {
+            val themedContext = ContextThemeWrapper(
+                this@DanmakuListenerService, R.style.Theme_MaterialComponents_Dialog)
+            floatingLayout = LayoutInflater.from(themedContext)
+                .inflate(R.layout.floating_window_view, null)
+                .also {
+                    captionView = it.findViewById(R.id.captionView)
+                }
+        }
+
+        try {
+            windowManager.addView(floatingLayout!!, floatingLayoutParams)
+            isFloatingShowing = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun destroyFloatingView() {
+        Log.d(TAG, "destroyFloatingView")
+        isFloatingShowing = false
+        floatingLayout?.let {
+            windowManager.removeViewImmediate(it)
+        }
+        floatingLayout = null
     }
 
     private fun connect(roomId: Long) {
@@ -188,6 +241,7 @@ class DanmakuListenerService :
             // TODO Implement filter
             callback.onReceiveDanmaku(msg)
         }
+        captionView?.text = msg.text
     }
 
     override fun onFailure(t: Throwable) {
@@ -208,12 +262,24 @@ class DanmakuListenerService :
             this@DanmakuListenerService.disconnect()
         }
 
+        override fun showFloating() {
+            createFloatingView()
+        }
+
+        override fun hideFloating() {
+            destroyFloatingView()
+        }
+
         override fun requestHeartbeat() {
             danmakuListener?.requestHeartbeat()
         }
 
         override fun isConnected(): Boolean {
             return danmakuListener?.isConnected == true
+        }
+
+        override fun isFloatingShowing(): Boolean {
+            return this@DanmakuListenerService.isFloatingShowing
         }
 
         override fun getRoomId(): Long {

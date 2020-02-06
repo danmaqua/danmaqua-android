@@ -18,6 +18,10 @@
     Disconnected from stream room.
     ]]></string>
 
+    <string name="toast_connect_room_before_opening_float"><![CDATA[
+    Please connect a room before opening a floating window.
+    ]]></string>
+
     <string name="chooser_title_choose_apps_to_watch_stream">Choose apps to watch stream</string>
 
     <string name="action_new_subscription">Subscribe streamer…</string>
@@ -41,6 +45,14 @@
     ]]></string>
     <string name="listener_service_noti_text_connected">Connected room: %1$s(%2$d)</string>
     <string name="listener_service_noti_stop">Stop</string>
+
+    <string name="overlay_permission_request_title">Overlay permission required</string>
+    <string name="overlay_permission_request_message"><![CDATA[
+    To show a floating window, overlay permission is required.
+    Click "Allow" and follow the system guide to turn on permissions for this app.
+    ]]></string>
+    <string name="action_allow">Allow</string>
+    <string name="action_deny">Deny</string>
 
     <string name="settings_title">Settings</string>
 
