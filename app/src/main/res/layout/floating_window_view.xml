@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:background="?attr/colorBackgroundFloating">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/captionView"
+    <View
+        android:id="@+id/floatingBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/floating_window_dark_background"
+        tools:layout_width="180dp"
+        tools:layout_height="42dp"/>
+
+    <LinearLayout
+        android:id="@+id/floatingContent"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorPrimary"
-        tools:text="Test Caption"/>
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/captionView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="Test Caption"/>
+
+    </LinearLayout>
+
+</FrameLayout>
