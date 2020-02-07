@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -52,6 +53,9 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     companion object {
 
         const val REQUEST_CODE_OVERLAY_PERMISSION = 10
+
+        const val STATE_ONLINE = "state:ONLINE"
+        const val STATE_LIST_DATA = "state:LIST_DATA"
 
     }
 
@@ -145,11 +149,23 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             supportFragmentManager.commit {
                 replace(R.id.drawerView, DrawerViewFragment())
             }
+        } else {
+            online = savedInstanceState.getInt(STATE_ONLINE)
+            savedInstanceState.getParcelableArrayList<Parcelable>(STATE_LIST_DATA)?.let {
+                messageAdapter.list.clear()
+                messageAdapter.list.addAll(it)
+            }
         }
 
         updateAvatarAndNameViews()
         updateStatusViews()
         checkServiceStatus()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(STATE_ONLINE, online)
+        outState.putParcelableArrayList(STATE_LIST_DATA, ArrayList(messageAdapter.list))
     }
 
     override fun onDestroy() {

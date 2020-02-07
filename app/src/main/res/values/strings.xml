@@ -68,4 +68,12 @@
     Danmaku sent by blocked users will not be displayed whether filter is on or off.
     ]]></string>
 
+    <string name="floating_settings_title">Floating window</string>
+    <string name="floating_two_line_title">Two-line mode</string>
+    <string name="floating_two_line_summary">Show two-line caption instead</string>
+    <string name="floating_background_alpha_title">Background transparent</string>
+    <string name="floating_background_alpha_summary">Alpha: %d</string>
+    <string name="floating_text_size_title">Caption text size</string>
+    <string name="floating_text_size_summary">Size: %d sp</string>
+
 </resources>

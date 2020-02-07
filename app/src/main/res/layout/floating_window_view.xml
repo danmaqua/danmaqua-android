@@ -3,32 +3,56 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    tools:layout_marginStart="@dimen/floating_window_horizontal_margin"
+    tools:layout_marginEnd="@dimen/floating_window_horizontal_margin">
 
     <View
         android:id="@+id/floatingBackground"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/floating_window_dark_background"
-        tools:layout_width="180dp"
         tools:layout_height="42dp"/>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/floatingContent"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp">
+        android:focusable="true">
 
-        <TextView
-            android:id="@+id/captionView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/normalContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorPrimary"
-            tools:text="Test Caption"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/captionView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="12dp"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:text="Test Caption"/>
+
+            <ImageButton
+                android:id="@+id/expandButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="12dp"
+                android:src="@drawable/ic_unfold_more_24"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </FrameLayout>

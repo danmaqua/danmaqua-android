@@ -28,8 +28,14 @@ class PreferenceActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             when (val action = intent?.action) {
+                MainSettingsFragment.ACTION -> {
+                    setFragment(MainSettingsFragment())
+                }
                 FilterSettingsFragment.ACTION -> {
                     setFragment(FilterSettingsFragment())
+                }
+                FloatingSettingsFragment.ACTION -> {
+                    setFragment(FloatingSettingsFragment())
                 }
                 else -> {
                     Log.e(TAG, "Unsupported action $action. PreferenceActivity finished.")

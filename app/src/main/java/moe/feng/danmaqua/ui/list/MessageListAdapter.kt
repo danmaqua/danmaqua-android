@@ -1,10 +1,11 @@
 package moe.feng.danmaqua.ui.list
 
+import android.os.Parcelable
 import com.drakeet.multitype.MultiTypeAdapter
 import moe.feng.danmaqua.model.BiliChatDanmaku
 
 class MessageListAdapter(
-    val list: MutableList<Any> = mutableListOf(),
+    val list: MutableList<Parcelable> = mutableListOf(),
     val onItemAdded: (MessageListAdapter) -> Unit = {}
 ) : MultiTypeAdapter(items = list) {
 

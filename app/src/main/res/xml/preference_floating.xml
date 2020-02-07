@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.SwitchPreference
+        android:key="floating_two_line"
+        android:title="@string/floating_two_line_title"
+        android:summary="@string/floating_two_line_summary"/>
+
+    <androidx.preference.EditTextPreference
+        android:key="floating_background_alpha"
+        android:title="@string/floating_background_alpha_title"
+        android:summary="@string/floating_background_alpha_summary"/>
+
+    <androidx.preference.EditTextPreference
+        android:key="floating_text_size"
+        android:title="@string/floating_text_size_title"
+        android:summary="@string/floating_text_size_summary"/>
+
+</androidx.preference.PreferenceScreen>

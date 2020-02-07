@@ -71,6 +71,10 @@ class DrawerViewFragment : BaseFragment() {
         appVersionView.text = getString(R.string.app_name_with_version_text_format,
             appName, versionName, versionCode)
 
+        settingsButton.setOnClickListener {
+            PreferenceActivity.launch(requireActivity(), MainSettingsFragment.ACTION)
+        }
+
         updateAdapterData()
     }
 

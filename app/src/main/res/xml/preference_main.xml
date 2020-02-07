@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="floating_settings"
+        android:title="@string/floating_settings_title"/>
+
+    <Preference
+        android:key="filter_settings"
+        android:title="@string/filter_settings_title"/>
+
+</androidx.preference.PreferenceScreen>

@@ -1,6 +1,8 @@
 package moe.feng.danmaqua.ui.list
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,29 @@ import moe.feng.danmaqua.ui.list.SystemMessageItemViewDelegate.*
 
 class SystemMessageItemViewDelegate : ItemViewDelegate<Item, ViewHolder>() {
 
-    class Item(val text: String)
+    class Item(val text: String) : Parcelable {
+
+        constructor(parcel: Parcel) : this(parcel.readString()!!)
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(text)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Item> {
+            override fun createFromParcel(parcel: Parcel): Item {
+                return Item(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Item?> {
+                return arrayOfNulls(size)
+            }
+        }
+
+    }
 
     class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 

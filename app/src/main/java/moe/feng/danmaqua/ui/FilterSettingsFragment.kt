@@ -6,6 +6,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
 import moe.feng.danmaqua.Danmaqua
+import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 
@@ -13,7 +14,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
 
     companion object {
 
-        const val ACTION = "${Danmaqua.ACTION_PREFIX}.settings.FILTER"
+        const val ACTION = "$ACTION_PREFIX.settings.FILTER"
 
     }
 

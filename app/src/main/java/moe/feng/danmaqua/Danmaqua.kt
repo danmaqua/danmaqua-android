@@ -2,6 +2,7 @@ package moe.feng.danmaqua
 
 import com.tencent.mmkv.MMKV
 import moe.feng.danmaqua.util.ext.booleanProperty
+import moe.feng.danmaqua.util.ext.intProperty
 import moe.feng.danmaqua.util.ext.notnullStringProperty
 
 /**
@@ -36,6 +37,22 @@ object Danmaqua {
 
             var pattern: String by mmkv.notnullStringProperty(
                 key = "filter_pattern", defaultValue = DEFAULT_FILTER_PATTERN
+            )
+
+        }
+
+        object Floating {
+
+            var backgroundAlpha: Int by mmkv.intProperty(
+                key = "floating_alpha", defaultValue = 255
+            )
+
+            var textSize: Int by mmkv.intProperty(
+                key = "floating_text_size", defaultValue = 14
+            )
+
+            var twoLine: Boolean by mmkv.booleanProperty(
+                key = "floating_two_line", defaultValue = false
             )
 
         }

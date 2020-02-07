@@ -10,4 +10,7 @@
     <dimen name="back_to_latest_button_radius">18sp</dimen>
     <dimen name="back_to_latest_button_elevation">4dp</dimen>
 
+    <dimen name="floating_window_horizontal_margin">16dp</dimen>
+    <dimen name="floating_window_vertical_margin">16dp</dimen>
+
 </resources>

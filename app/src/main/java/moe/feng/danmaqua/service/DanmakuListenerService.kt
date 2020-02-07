@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
 import android.view.WindowManager
@@ -125,6 +126,10 @@ class DanmakuListenerService :
             }
         }
         return START_STICKY
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        floatingHolder?.onConfigurationChanged(newConfig)
     }
 
     private fun createFloatingView() = launch {
