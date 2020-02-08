@@ -13,20 +13,28 @@ import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.getSystemService
 import androidx.core.text.HtmlCompat
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.coroutines.*
-import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.ui.list.AutoScrollHelper
+import moe.feng.danmaqua.ui.list.FWDanmakuItemViewDelegate
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.screenHeight
 import moe.feng.danmaqua.util.ext.screenWidth
-import moe.feng.danmaqua.util.ext.spToPx
 import java.lang.Exception
 
 @SuppressLint("ClickableViewAccessibility")
-class FloatingWindowHolder(val rootView: View)
-    : ContextWrapper(rootView.context), CoroutineScope by MainScope() {
+class FloatingWindowHolder(
+    val rootView: View,
+    var onCloseClick: () -> Unit = {}
+) : ContextWrapper(rootView.context), CoroutineScope by MainScope() {
 
     companion object {
 
@@ -51,7 +59,22 @@ class FloatingWindowHolder(val rootView: View)
 
     var isAdded: Boolean = false
     var isLandscaped: Boolean = true
+    var isExpanded: Boolean
+        get() = !normalContent.isVisible
+        set(value) {
+            if (value) {
+                normalContent.isGone = true
+                expandedContent.isVisible = true
+            } else {
+                expandedContent.isGone = true
+                normalContent.isVisible = true
+            }
+        }
     val danmakuList: MutableList<BiliChatDanmaku> = mutableListOf()
+    val danmakuAdapter: MultiTypeAdapter = MultiTypeAdapter(items = danmakuList).also {
+        it.register(FWDanmakuItemViewDelegate(this))
+    }
+
     var danmakuMaxCount: Int = 30
     var textSize: Int = 14
     var twoLine: Boolean = false
@@ -60,8 +83,14 @@ class FloatingWindowHolder(val rootView: View)
     val backgroundView: View = rootView.findViewById(R.id.floatingBackground)
     val contentView: View = rootView.findViewById(R.id.floatingContent)
     val normalContent: View = rootView.findViewById(R.id.normalContent)
+    val expandedContent: View = rootView.findViewById(R.id.expandedContent)
     val captionView: TextView = rootView.findViewById(R.id.captionView)
     val expandButton: View = rootView.findViewById(R.id.expandButton)
+    val listView: RecyclerView = rootView.findViewById(R.id.danmakuList)
+    val collapseButton: View = rootView.findViewById(R.id.collapseButton)
+    val closeButton: View = rootView.findViewById(R.id.closeButton)
+
+    val autoScrollHelper: AutoScrollHelper = AutoScrollHelper.create(listView)
 
     val backgroundViewParams: FrameLayout.LayoutParams =
         backgroundView.layoutParams as FrameLayout.LayoutParams
@@ -86,15 +115,27 @@ class FloatingWindowHolder(val rootView: View)
                     WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
         }
 
-        contentView.viewTreeObserver.addOnGlobalLayoutListener {
-            backgroundViewParams.height = contentView.measuredHeight
-            backgroundView.requestLayout()
+        contentView.addOnLayoutChangeListener { _, _, top, _, bottom, _, oldTop, _, oldBottom ->
+            if ((oldBottom - oldTop) != (bottom - top)) {
+                backgroundViewParams.height = bottom - top
+                backgroundView.requestLayout()
+            }
         }
         contentView.setOnTouchListener(WindowOnTouchListener())
 
         expandButton.setOnClickListener {
-            Log.d(TAG, "expandButton onClick")
+            isExpanded = true
         }
+        collapseButton.setOnClickListener {
+            isExpanded = false
+            autoScrollHelper.autoScrollEnabled = true
+        }
+        closeButton.setOnClickListener {
+            removeFromWindowManager()
+            onCloseClick()
+        }
+
+        listView.adapter = danmakuAdapter
 
         loadSettings()
     }
@@ -118,6 +159,8 @@ class FloatingWindowHolder(val rootView: View)
             Configuration.ORIENTATION_PORTRAIT -> false
             else -> true
         }
+        isExpanded = false
+        autoScrollHelper.autoScrollEnabled = true
         updateViewParamsByOrientation()
         try {
             windowManager.addView(rootView, windowLayoutParams)
@@ -180,9 +223,17 @@ class FloatingWindowHolder(val rootView: View)
                 }
             }
         }
+        danmakuAdapter.notifyDataSetChanged()
+        if (autoScrollHelper.autoScrollEnabled) {
+            listView.scrollToPosition(danmakuList.size - 1)
+        }
         captionView.text = if (twoLine && danmakuList.size >= 2) {
             val reversed = danmakuList.asReversed()
-            HtmlCompat.fromHtml("<b>${reversed[0].text}</b><br>${reversed[1].text}", 0)
+            buildSpannedString {
+                append(reversed[1].text)
+                append("\n")
+                bold { append(reversed[0].text) }
+            }
         } else {
             danmakuList.lastOrNull()?.text ?: ""
         }

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/floating_window_dark_background"
-        tools:layout_height="42dp"/>
+        tools:layout_height="180dp"/>
 
     <FrameLayout
         android:id="@+id/floatingContent"
@@ -22,36 +22,14 @@
         android:clickable="true"
         android:focusable="true">
 
-        <LinearLayout
+        <include
             android:id="@+id/normalContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            layout="@layout/floating_window_normal_content"
+            tools:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/captionView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:text="Test Caption"/>
-
-            <ImageButton
-                android:id="@+id/expandButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="12dp"
-                android:src="@drawable/ic_unfold_more_24"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackgroundBorderless"/>
-
-        </LinearLayout>
+        <include
+            android:id="@+id/expandedContent"
+            layout="@layout/floating_window_expanded_content"/>
 
     </FrameLayout>
 

@@ -56,7 +56,6 @@ class DrawerViewFragment : BaseFragment() {
             0F,
             context.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
         ))
-        drawerList.scrollToPosition(0)
 
         val appName = getString(R.string.app_name)
         var versionName = "Unknown"
@@ -75,7 +74,7 @@ class DrawerViewFragment : BaseFragment() {
             PreferenceActivity.launch(requireActivity(), MainSettingsFragment.ACTION)
         }
 
-        updateAdapterData()
+        updateAdapterData(scrollToSelection = true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,7 +100,10 @@ class DrawerViewFragment : BaseFragment() {
         }
     }
 
-    private fun updateAdapterData(updateItems: List<Subscription>? = null) = launch {
+    private fun updateAdapterData(
+        updateItems: List<Subscription>? = null,
+        scrollToSelection: Boolean = false
+    ) = launch {
         val oldItems = drawerListAdapter.items
         val newItems = withContext(Dispatchers.IO) {
             val result = mutableListOf<Any>()
@@ -114,6 +116,14 @@ class DrawerViewFragment : BaseFragment() {
         val diffResult = DiffUtil.calculateDiff(callback)
         drawerListAdapter.items = newItems
         diffResult.dispatchUpdatesTo(drawerListAdapter)
+        if (scrollToSelection) {
+            for ((index, item) in newItems.withIndex()) {
+                if ((item as? Subscription)?.selected == true) {
+                    drawerList.scrollToPosition(index)
+                    break
+                }
+            }
+        }
     }
 
     private inner class DrawerListAdapter : MultiTypeAdapter(),

@@ -10,7 +10,7 @@ class MessageListAdapter(
 ) : MultiTypeAdapter(items = list) {
 
     init {
-        register(SimpleDanmakuItemViewDelegate())
+        register(MainDanmakuItemViewDelegate())
         register(SystemMessageItemViewDelegate())
     }
 

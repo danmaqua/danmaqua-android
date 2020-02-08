@@ -10,8 +10,8 @@ import com.drakeet.multitype.ItemViewDelegate
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 
-class SimpleDanmakuItemViewDelegate :
-    ItemViewDelegate<BiliChatDanmaku, SimpleDanmakuItemViewDelegate.ViewHolder>() {
+class MainDanmakuItemViewDelegate :
+    ItemViewDelegate<BiliChatDanmaku, MainDanmakuItemViewDelegate.ViewHolder>() {
 
     class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 

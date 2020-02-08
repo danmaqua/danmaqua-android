@@ -31,20 +31,20 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
-import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
+import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
+import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.HttpUtils
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.WindowUtils
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
-import java.util.regex.Pattern
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -65,13 +65,14 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     private var serviceConnection: ServiceConnection? = null
 
     private var online: Int = 0
+    private var danmakuFilter: DanmakuFilter = DanmakuFilter.fromSettings()
 
+    private lateinit var autoScrollHelper: AutoScrollHelper
     private val messageAdapter: MessageListAdapter = MessageListAdapter(onItemAdded = {
-        if (!isFinishing && autoScrollToLatest) {
+        if (!isFinishing && autoScrollHelper.autoScrollEnabled) {
             recyclerView.smoothScrollToPosition(it.itemCount)
         }
     })
-    private var autoScrollToLatest: Boolean = true
 
     private lateinit var toolbarView: View
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
@@ -96,42 +97,8 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         backToLatestButton.isGone = true
 
         recyclerView.adapter = messageAdapter
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var state: Int = RecyclerView.SCROLL_STATE_IDLE
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                state = newState
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_IDLE -> {
-                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                        val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
-                        val itemCount = layoutManager.itemCount
-                        if (lastPos == itemCount - 1) {
-                            autoScrollToLatest = true
-                        }
-                    }
-                    RecyclerView.SCROLL_STATE_DRAGGING -> {
-                        autoScrollToLatest = false
-                    }
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 5) {
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
-                    val itemCount = layoutManager.itemCount
-
-                    if (itemCount < 3 || ((itemCount - 1) - lastPos < 3)) {
-                        backToLatestButton.isGone = true
-                    } else if (state == RecyclerView.SCROLL_STATE_DRAGGING) {
-                        backToLatestButton.isVisible = true
-                    }
-                } else if (dy < 0) {
-                    backToLatestButton.isGone = true
-                }
-            }
-        })
+        autoScrollHelper = AutoScrollHelper.create(recyclerView)
+        recyclerView.addOnScrollListener(ScrollToLatestButtonScrollListener())
 
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
 
@@ -428,22 +395,9 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         override fun onReceiveDanmaku(msg: BiliChatDanmaku) {
             Log.d(TAG, "DanmakuListener: onReceiveDanmaku: $msg")
             launch {
-                if (Settings.Filter.enabled) {
-                    val ignored = withContext(IO) {
-                        try {
-                            val pattern = Pattern.compile(Settings.Filter.pattern)
-                            val matcher = pattern.matcher(msg.text)
-                            !matcher.matches()
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Filter pattern might be invalid.")
-                            true
-                        }
-                    }
-                    if (ignored) {
-                        return@launch
-                    }
+                if (withContext(IO) { danmakuFilter(msg) }) {
+                    messageAdapter.addDanmaku(msg)
                 }
-                messageAdapter.addDanmaku(msg)
             }
         }
 
@@ -452,6 +406,32 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             this@MainActivity.online = online
             updateStatusViews()
         }
+    }
+
+    private inner class ScrollToLatestButtonScrollListener : RecyclerView.OnScrollListener() {
+
+        var state: Int = RecyclerView.SCROLL_STATE_IDLE
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            state = newState
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy > 5) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
+                val itemCount = layoutManager.itemCount
+
+                if (itemCount < 3 || ((itemCount - 1) - lastPos < 3)) {
+                    backToLatestButton.isGone = true
+                } else if (state == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    backToLatestButton.isVisible = true
+                }
+            } else if (dy < 0) {
+                backToLatestButton.isGone = true
+            }
+        }
+
     }
 
 }

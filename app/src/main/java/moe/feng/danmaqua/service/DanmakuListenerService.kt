@@ -4,6 +4,8 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.IBinder
@@ -57,6 +59,14 @@ class DanmakuListenerService :
     private lateinit var notification: Notification
     private val notificationBuilder: NotificationCompat.Builder =
         NotificationCompat.Builder(this, NOTI_CHANNEL_ID_STATUS)
+
+    private val onSettingsUpdated: BroadcastReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+
+        }
+
+    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return binder

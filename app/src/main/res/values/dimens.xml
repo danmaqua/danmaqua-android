@@ -12,5 +12,6 @@
 
     <dimen name="floating_window_horizontal_margin">16dp</dimen>
     <dimen name="floating_window_vertical_margin">16dp</dimen>
+    <dimen name="floating_window_list_height">120dp</dimen>
 
 </resources>

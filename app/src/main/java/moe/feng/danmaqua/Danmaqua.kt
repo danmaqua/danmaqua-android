@@ -1,5 +1,6 @@
 package moe.feng.danmaqua
 
+import android.content.Intent
 import com.tencent.mmkv.MMKV
 import moe.feng.danmaqua.util.ext.booleanProperty
 import moe.feng.danmaqua.util.ext.intProperty
@@ -16,6 +17,7 @@ object Danmaqua {
     const val EXTRA_CONNECT_ROOM_ID = "${EXTRA_PREFIX}.CONNECT_ROOM_ID"
 
     const val ACTION_PREFIX = "${BuildConfig.APPLICATION_ID}.action"
+    const val ACTION_SETTINGS_UPDATED = "$ACTION_PREFIX.SETTINGS_UPDATED"
 
     const val NOTI_CHANNEL_ID_STATUS = "status"
     const val NOTI_ID_LISTENER_STATUS = 10
@@ -24,6 +26,8 @@ object Danmaqua {
     const val PENDING_INTENT_REQUEST_ENTER_MAIN = 11
 
     const val DEFAULT_FILTER_PATTERN = "【(.*)】"
+
+    val INTENT_SETTINGS_UPDATED = Intent(ACTION_SETTINGS_UPDATED)
 
     object Settings {
 
