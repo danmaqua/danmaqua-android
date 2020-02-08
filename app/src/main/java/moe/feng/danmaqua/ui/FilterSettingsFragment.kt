@@ -41,6 +41,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
     private fun onEnabledChanged(pref: Preference, newValue: Any): Boolean {
         val value = newValue as? Boolean ?: false
         Settings.Filter.enabled = value
+        Settings.notifyChanged(context!!)
         return true
     }
 
@@ -52,6 +53,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         } else {
             Settings.Filter.pattern = value
         }
+        Settings.notifyChanged(context!!)
         return true
     }
 

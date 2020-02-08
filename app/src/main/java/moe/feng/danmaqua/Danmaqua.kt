@@ -1,5 +1,6 @@
 package moe.feng.danmaqua
 
+import android.content.Context
 import android.content.Intent
 import com.tencent.mmkv.MMKV
 import moe.feng.danmaqua.util.ext.booleanProperty
@@ -59,6 +60,10 @@ object Danmaqua {
                 key = "floating_two_line", defaultValue = false
             )
 
+        }
+
+        fun notifyChanged(context: Context) {
+            context.sendBroadcast(INTENT_SETTINGS_UPDATED)
         }
 
     }

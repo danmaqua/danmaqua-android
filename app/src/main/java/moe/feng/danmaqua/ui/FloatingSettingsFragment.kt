@@ -45,6 +45,7 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
     private fun onTwoLineChanged(pref: Preference, newValue: Any): Boolean {
         val newBool = newValue as Boolean
         Settings.Floating.twoLine = newBool
+        Settings.notifyChanged(context!!)
         return true
     }
 

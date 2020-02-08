@@ -27,15 +27,16 @@ class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, item: BiliChatDanmaku) {
+        val itemText = fwHolder.danmakuFilter.unescapeCaption(item)
         with (holder) {
             textView.textSize = fwHolder.textSize.toFloat()
             val latest = holder.adapterPosition + 1 == fwHolder.listView.layoutManager?.itemCount
             textView.text = if (latest) {
                 buildSpannedString {
-                    bold { append(item.text) }
+                    bold { append(itemText) }
                 }
             } else {
-                item.text
+                itemText
             }
         }
     }

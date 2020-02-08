@@ -25,6 +25,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.FWDanmakuItemViewDelegate
+import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.screenHeight
 import moe.feng.danmaqua.util.ext.screenWidth
@@ -33,7 +34,8 @@ import java.lang.Exception
 @SuppressLint("ClickableViewAccessibility")
 class FloatingWindowHolder(
     val rootView: View,
-    var onCloseClick: () -> Unit = {}
+    var onCloseClick: () -> Unit = {},
+    var onGetDanmakuFilter: () -> DanmakuFilter = { DanmakuFilter.acceptAll() }
 ) : ContextWrapper(rootView.context), CoroutineScope by MainScope() {
 
     companion object {
@@ -79,6 +81,7 @@ class FloatingWindowHolder(
     var textSize: Int = 14
     var twoLine: Boolean = false
     var backgroundAlpha: Int = 255
+    val danmakuFilter: DanmakuFilter get() = onGetDanmakuFilter()
 
     val backgroundView: View = rootView.findViewById(R.id.floatingBackground)
     val contentView: View = rootView.findViewById(R.id.floatingContent)
@@ -230,12 +233,12 @@ class FloatingWindowHolder(
         captionView.text = if (twoLine && danmakuList.size >= 2) {
             val reversed = danmakuList.asReversed()
             buildSpannedString {
-                append(reversed[1].text)
+                append(danmakuFilter.unescapeCaption(reversed[1]))
                 append("\n")
-                bold { append(reversed[0].text) }
+                bold { append(danmakuFilter.unescapeCaption(reversed[0])) }
             }
         } else {
-            danmakuList.lastOrNull()?.text ?: ""
+            danmakuList.lastOrNull()?.let { danmakuFilter.unescapeCaption(it) } ?: ""
         }
     }
 

@@ -1,9 +1,7 @@
 package moe.feng.danmaqua.ui
 
 import android.app.Service
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
@@ -30,6 +28,7 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
@@ -79,6 +78,12 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     private val usernameView by lazy { toolbarView.findViewById<TextView>(R.id.usernameView) }
     private val statusView by lazy { toolbarView.findViewById<TextView>(R.id.statusView) }
 
+    private val onSettingsUpdated = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            danmakuFilter = DanmakuFilter.fromSettings()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -127,6 +132,8 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         updateAvatarAndNameViews()
         updateStatusViews()
         checkServiceStatus()
+
+        registerReceiver(onSettingsUpdated, IntentFilter(ACTION_SETTINGS_UPDATED))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -148,6 +155,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 e.printStackTrace()
             }
         }
+        unregisterReceiver(onSettingsUpdated)
     }
 
     override fun onAttachFragment(fragment: Fragment) {
