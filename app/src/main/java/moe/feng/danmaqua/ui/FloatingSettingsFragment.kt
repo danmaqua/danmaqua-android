@@ -2,8 +2,8 @@ package moe.feng.danmaqua.ui
 
 import android.content.Context
 import android.os.Bundle
-import androidx.preference.EditTextPreference
 import androidx.preference.Preference
+import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
@@ -21,10 +21,10 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
         findPreference<SwitchPreference>("floating_two_line")!!
     }
     private val backgroundAlphaPref by lazy {
-        findPreference<EditTextPreference>("floating_background_alpha")!!
+        findPreference<SeekBarPreference>("floating_background_alpha")!!
     }
     private val textSizePref by lazy {
-        findPreference<EditTextPreference>("floating_text_size")!!
+        findPreference<SeekBarPreference>("floating_text_size")!!
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -33,9 +33,17 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
         twoLinePref.isChecked = Settings.Floating.twoLine
         twoLinePref.setOnPreferenceChangeListener(this::onTwoLineChanged)
 
-        backgroundAlphaPref.text = Settings.Floating.backgroundAlpha.toString()
+        backgroundAlphaPref.value = Settings.Floating.backgroundAlpha
+        backgroundAlphaPref.setOnPreferenceChangeListener(this::onBackgroundAlphaChanged)
+        backgroundAlphaPref.setSummaryProvider {
+            getString(R.string.floating_background_alpha_summary, backgroundAlphaPref.value)
+        }
 
-        textSizePref.text = Settings.Floating.textSize.toString()
+        textSizePref.value = Settings.Floating.textSize
+        textSizePref.setOnPreferenceChangeListener(this::onTextSizeChanged)
+        textSizePref.setSummaryProvider {
+            getString(R.string.floating_text_size_summary, textSizePref.value)
+        }
     }
 
     override fun getActivityTitle(context: Context): CharSequence? {
@@ -45,6 +53,20 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
     private fun onTwoLineChanged(pref: Preference, newValue: Any): Boolean {
         val newBool = newValue as Boolean
         Settings.Floating.twoLine = newBool
+        Settings.notifyChanged(context!!)
+        return true
+    }
+
+    private fun onBackgroundAlphaChanged(pref: Preference, newValue: Any): Boolean {
+        val newInt = newValue as Int
+        Settings.Floating.backgroundAlpha = newInt.coerceIn(100..255)
+        Settings.notifyChanged(context!!)
+        return true
+    }
+
+    private fun onTextSizeChanged(pref: Preference, newValue: Any): Boolean {
+        val newInt = newValue as Int
+        Settings.Floating.textSize = newInt.coerceIn(10..30)
         Settings.notifyChanged(context!!)
         return true
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="floating_background_alpha_min">100</integer>
+    <integer name="floating_background_alpha_max">255</integer>
+
+    <integer name="floating_text_size_min">10</integer>
+    <integer name="floating_text_size_max">30</integer>
+
+</resources>

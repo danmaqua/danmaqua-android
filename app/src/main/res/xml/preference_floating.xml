@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.preference.SwitchPreference
         android:key="floating_two_line"
         android:title="@string/floating_two_line_title"
         android:summary="@string/floating_two_line_summary"/>
 
-    <androidx.preference.EditTextPreference
+    <androidx.preference.SeekBarPreference
         android:key="floating_background_alpha"
         android:title="@string/floating_background_alpha_title"
-        android:summary="@string/floating_background_alpha_summary"/>
+        android:summary="@string/floating_background_alpha_summary"
+        android:max="@integer/floating_background_alpha_max"
+        app:min="@integer/floating_background_alpha_min" />
 
-    <androidx.preference.EditTextPreference
+    <androidx.preference.SeekBarPreference
         android:key="floating_text_size"
         android:title="@string/floating_text_size_title"
-        android:summary="@string/floating_text_size_summary"/>
+        android:summary="@string/floating_text_size_summary"
+        android:max="@integer/floating_text_size_max"
+        app:min="@integer/floating_text_size_min"/>
 
 </androidx.preference.PreferenceScreen>
