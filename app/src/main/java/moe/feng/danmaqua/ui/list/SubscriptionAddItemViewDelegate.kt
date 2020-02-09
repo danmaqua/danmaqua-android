@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.drakeet.multitype.ItemViewDelegate
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate.Item
+import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate.ViewHolder
 
 class SubscriptionAddItemViewDelegate(var callback: Callback? = null)
-    : ItemViewDelegate<
-        SubscriptionAddItemViewDelegate.Item,
-        SubscriptionAddItemViewDelegate.ViewHolder>() {
+    : ItemViewDelegate<Item, ViewHolder>() {
 
     interface Callback {
 

@@ -11,7 +11,6 @@ import android.os.IBinder
 import android.os.Parcelable
 import android.util.Log
 import android.view.*
-import android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -84,10 +84,10 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.main_activity)
+
         // Make status bar and nav bar transparent
         setWindowFlags()
-
-        setContentView(R.layout.main_activity)
 
         // Set up toolbar
         setSupportActionBar(toolbar)
@@ -103,20 +103,20 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         supportActionBar?.customView = toolbarView
         coordinator.setOnApplyWindowInsetsListener { _, insets ->
             appBarLayout.updatePadding(top = insets.systemWindowInsetTop)
-            //bottomNavBackground.updateLayoutParams { height = insets.systemWindowInsetBottom }
+            bottomAppBarBackground.updateLayoutParams { height = insets.systemWindowInsetBottom }
+            if (insets.systemWindowInsetBottom > 0) {
+                if (!hideNavigation) setWindowFlags(hideNavigation = true)
+            } else {
+                if (hideNavigation) setWindowFlags(hideNavigation = false)
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (insets.systemGestureInsets.bottom != insets.tappableElementInsets.bottom) {
-                    bottomAppBar.backgroundTint = ColorStateList.valueOf(
-                        ResourcesUtils.resolveColor(theme, R.attr.bottomAppBarColor)
-                    )
+                    bottomAppBarBackground.alpha = 0F
                 } else {
-                    bottomAppBar.backgroundTint = ColorStateList.valueOf(
-                        getColor(R.color.darken_nav_bar)
-                    )
+                    bottomAppBarBackground.alpha = 1F
                 }
-                Log.d(TAG, "systemWindowInsets: " + insets.systemWindowInsets)
-                Log.d(TAG, "systemGestureInsets: " + insets.systemGestureInsets)
-                Log.d(TAG, "tappableElementInsets: " + insets.tappableElementInsets)
+            } else {
+                bottomAppBarBackground.alpha = 1F
             }
             insets
         }
@@ -130,6 +130,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         recyclerView.addOnScrollListener(ScrollToLatestButtonScrollListener())
 
         // Set up event listener
+        drawerLayout.addDrawerListener(MainDrawerListener())
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
         connectButton.setOnClickListener(this::onConnectButtonClick)
         setFilterButton.setOnClickListener {
@@ -165,21 +166,18 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         setWindowFlags()
     }
 
-    fun setWindowFlags() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        window.navigationBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            Color.parseColor("#01000000")
-        } else {
-            Color.TRANSPARENT
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(STATE_ONLINE, online)
         outState.putParcelableArrayList(STATE_LIST_DATA, ArrayList(messageAdapter.list))
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {
@@ -249,6 +247,12 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 connectRoom(current.roomId)
             }
         }
+    }
+
+    override fun setWindowFlags(lightNavBar: Boolean?, hideNavigation: Boolean?) {
+        super.setWindowFlags(
+            lightNavBar ?: drawerLayout.isDrawerOpen(GravityCompat.START),
+            hideNavigation)
     }
 
     private fun onFabClick(view: View) {
@@ -502,6 +506,28 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 backToLatestButton.isGone = true
             }
         }
+
+    }
+
+    private inner class MainDrawerListener : DrawerLayout.DrawerListener {
+
+        override fun onDrawerStateChanged(newState: Int) {}
+
+        override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            if (slideOffset > 0.5F) {
+                if (!lightNavBar) {
+                    setWindowFlags(lightNavBar = true)
+                }
+            } else {
+                if (lightNavBar) {
+                    setWindowFlags(lightNavBar = false)
+                }
+            }
+        }
+
+        override fun onDrawerClosed(drawerView: View) {}
+
+        override fun onDrawerOpened(drawerView: View) {}
 
     }
 

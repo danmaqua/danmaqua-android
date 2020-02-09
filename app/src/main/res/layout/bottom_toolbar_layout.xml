@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/actionBarSize"
-    android:background="?attr/bottomAppBarColor"
+    android:layout_height="wrap_content"
+    tools:background="?attr/bottomAppBarColor"
     tools:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/Widget.Danmaqua.IconTextButton"
-        android:id="@+id/connectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:text="@string/action_connect"
-        android:drawableStart="@drawable/ic_play_circle_filled_24"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize">
 
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/Widget.Danmaqua.IconTextButton"
-        android:id="@+id/setFilterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:text="@string/action_set_filter"
-        android:drawableEnd="@drawable/ic_filter_list_24"/>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.Danmaqua.IconTextButton"
+            android:id="@+id/connectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:text="@string/action_connect"
+            android:drawableStart="@drawable/ic_play_circle_filled_24"/>
 
-</FrameLayout>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.Danmaqua.IconTextButton"
+            android:id="@+id/setFilterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:text="@string/action_set_filter"
+            android:drawableEnd="@drawable/ic_filter_list_24"/>
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/bottomAppBarBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/darken_nav_bar"
+        tools:layout_height="48dp"/>
+
+</LinearLayout>

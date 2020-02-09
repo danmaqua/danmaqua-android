@@ -141,9 +141,12 @@ class DrawerViewFragment : BaseFragment() {
     private inner class DrawerListAdapter : MultiTypeAdapter(),
         SubscriptionItemViewDelegate.Callback, SubscriptionAddItemViewDelegate.Callback {
 
+        val subscriptionItemDelegate = SubscriptionItemViewDelegate(this)
+        val subscriptionAddDelegate = SubscriptionAddItemViewDelegate(this)
+
         init {
-            register(SubscriptionItemViewDelegate(this))
-            register(SubscriptionAddItemViewDelegate(this))
+            register(subscriptionItemDelegate)
+            register(subscriptionAddDelegate)
         }
 
         override fun onSubscriptionItemClick(item: Subscription) {

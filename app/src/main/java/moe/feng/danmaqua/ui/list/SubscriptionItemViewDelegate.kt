@@ -62,8 +62,4 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, item: Subscription, payloads: List<Any>) {
-        super.onBindViewHolder(holder, item, payloads)
-    }
-
 }

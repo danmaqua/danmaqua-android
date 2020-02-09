@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:gravity="center_vertical"
@@ -9,8 +10,8 @@
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    android:paddingStart="@dimen/subscription_item_view_background_radius"
-    android:paddingEnd="@dimen/subscription_item_view_background_radius"
+    android:paddingLeft="@dimen/subscription_item_view_background_radius"
+    android:paddingRight="@dimen/subscription_item_view_background_radius"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:focusable="true"
