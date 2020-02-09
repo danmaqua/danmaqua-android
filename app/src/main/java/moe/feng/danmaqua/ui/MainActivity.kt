@@ -5,6 +5,7 @@ import android.content.*
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -41,6 +42,7 @@ import moe.feng.danmaqua.ui.list.MessageListAdapter
 import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
+import moe.feng.danmaqua.util.ext.screenHeight
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -154,6 +156,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             }
         }
 
+        updateGestureExclusion()
         updateAvatarAndNameViews()
         updateStatusViews()
         checkServiceStatus()
@@ -163,6 +166,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        updateGestureExclusion()
         setWindowFlags()
     }
 
@@ -253,6 +257,17 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         super.setWindowFlags(
             lightNavBar ?: drawerLayout.isDrawerOpen(GravityCompat.START),
             hideNavigation)
+    }
+
+    private fun updateGestureExclusion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val screenHeight = windowManager.defaultDisplay.screenHeight
+            val height = resources.getDimensionPixelSize(R.dimen.max_gesture_exclusion_height)
+            val width = resources.getDimensionPixelSize(R.dimen.drawer_layout_start_area_width)
+            drawerLayout.systemGestureExclusionRects = listOf(
+                Rect(0, (screenHeight - height) / 2, width, (screenHeight + height) / 2)
+            )
+        }
     }
 
     private fun onFabClick(view: View) {

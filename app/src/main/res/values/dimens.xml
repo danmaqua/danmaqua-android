@@ -15,4 +15,7 @@
     <dimen name="floating_window_vertical_margin">16dp</dimen>
     <dimen name="floating_window_list_height">120dp</dimen>
 
+    <dimen name="drawer_layout_start_area_width">24dp</dimen>
+    <dimen name="max_gesture_exclusion_height">200dp</dimen>
+
 </resources>
