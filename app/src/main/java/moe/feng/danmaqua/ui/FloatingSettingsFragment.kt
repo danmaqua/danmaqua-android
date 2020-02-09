@@ -35,15 +35,9 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
 
         backgroundAlphaPref.value = Settings.Floating.backgroundAlpha
         backgroundAlphaPref.setOnPreferenceChangeListener(this::onBackgroundAlphaChanged)
-        backgroundAlphaPref.setSummaryProvider {
-            getString(R.string.floating_background_alpha_summary, backgroundAlphaPref.value)
-        }
 
         textSizePref.value = Settings.Floating.textSize
         textSizePref.setOnPreferenceChangeListener(this::onTextSizeChanged)
-        textSizePref.setSummaryProvider {
-            getString(R.string.floating_text_size_summary, textSizePref.value)
-        }
     }
 
     override fun getActivityTitle(context: Context): CharSequence? {

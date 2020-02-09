@@ -13,13 +13,15 @@
         android:title="@string/floating_background_alpha_title"
         android:summary="@string/floating_background_alpha_summary"
         android:max="@integer/floating_background_alpha_max"
-        app:min="@integer/floating_background_alpha_min" />
+        app:min="@integer/floating_background_alpha_min"
+        app:showSeekBarValue="true"/>
 
     <androidx.preference.SeekBarPreference
         android:key="floating_text_size"
         android:title="@string/floating_text_size_title"
         android:summary="@string/floating_text_size_summary"
         android:max="@integer/floating_text_size_max"
-        app:min="@integer/floating_text_size_min"/>
+        app:min="@integer/floating_text_size_min"
+        app:showSeekBarValue="true"/>
 
 </androidx.preference.PreferenceScreen>
