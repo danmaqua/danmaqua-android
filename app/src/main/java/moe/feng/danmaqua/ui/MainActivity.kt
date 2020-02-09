@@ -168,7 +168,9 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         when (requestCode) {
             REQUEST_CODE_OVERLAY_PERMISSION -> {
                 if (WindowUtils.canDrawOverlays(this)) {
-                    launch { showFloatingWindow() }
+                    askShowFloatingWindow()
+                } else {
+                    // TODO Show fail
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
@@ -232,8 +234,29 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                     .show()
                 return@launch
             }
-            showFloatingWindow()
+            askShowFloatingWindow()
         }
+    }
+
+    private fun askShowFloatingWindow() = launch {
+        if (withContext(IO) { service?.isFloatingShowing } == true) {
+            Toast.makeText(this@MainActivity,
+                R.string.toast_floating_is_showing, Toast.LENGTH_SHORT).show()
+            // TODO Highlight floating window animation
+            return@launch
+        }
+        AlertDialog.Builder(this@MainActivity)
+            .setTitle(R.string.ask_show_floating_title)
+            .setMessage(R.string.ask_show_floating_message)
+            .setPositiveButton(R.string.action_minimize) { _, _ ->
+                launch { showFloatingWindow() }
+                moveTaskToBack(true)
+            }
+            .setNegativeButton(R.string.action_stay_here) { _, _ ->
+                launch { showFloatingWindow() }
+            }
+            .setNeutralButton(android.R.string.cancel, null)
+            .show()
     }
 
     private suspend fun showFloatingWindow() = withContext(IO) {

@@ -54,6 +54,16 @@
     <string name="action_allow">Allow</string>
     <string name="action_deny">Deny</string>
 
+    <string name="ask_show_floating_title">Show floating window</string>
+    <string name="ask_show_floating_message"><![CDATA[
+    Floating window will help you read filtered (such as translation) danmaku easily. You should
+    enable filter and set up rules first.\n\nChoose an action to do after showing floating window.
+    ]]></string>
+    <string name="action_stay_here">Stay here</string>
+    <string name="action_minimize">Minimize</string>
+
+    <string name="toast_floating_is_showing">Floating window is showing.</string>
+
     <string name="settings_title">Settings</string>
 
     <string name="filter_settings_title">Filter</string>
@@ -72,8 +82,10 @@
     <string name="floating_two_line_title">Two-line mode</string>
     <string name="floating_two_line_summary">Show two-line caption instead</string>
     <string name="floating_background_alpha_title">Background transparent</string>
-    <string name="floating_background_alpha_summary">Alpha: %d</string>
+    <string name="floating_background_alpha_summary"><![CDATA[
+    Range: 100–255. The maximum value means opaque.
+    ]]></string>
     <string name="floating_text_size_title">Caption text size</string>
-    <string name="floating_text_size_summary">Size: %d sp</string>
+    <string name="floating_text_size_summary">Unit: sp</string>
 
 </resources>
