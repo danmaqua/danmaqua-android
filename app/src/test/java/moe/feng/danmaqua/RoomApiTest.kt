@@ -10,7 +10,7 @@ class RoomApiTest {
     @Test
     fun test_getRoomInit() {
         runBlocking {
-            println(RoomApi.getRoomInfo(3).toJson())
+            println(RoomApi.getRoomInitInfo(3).toJson())
         }
     }
 

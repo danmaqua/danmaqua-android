@@ -58,7 +58,7 @@ class DanmakuListener internal constructor(
         if (isClosed) {
             throw IllegalStateException("DanmakuListener is closed. Please recreate a new one.")
         }
-        val roomInfo = RoomApi.getRoomInfo(roomId)
+        val roomInfo = RoomApi.getRoomInitInfo(roomId)
         realRoomId = roomInfo.data.roomId
         if (realRoomId <= 0) {
             throw IllegalStateException("Cannot get real room id")

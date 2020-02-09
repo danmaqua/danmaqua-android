@@ -47,7 +47,7 @@ class NewSubscriptionActivity : BaseActivity() {
     }
 
     private suspend fun getSubscription(roomId: Long): Subscription = withContext(Dispatchers.IO) {
-        val roomInitInfo = RoomApi.getRoomInfo(roomId)
+        val roomInitInfo = RoomApi.getRoomInitInfo(roomId)
         val spaceInfo = UserApi.getSpaceInfo(roomInitInfo.data.uid)
         Subscription(spaceInfo.data.uid, roomId, spaceInfo.data.name, spaceInfo.data.face)
     }

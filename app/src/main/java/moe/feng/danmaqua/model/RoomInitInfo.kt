@@ -11,6 +11,25 @@ class RoomInitInfo(
     val data: Data
 ): Parcelable {
 
+    companion object {
+
+        const val LIVE_STATUS_CLOSED = 0
+        const val LIVE_STATUS_ACTIVE = 1
+        const val LIVE_STATUS_CAROUSEL = 2
+
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<RoomInitInfo> {
+            override fun createFromParcel(parcel: Parcel): RoomInitInfo {
+                return RoomInitInfo(parcel)
+            }
+
+            override fun newArray(size: Int): Array<RoomInitInfo?> {
+                return arrayOfNulls(size)
+            }
+        }
+
+    }
+
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()!!,
@@ -100,16 +119,6 @@ class RoomInitInfo(
 
     override fun describeContents(): Int {
         return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<RoomInitInfo> {
-        override fun createFromParcel(parcel: Parcel): RoomInitInfo {
-            return RoomInitInfo(parcel)
-        }
-
-        override fun newArray(size: Int): Array<RoomInitInfo?> {
-            return arrayOfNulls(size)
-        }
     }
 
 }

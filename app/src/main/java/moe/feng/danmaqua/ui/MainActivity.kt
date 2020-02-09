@@ -37,6 +37,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
+import moe.feng.danmaqua.ui.dialog.RoomInfoDialog
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
 import moe.feng.danmaqua.util.*
@@ -232,6 +233,16 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                     if (current != null) {
                         startActivity(IntentUtils.openBilibiliLive(
                             this@MainActivity, current.roomId))
+                    }
+                }
+                true
+            }
+            R.id.action_room_info -> {
+                launch {
+                    val current = database.subscriptions().getAll().firstOrNull { it.selected }
+                    if (current != null) {
+                        RoomInfoDialog.newInstance(current.roomId)
+                            .show(supportFragmentManager, "room_info")
                     }
                 }
                 true
