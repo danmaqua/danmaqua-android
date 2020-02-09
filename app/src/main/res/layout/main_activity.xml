@@ -18,7 +18,8 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.Danmaqua.AppBar">
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
@@ -27,7 +28,7 @@
                 app:contentInsetStart="0dp"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
-                app:contentInsetRight="0dp"/>
+                app:contentInsetRight="0dp" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -249,11 +249,11 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             .setTitle(R.string.ask_show_floating_title)
             .setMessage(R.string.ask_show_floating_message)
             .setPositiveButton(R.string.action_minimize) { _, _ ->
-                launch { showFloatingWindow() }
+                this@MainActivity.launch { showFloatingWindow() }
                 moveTaskToBack(true)
             }
             .setNegativeButton(R.string.action_stay_here) { _, _ ->
-                launch { showFloatingWindow() }
+                this@MainActivity.launch { showFloatingWindow() }
             }
             .setNeutralButton(android.R.string.cancel, null)
             .show()

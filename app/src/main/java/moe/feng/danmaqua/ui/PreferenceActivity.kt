@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import kotlinx.android.synthetic.main.preference_activity.*
+import moe.feng.danmaqua.R
 import moe.feng.danmaqua.util.ext.TAG
 
 class PreferenceActivity : BaseActivity() {
@@ -23,7 +25,9 @@ class PreferenceActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.preference_activity)
 
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (savedInstanceState == null) {
@@ -47,7 +51,7 @@ class PreferenceActivity : BaseActivity() {
 
     private fun setFragment(fragment: Fragment) {
         supportFragmentManager.commit {
-            replace(android.R.id.content, fragment)
+            replace(R.id.preferenceContent, fragment)
         }
     }
 

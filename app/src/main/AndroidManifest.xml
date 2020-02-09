@@ -35,7 +35,7 @@
         <activity
             android:name=".ui.PreferenceActivity"
             android:label="@string/settings_title"
-            android:theme="@style/Theme.Danmaqua"
+            android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="true"/>
 
         <service
