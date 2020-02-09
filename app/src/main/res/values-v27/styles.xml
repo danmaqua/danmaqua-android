@@ -2,7 +2,8 @@
 <resources>
 
     <style name="Theme.Danmaqua" parent="BaseTheme">
-        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:navigationBarColor">@color/light_nav_bar</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
 </resources>

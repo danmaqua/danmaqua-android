@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.main_drawer_view.*
@@ -48,6 +50,16 @@ class DrawerViewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val context = view.context
+
+        view.setOnApplyWindowInsetsListener { _, insets ->
+            drawerList.updatePadding(top = insets.systemWindowInsetTop +
+                    resources.getDimensionPixelSize(R.dimen.subscription_list_default_padding_top))
+            statusBarBackground.updateLayoutParams {
+                height = insets.systemWindowInsetTop
+            }
+            bottomBar.updatePadding(bottom = insets.systemWindowInsetBottom)
+            insets
+        }
 
         drawerList.adapter = drawerListAdapter
         drawerList.addOnScrollListener(RaisedViewScrollListener(

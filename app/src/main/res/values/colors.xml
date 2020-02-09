@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="bottom_appbar_color">@color/material_grey_900</color>
+    <color name="darken_nav_bar">#181818</color>
+    <color name="light_nav_bar">@color/material_grey_200</color>
+
 </resources>

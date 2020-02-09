@@ -2,23 +2,23 @@ package moe.feng.danmaqua.ui
 
 import android.app.Service
 import android.content.*
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
+import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,10 +38,7 @@ import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
-import moe.feng.danmaqua.util.DanmakuFilter
-import moe.feng.danmaqua.util.HttpUtils
-import moe.feng.danmaqua.util.IntentUtils
-import moe.feng.danmaqua.util.WindowUtils
+import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
 import kotlin.coroutines.resume
@@ -86,8 +83,13 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Make status bar and nav bar transparent
+        setWindowFlags()
+
         setContentView(R.layout.main_activity)
 
+        // Set up toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.also {
             it.setDisplayShowTitleEnabled(false)
@@ -99,14 +101,36 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
             drawerLayout.openDrawer(GravityCompat.START)
         }
         supportActionBar?.customView = toolbarView
+        coordinator.setOnApplyWindowInsetsListener { _, insets ->
+            appBarLayout.updatePadding(top = insets.systemWindowInsetTop)
+            //bottomNavBackground.updateLayoutParams { height = insets.systemWindowInsetBottom }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (insets.systemGestureInsets.bottom != insets.tappableElementInsets.bottom) {
+                    bottomAppBar.backgroundTint = ColorStateList.valueOf(
+                        ResourcesUtils.resolveColor(theme, R.attr.bottomAppBarColor)
+                    )
+                } else {
+                    bottomAppBar.backgroundTint = ColorStateList.valueOf(
+                        getColor(R.color.darken_nav_bar)
+                    )
+                }
+                Log.d(TAG, "systemWindowInsets: " + insets.systemWindowInsets)
+                Log.d(TAG, "systemGestureInsets: " + insets.systemGestureInsets)
+                Log.d(TAG, "tappableElementInsets: " + insets.tappableElementInsets)
+            }
+            insets
+        }
+
+        // Set up views visibility
         backToLatestButton.isGone = true
 
+        // Initialize message list views
         recyclerView.adapter = messageAdapter
         autoScrollHelper = AutoScrollHelper.create(recyclerView)
         recyclerView.addOnScrollListener(ScrollToLatestButtonScrollListener())
 
+        // Set up event listener
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
-
         connectButton.setOnClickListener(this::onConnectButtonClick)
         setFilterButton.setOnClickListener {
             PreferenceActivity.launch(this, FilterSettingsFragment.ACTION)
@@ -134,6 +158,22 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         checkServiceStatus()
 
         registerReceiver(onSettingsUpdated, IntentFilter(ACTION_SETTINGS_UPDATED))
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        setWindowFlags()
+    }
+
+    fun setWindowFlags() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        window.navigationBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Color.parseColor("#01000000")
+        } else {
+            Color.TRANSPARENT
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

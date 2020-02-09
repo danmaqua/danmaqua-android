@@ -18,7 +18,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Danmaqua.NoActionBar">
+            android:theme="@style/Theme.Danmaqua.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -41,6 +41,7 @@
         <service
             android:name=".service.DanmakuListenerService"
             android:label="@string/listener_service_label"
+            android:foregroundServiceType="dataSync"
             android:exported="false"/>
 
     </application>

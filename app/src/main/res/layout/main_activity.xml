@@ -13,7 +13,8 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -75,13 +76,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:backgroundTint="@color/material_grey_900"
+            app:backgroundTint="?attr/bottomAppBarColor"
             app:contentInsetStart="0dp"
             app:contentInsetEnd="0dp"
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp">
 
-            <include layout="@layout/bottom_toolbar_layout" />
+            <include
+                android:id="@+id/bottomToolbarLayout"
+                layout="@layout/bottom_toolbar_layout" />
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 

@@ -4,9 +4,9 @@
         <item name="colorPrimary">@color/material_deep_purple_500</item>
         <item name="colorPrimaryDark">@color/material_deep_purple_700</item>
         <item name="colorAccent">@color/material_blue_A400</item>
+        <item name="bottomAppBarColor">@color/bottom_appbar_color</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/material_grey_300</item>
-        <item name="android:navigationBarColor">@color/material_grey_1000</item>
+        <item name="android:statusBarColor">@color/material_grey_50</item>
     </style>
 
     <style name="Theme.Danmaqua" parent="BaseTheme"></style>
@@ -16,9 +16,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Danmaqua.MainActivity" parent="Theme.Danmaqua.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="ThemeOverlay.Danmaqua.AppBar" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="colorPrimary">@color/material_grey_50</item>
-        <item name="colorPrimaryDark">@color/material_grey_300</item>
+        <item name="colorPrimaryDark">@color/material_grey_50</item>
     </style>
 
     <style name="Widget.Danmaqua.IconTextButton" parent="Widget.MaterialComponents.TextView">
