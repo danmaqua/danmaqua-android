@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import kotlinx.android.synthetic.main.preference_activity.*
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
+import moe.feng.danmaqua.ui.settings.FloatingSettingsFragment
+import moe.feng.danmaqua.ui.settings.MainSettingsFragment
+import moe.feng.danmaqua.ui.settings.ManageBlockedTextFragment
 import moe.feng.danmaqua.util.ext.TAG
 
 class PreferenceActivity : BaseActivity() {
@@ -33,13 +37,24 @@ class PreferenceActivity : BaseActivity() {
         if (savedInstanceState == null) {
             when (val action = intent?.action) {
                 MainSettingsFragment.ACTION -> {
-                    setFragment(MainSettingsFragment())
+                    setFragment(
+                        MainSettingsFragment()
+                    )
                 }
                 FilterSettingsFragment.ACTION -> {
-                    setFragment(FilterSettingsFragment())
+                    setFragment(
+                        FilterSettingsFragment()
+                    )
                 }
                 FloatingSettingsFragment.ACTION -> {
-                    setFragment(FloatingSettingsFragment())
+                    setFragment(
+                        FloatingSettingsFragment()
+                    )
+                }
+                ManageBlockedTextFragment.ACTION -> {
+                    setFragment(
+                        ManageBlockedTextFragment()
+                    )
                 }
                 else -> {
                     Log.e(TAG, "Unsupported action $action. PreferenceActivity finished.")

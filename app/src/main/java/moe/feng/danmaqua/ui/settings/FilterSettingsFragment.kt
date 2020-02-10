@@ -1,24 +1,26 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.settings
 
+import android.content.BroadcastReceiver
 import android.content.Context
-import android.graphics.Typeface
-import android.net.Uri
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.text.style.TextAppearanceSpan
 import android.text.style.TypefaceSpan
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
-import androidx.core.text.HtmlCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
 import com.google.androidbrowserhelper.trusted.TwaLauncher
+import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
+import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.dialog.PatternTestDialogFragment
 import java.lang.Exception
 import java.util.regex.Pattern
@@ -36,14 +38,18 @@ class FilterSettingsFragment : BasePreferenceFragment() {
     private val testPatternPref by lazy {
         findPreference<Preference>("filter_test_pattern")!!
     }
+    private val blockedUsersPref by lazy {
+        findPreference<Preference>("filter_blocked_users")!!
+    }
+    private val blockedTextPref by lazy {
+        findPreference<Preference>("filter_blocked_text")!!
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preference_filter)
 
-        enabledPref.isChecked = Settings.Filter.enabled
         enabledPref.setOnPreferenceChangeListener(this::onEnabledChanged)
 
-        patternPref.text = Settings.Filter.pattern
         patternPref.setOnPreferenceChangeListener(this::onPatternChanged)
         patternPref.setSummaryProvider {
             getString(R.string.filter_settings_pattern_summary_format, patternPref.text)
@@ -55,6 +61,28 @@ class FilterSettingsFragment : BasePreferenceFragment() {
             ).show(childFragmentManager, "pattern_test_dialog")
             true
         }
+
+        blockedUsersPref.setOnPreferenceClickListener {
+            true
+        }
+
+        blockedTextPref.setOnPreferenceClickListener {
+            PreferenceActivity.launch(activity!!, ManageBlockedTextFragment.ACTION)
+            true
+        }
+
+        updatePrefValues()
+    }
+
+    private fun updatePrefValues() = launch {
+        enabledPref.isChecked = Settings.Filter.enabled
+        patternPref.text = Settings.Filter.pattern
+        blockedTextPref.summary = getString(R.string.filter_settings_blocked_text_summary_format,
+            Settings.Filter.blockedTextPatterns.size)
+    }
+
+    override fun onSettingsUpdated() {
+        updatePrefValues()
     }
 
     override fun getActivityTitle(context: Context): CharSequence? {

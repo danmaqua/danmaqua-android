@@ -3,8 +3,10 @@ package moe.feng.danmaqua
 import android.content.Context
 import android.content.Intent
 import com.tencent.mmkv.MMKV
+import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.util.ext.booleanProperty
 import moe.feng.danmaqua.util.ext.intProperty
+import moe.feng.danmaqua.util.ext.jsonArrayProperty
 import moe.feng.danmaqua.util.ext.notnullStringProperty
 
 /**
@@ -42,6 +44,11 @@ object Danmaqua {
 
             var pattern: String by mmkv.notnullStringProperty(
                 key = "filter_pattern", defaultValue = DEFAULT_FILTER_PATTERN
+            )
+
+            var blockedTextPatterns: List<BlockedTextRule> by mmkv.jsonArrayProperty(
+                key = "filter_blocked_text_rules",
+                arrayClass = Array<BlockedTextRule>::class.java
             )
 
         }

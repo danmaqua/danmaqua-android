@@ -2,6 +2,8 @@ package moe.feng.danmaqua.util
 
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.model.BlockedTextRule
+import java.lang.Exception
 import java.util.regex.Pattern
 
 interface DanmakuFilter {
@@ -13,11 +15,12 @@ interface DanmakuFilter {
         }
 
         fun fromSettings(): DanmakuFilter {
-            if (!Settings.Filter.enabled) {
-                return acceptAll()
+            val pattern = if (Settings.Filter.enabled) {
+                Pattern.compile(Settings.Filter.pattern)
+            } else {
+                null
             }
-            val pattern = Pattern.compile(Settings.Filter.pattern)
-            return DanmaquaFilter(pattern)
+            return DanmaquaFilter(pattern, blockedWords = Settings.Filter.blockedTextPatterns)
         }
 
     }
@@ -45,17 +48,40 @@ interface DanmakuFilter {
     }
 
     private class DanmaquaFilter(
-        val pattern: Pattern,
+        val pattern: Pattern?,
         val blockedUids: List<Long> = emptyList(),
-        val blockedWords: List<Pattern> = emptyList()
+        val blockedWords: List<BlockedTextRule> = emptyList()
     ) : DanmakuFilter {
 
+        val blockedWordsPattern: List<Pattern> = blockedWords.mapNotNull {
+            try {
+                Pattern.compile(if (it.isRegExp) it.text else ".*${it.text}.*")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
         override fun invoke(msg: BiliChatDanmaku): Boolean {
-            val matcher = pattern.matcher(msg.text)
-            return matcher.matches()
+            if (pattern != null) {
+                val matcher = pattern.matcher(msg.text)
+                if (!matcher.matches()) {
+                    return false
+                }
+            }
+            for (blockedPattern in blockedWordsPattern) {
+                val blockedMatcher = blockedPattern.matcher(msg.text)
+                if (blockedMatcher.matches()) {
+                    return false
+                }
+            }
+            return true
         }
 
         override fun unescapeCaption(msg: BiliChatDanmaku): String? {
+            if (pattern == null) {
+                return msg.text
+            }
             val matcher = pattern.matcher(msg.text)
             if (matcher.find() && matcher.groupCount() > 0) {
                 return matcher.group(1)

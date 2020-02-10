@@ -21,6 +21,7 @@ import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
+import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 
 class DrawerViewFragment : BaseFragment() {
 

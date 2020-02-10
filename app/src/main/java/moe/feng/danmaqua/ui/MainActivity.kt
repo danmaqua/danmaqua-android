@@ -43,6 +43,7 @@ import moe.feng.danmaqua.ui.dialog.NoConnectionsDialog
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
+import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
 import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes

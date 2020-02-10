@@ -19,7 +19,11 @@
     <Preference
         android:key="filter_blocked_users"
         android:title="@string/filter_settings_blocked_users_title"
-        android:summary="@string/filter_settings_blocked_users_summary_format"
-        android:enabled="false"/>
+        android:summary="@string/filter_settings_blocked_users_summary_format"/>
+
+    <Preference
+        android:key="filter_blocked_text"
+        android:title="@string/filter_settings_blocked_text_title"
+        android:summary="@string/filter_settings_blocked_text_summary_format"/>
 
 </androidx.preference.PreferenceScreen>

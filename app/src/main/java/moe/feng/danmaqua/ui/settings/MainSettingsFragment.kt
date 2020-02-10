@@ -1,9 +1,10 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.settings
 
 import android.os.Bundle
 import androidx.preference.Preference
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.PreferenceActivity
 
 class MainSettingsFragment : BasePreferenceFragment() {
 
@@ -17,11 +18,13 @@ class MainSettingsFragment : BasePreferenceFragment() {
         addPreferencesFromResource(R.xml.preference_main)
 
         findPreference<Preference>("filter_settings")!!.setOnPreferenceClickListener {
-            PreferenceActivity.launch(activity!!, FilterSettingsFragment.ACTION)
+            PreferenceActivity
+                .launch(activity!!, FilterSettingsFragment.ACTION)
             true
         }
         findPreference<Preference>("floating_settings")!!.setOnPreferenceClickListener {
-            PreferenceActivity.launch(activity!!, FloatingSettingsFragment.ACTION)
+            PreferenceActivity
+                .launch(activity!!, FloatingSettingsFragment.ACTION)
             true
         }
     }

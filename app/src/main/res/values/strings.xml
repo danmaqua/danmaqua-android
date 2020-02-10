@@ -98,8 +98,13 @@
     <string name="filter_settings_blocked_users_title">Blocked users</string>
     <string name="filter_settings_blocked_users_summary_format"><![CDATA[
     Danmaku sent by blocked users will not be displayed whether filter is on or off.
+    \nBlocked users count: %d
     ]]></string>
-
+    <string name="filter_settings_blocked_text_title">Blocked text</string>
+    <string name="filter_settings_blocked_text_summary_format"><![CDATA[
+    Danmaku included blocked text will not be displayed whether filter is on or off.
+    \nRules count: %d
+    ]]></string>
     <string name="filter_settings_invalid_pattern_title">Invalid Pattern</string>
     <string name="filter_settings_invalid_pattern_message"><![CDATA[
     Your regexp pattern is invalid. Here is report log:
@@ -121,6 +126,14 @@
     <string name="test_pattern_dialog_status_no_matches">No matches</string>
     <string name="test_pattern_dialog_status_matched">Matched %1$s → %2$s</string>
     <string name="action_go_to_regexr_com">Test on regexr.com</string>
+
+    <string name="manage_blocked_text_title">Manage blocked text</string>
+    <string name="action_add_rule">Add rule</string>
+    <string name="action_edit_rule">Edit rule</string>
+    <string name="action_delete_rule">Delete rule</string>
+    <string name="rule_support_regexp_hint">Regular expression supported here</string>
+    <string name="toast_empty_input">Your input is empty.</string>
+    <string name="checkbox_is_regexp">Regular expression</string>
 
     <string name="floating_settings_title">Floating window</string>
     <string name="floating_two_line_title">Two-line mode</string>

@@ -1,10 +1,11 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.settings
 
 import android.content.Context
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
+import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
@@ -30,14 +31,21 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preference_floating)
 
-        twoLinePref.isChecked = Settings.Floating.twoLine
         twoLinePref.setOnPreferenceChangeListener(this::onTwoLineChanged)
-
-        backgroundAlphaPref.value = Settings.Floating.backgroundAlpha
         backgroundAlphaPref.setOnPreferenceChangeListener(this::onBackgroundAlphaChanged)
-
-        textSizePref.value = Settings.Floating.textSize
         textSizePref.setOnPreferenceChangeListener(this::onTextSizeChanged)
+
+        updatePrefsValue()
+    }
+
+    private fun updatePrefsValue() = launch {
+        twoLinePref.isChecked = Settings.Floating.twoLine
+        backgroundAlphaPref.value = Settings.Floating.backgroundAlpha
+        textSizePref.value = Settings.Floating.textSize
+    }
+
+    override fun onSettingsUpdated() {
+        updatePrefsValue()
     }
 
     override fun getActivityTitle(context: Context): CharSequence? {
