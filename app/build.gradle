@@ -65,6 +65,7 @@ dependencies {
     implementation 'com.drakeet.multitype:multitype:4.2.0'
 
     implementation 'com.squareup.okhttp3:okhttp:4.3.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.tencent:mmkv-static:1.0.24'
 

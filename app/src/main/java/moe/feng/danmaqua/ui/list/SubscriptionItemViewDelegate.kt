@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.drakeet.multitype.ItemViewDelegate
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
@@ -29,7 +30,6 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
         val avatarRing: ImageView by bindView(R.id.avatarRing)
         val usernameView: TextView by bindView(R.id.usernameView)
 
-        var avatarLoadTask: Job? = null
         lateinit var item: Subscription
 
     }
@@ -56,10 +56,10 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
         })
         avatarRing.isVisible = item.selected
 
-        avatarLoadTask?.cancel()
-        avatarLoadTask = launch {
-            avatarView.setImageBitmap(HttpUtils.loadBitmapWithCache(item.avatar))
-        }
+        Picasso.get()
+            .load(item.avatar)
+            .placeholder(R.drawable.avatar_placeholder_empty)
+            .into(avatarView)
     }
 
 }

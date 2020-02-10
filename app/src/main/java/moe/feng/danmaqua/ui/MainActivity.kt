@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_toolbar_layout.*
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -493,9 +494,12 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         val cur = database.subscriptions().findSelected()
         if (cur != null) {
             usernameView.text = cur.username
-            avatarView.setImageBitmap(HttpUtils.loadBitmapWithCache(cur.avatar))
+            Picasso.get().load(cur.avatar)
+                .placeholder(R.drawable.avatar_placeholder_empty)
+                .into(avatarView)
         } else {
             usernameView.setText(R.string.no_streamer_selected_title)
+            Picasso.get().cancelRequest(avatarView)
             avatarView.setImageResource(R.drawable.avatar_placeholder_empty)
         }
     }

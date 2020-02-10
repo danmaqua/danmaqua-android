@@ -1,13 +1,10 @@
 package moe.feng.danmaqua.util
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Log
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.util.ext.TAG
 import okhttp3.*
-import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
 object HttpUtils {
@@ -15,6 +12,10 @@ object HttpUtils {
     var client: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(ForceHttpsInterceptor)
         .build()
+
+    fun setCache(cache: Cache) {
+        client = client.newBuilder().cache(cache).build()
+    }
 
     suspend fun <T> requestAsJson(request: Request, objClass: Class<T>): T = withContext(IO) {
         val response = client.newCall(request).execute()
@@ -32,27 +33,6 @@ object HttpUtils {
 
     suspend inline fun <reified T> requestAsJson(request: Request): T {
         return requestAsJson(request, T::class.java)
-    }
-
-    suspend fun loadBitmapWithCache(url: String): Bitmap? = withContext(IO) {
-        val request = Request.Builder()
-            .cacheControl(CacheControl.Builder().maxAge(1800, TimeUnit.SECONDS).build())
-            .url(url)
-            .build()
-        Log.d(TAG, "Request url: $url")
-        try {
-            val response = client.newCall(request).execute()
-            if (response.isSuccessful) {
-                val input = response.body?.byteStream() ?: return@withContext null
-                return@withContext BitmapFactory.decodeStream(input)
-
-            } else {
-                return@withContext null
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return@withContext null
-        }
     }
 
     object ForceHttpsInterceptor : Interceptor {
