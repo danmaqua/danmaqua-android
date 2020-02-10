@@ -40,4 +40,8 @@
         <item name="android:paddingEnd">16dp</item>
     </style>
 
+    <style name="TextAppearance.Danmaqua.Monospace" parent="@style/TextAppearance.AppCompat">
+        <item name="android:typeface">monospace</item>
+    </style>
+
 </resources>

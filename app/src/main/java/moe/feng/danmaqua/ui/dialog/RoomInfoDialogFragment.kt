@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import kotlinx.coroutines.launch
@@ -21,9 +22,7 @@ class RoomInfoDialogFragment : BaseDialogFragment() {
 
         fun newInstance(roomId: Long): RoomInfoDialogFragment {
             return RoomInfoDialogFragment().apply {
-                arguments = Bundle().also {
-                    it.putLong(EXTRA_DATA, roomId)
-                }
+                arguments = bundleOf(EXTRA_DATA to roomId)
             }
         }
 

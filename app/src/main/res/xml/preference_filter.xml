@@ -12,6 +12,11 @@
         android:title="@string/filter_settings_pattern_title"/>
 
     <Preference
+        android:key="filter_test_pattern"
+        android:title="@string/filter_settings_test_pattern_title"
+        android:summary="@string/filter_settings_test_pattern_summary"/>
+
+    <Preference
         android:key="filter_blocked_users"
         android:title="@string/filter_settings_blocked_users_title"
         android:summary="@string/filter_settings_blocked_users_summary_format"
