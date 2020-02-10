@@ -36,15 +36,15 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="56dp"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <FrameLayout
+            android:id="@+id/backToLatestButtonContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="?android:attr/actionBarSize">
+            android:layout_gravity="bottom">
 
             <TextView
                 android:id="@+id/backToLatestButton"

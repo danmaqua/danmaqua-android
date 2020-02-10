@@ -17,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.*
@@ -132,6 +133,12 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 bottomAppBarBackground.alpha = 1F
             }
             insets
+        }
+        bottomAppBar.addOnLayoutChangeListener { _, _, top, _, bottom, _, _, _, _ ->
+            recyclerView.updatePadding(bottom = bottom - top)
+            backToLatestButtonContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                bottomMargin = bottom - top
+            }
         }
 
         // Set up views visibility
