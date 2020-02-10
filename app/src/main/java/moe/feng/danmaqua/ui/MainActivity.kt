@@ -2,10 +2,10 @@ package moe.feng.danmaqua.ui
 
 import android.app.Service
 import android.content.*
-import android.content.res.ColorStateList
 import android.content.res.Configuration
-import android.graphics.Color
 import android.graphics.Rect
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.*
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -37,7 +38,8 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
-import moe.feng.danmaqua.ui.dialog.RoomInfoDialog
+import moe.feng.danmaqua.ui.dialog.NoConnectionsDialog
+import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
 import moe.feng.danmaqua.util.*
@@ -59,6 +61,12 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     }
 
     private val danmakuListenerCallback: IDanmakuListenerCallback = DanmakuListenerCallbackImpl()
+
+    private val connectivityManager: ConnectivityManager? by lazy {
+        getSystemService<ConnectivityManager>()
+    }
+    private val connectivityCallback: ConnectivityCallback = ConnectivityCallback()
+    private var isConnectivityAvailable: Boolean = true
 
     private var service: IDanmakuListenerService? = null
     private var serviceConnection: ServiceConnection? = null
@@ -165,6 +173,20 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         registerReceiver(onSettingsUpdated, IntentFilter(ACTION_SETTINGS_UPDATED))
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connectivityManager?.registerDefaultNetworkCallback(connectivityCallback)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            connectivityManager?.unregisterNetworkCallback(connectivityCallback)
+        }
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         updateGestureExclusion()
@@ -241,7 +263,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 launch {
                     val current = database.subscriptions().getAll().firstOrNull { it.selected }
                     if (current != null) {
-                        RoomInfoDialog.newInstance(current.roomId)
+                        RoomInfoDialogFragment.newInstance(current.roomId)
                             .show(supportFragmentManager, "room_info")
                     }
                 }
@@ -353,13 +375,31 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                     updateStatusViews()
                 }
             } else {
-                val current = database.subscriptions().getAll().firstOrNull { it.selected }
-                if (current != null) {
-                    connectRoom(current.roomId)
+                val showConnectivityDialog: Boolean
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    showConnectivityDialog = !isConnectivityAvailable
                 } else {
-                    Log.e(TAG, "No subscriptions selected.")
+                    showConnectivityDialog = connectivityManager?.isDefaultNetworkActive != true
                 }
+                if (showConnectivityDialog) {
+                    NoConnectionsDialog.show(this@MainActivity) {
+                        launch {
+                            connectToCurrentSubscription()
+                        }
+                    }
+                    return@launch
+                }
+                connectToCurrentSubscription()
             }
+        }
+    }
+
+    private suspend fun connectToCurrentSubscription() = withContext(IO) {
+        val current = database.subscriptions().getAll().firstOrNull { it.selected }
+        if (current != null) {
+            connectRoom(current.roomId)
+        } else {
+            Log.e(TAG, "No subscriptions selected.")
         }
     }
 
@@ -481,20 +521,18 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     }
 
     private inner class DanmakuListenerCallbackImpl : IDanmakuListenerCallback.Stub() {
+
         override fun onConnect(roomId: Long) {
-            Log.i(TAG, "DanmakuListener: onConnect")
             messageAdapter.addSystemMessage(getString(R.string.sys_msg_connected_to_room, roomId))
             updateStatusViews()
         }
 
         override fun onDisconnect() {
-            Log.i(TAG, "DanmakuListener: onDisconnect")
             messageAdapter.addSystemMessage(getString(R.string.sys_msg_disconnected))
             updateStatusViews()
         }
 
         override fun onReceiveDanmaku(msg: BiliChatDanmaku) {
-            Log.d(TAG, "DanmakuListener: onReceiveDanmaku: $msg")
             launch {
                 if (withContext(IO) { danmakuFilter(msg) }) {
                     messageAdapter.addDanmaku(msg)
@@ -503,10 +541,10 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         }
 
         override fun onHeartbeat(online: Int) {
-            Log.d(TAG, "DanmakuListener: onHeartbeat: online=$online")
             this@MainActivity.online = online
             updateStatusViews()
         }
+
     }
 
     private inner class ScrollToLatestButtonScrollListener : RecyclerView.OnScrollListener() {
@@ -554,6 +592,22 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         override fun onDrawerClosed(drawerView: View) {}
 
         override fun onDrawerOpened(drawerView: View) {}
+
+    }
+
+    private inner class ConnectivityCallback : ConnectivityManager.NetworkCallback() {
+
+        override fun onAvailable(network: Network) {
+            isConnectivityAvailable = true
+        }
+
+        override fun onUnavailable() {
+            isConnectivityAvailable = false
+        }
+
+        override fun onLost(network: Network) {
+            isConnectivityAvailable = false
+        }
 
     }
 

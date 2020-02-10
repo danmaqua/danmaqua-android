@@ -77,6 +77,15 @@
 
     <string name="toast_floating_is_showing">Floating window is showing.</string>
 
+    <string name="no_connections_available_title">No connections available</string>
+    <string name="no_connections_available_message"><![CDATA[
+    We detect that your phone hasn\'t connected to any network. It may not be able to accessing
+    Bilibili live API. If you are sure you have connected to Internet, click ignore button to skip
+    this check.
+    ]]></string>
+    <string name="action_ignore">Ignore</string>
+    <string name="action_open_settings">Open settings</string>
+
     <string name="settings_title">Settings</string>
 
     <string name="filter_settings_title">Filter</string>

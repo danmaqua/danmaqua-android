@@ -40,16 +40,17 @@ object HttpUtils {
             .url(url)
             .build()
         Log.d(TAG, "Request url: $url")
-        val response = client.newCall(request).execute()
-        if (response.isSuccessful) {
-            val input = response.body?.byteStream() ?: return@withContext null
-            try {
+        try {
+            val response = client.newCall(request).execute()
+            if (response.isSuccessful) {
+                val input = response.body?.byteStream() ?: return@withContext null
                 return@withContext BitmapFactory.decodeStream(input)
-            } catch (e: Exception) {
-                e.printStackTrace()
+
+            } else {
                 return@withContext null
             }
-        } else {
+        } catch (e: Exception) {
+            e.printStackTrace()
             return@withContext null
         }
     }

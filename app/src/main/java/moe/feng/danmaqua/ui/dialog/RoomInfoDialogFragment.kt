@@ -15,12 +15,12 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.RoomApi
 import moe.feng.danmaqua.model.RoomInfo
 
-class RoomInfoDialog : BaseDialogFragment() {
+class RoomInfoDialogFragment : BaseDialogFragment() {
 
     companion object {
 
-        fun newInstance(roomId: Long): RoomInfoDialog {
-            return RoomInfoDialog().apply {
+        fun newInstance(roomId: Long): RoomInfoDialogFragment {
+            return RoomInfoDialogFragment().apply {
                 arguments = Bundle().also {
                     it.putLong(EXTRA_DATA, roomId)
                 }
@@ -73,9 +73,9 @@ class RoomInfoDialog : BaseDialogFragment() {
         liveStatus = view.findViewById(R.id.liveStatus)
 
         if (savedInstanceState == null) {
+            loadingView.isVisible = true
+            contentView.isGone = true
             launch {
-                loadingView.isVisible = true
-                contentView.isGone = true
                 roomInfo = RoomApi.getRoomInfo(roomId)
                 bindViews()
             }
