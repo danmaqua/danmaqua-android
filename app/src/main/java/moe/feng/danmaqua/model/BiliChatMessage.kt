@@ -1,10 +1,11 @@
 package moe.feng.danmaqua.model
 
-import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import moe.feng.danmaqua.util.JsonUtils
 
-open class BiliChatMessage(val cmd: String, val timestamp: Long) : Parcelable {
+@Parcelize
+open class BiliChatMessage(open val cmd: String, open val timestamp: Long) : Parcelable {
 
     companion object {
 
@@ -60,37 +61,10 @@ open class BiliChatMessage(val cmd: String, val timestamp: Long) : Parcelable {
             }
         }
 
-        @JvmField
-        val CREATOR = object : Parcelable.Creator<BiliChatMessage> {
-            override fun createFromParcel(parcel: Parcel): BiliChatMessage {
-                return BiliChatMessage(parcel)
-            }
-
-            override fun newArray(size: Int): Array<BiliChatMessage?> {
-                return arrayOfNulls(size)
-            }
-        }
-
     }
-
-    constructor(src: Parcel) : this(
-        src.readString()!!,
-        src.readLong()
-    )
 
     override fun toString(): String {
         return "BiliChatMessage[cmd: $cmd, timestamp: $timestamp, (Unrecognized data)]"
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        with(parcel) {
-            writeString(cmd)
-            writeLong(timestamp)
-        }
-    }
-
-    override fun describeContents(): Int {
-        return 0
     }
 
 }
