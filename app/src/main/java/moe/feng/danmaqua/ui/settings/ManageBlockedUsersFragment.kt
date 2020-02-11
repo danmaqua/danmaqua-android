@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.manage_blocked_users_layout.*
 import kotlinx.coroutines.launch
+import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.UserApi
@@ -100,6 +101,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
         launch {
             database.blockedUsers().delete(items[position])
             setItems(database.blockedUsers().getAll())
+            context?.let { Danmaqua.Settings.notifyChanged(it) }
         }
     }
 
@@ -126,6 +128,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
                         info.data.face
                     ))
                     setItems(database.blockedUsers().getAll())
+                    context?.let { Danmaqua.Settings.notifyChanged(it) }
                 }
             }
             .setNegativeButton(android.R.string.no, null)

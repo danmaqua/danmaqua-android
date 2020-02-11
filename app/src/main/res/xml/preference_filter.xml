@@ -5,25 +5,31 @@
     <androidx.preference.SwitchPreference
         android:key="filter_enabled"
         android:title="@string/filter_settings_enabled_title"
-        android:summary="@string/filter_settings_enabled_summary"/>
+        android:summary="@string/filter_settings_enabled_summary"
+        android:icon="@drawable/ic_filter_list_24_text_color_primary"/>
 
     <androidx.preference.EditTextPreference
         android:key="filter_pattern"
-        android:title="@string/filter_settings_pattern_title"/>
+        android:title="@string/filter_settings_pattern_title"
+        android:summary="@string/filter_settings_pattern_summary_format"
+        android:icon="@drawable/ic_find_in_page_24_text_color_primary"/>
 
     <Preference
         android:key="filter_test_pattern"
         android:title="@string/filter_settings_test_pattern_title"
-        android:summary="@string/filter_settings_test_pattern_summary"/>
+        android:summary="@string/filter_settings_test_pattern_summary"
+        android:icon="@drawable/ic_developer_mode_24_text_color_primary"/>
 
     <Preference
         android:key="filter_blocked_users"
         android:title="@string/filter_settings_blocked_users_title"
-        android:summary="@string/filter_settings_blocked_users_summary_format"/>
+        android:summary="@string/filter_settings_blocked_users_summary_format"
+        android:icon="@drawable/ic_person_add_disabled_24_text_color_primary"/>
 
     <Preference
         android:key="filter_blocked_text"
         android:title="@string/filter_settings_blocked_text_title"
-        android:summary="@string/filter_settings_blocked_text_summary_format"/>
+        android:summary="@string/filter_settings_blocked_text_summary_format"
+        android:icon="@drawable/ic_block_24_text_color_primary"/>
 
 </androidx.preference.PreferenceScreen>
