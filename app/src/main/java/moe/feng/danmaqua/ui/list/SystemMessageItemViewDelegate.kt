@@ -14,7 +14,7 @@ import moe.feng.danmaqua.ui.list.SystemMessageItemViewDelegate.*
 
 class SystemMessageItemViewDelegate : ItemViewDelegate<Item, ViewHolder>() {
 
-    class Item(val text: String) : Parcelable {
+    data class Item(val text: String) : Parcelable {
 
         constructor(parcel: Parcel) : this(parcel.readString()!!)
 

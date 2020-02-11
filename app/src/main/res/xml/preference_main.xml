@@ -5,11 +5,13 @@
     <Preference
         android:key="floating_settings"
         android:title="@string/floating_settings_title"
+        android:summary="@string/floating_settings_summary"
         android:icon="@drawable/ic_closed_caption_24_text_color_primary"/>
 
     <Preference
         android:key="filter_settings"
         android:title="@string/filter_settings_title"
+        android:summary="@string/filter_settings_summary"
         android:icon="@drawable/ic_filter_list_24_text_color_primary"/>
 
 </androidx.preference.PreferenceScreen>

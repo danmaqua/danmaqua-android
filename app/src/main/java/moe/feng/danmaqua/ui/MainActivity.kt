@@ -32,18 +32,26 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.api.UserApi
+import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.model.BlockedTextRule
+import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
+import moe.feng.danmaqua.ui.dialog.DanmakuContextMenuDialogFragment
 import moe.feng.danmaqua.ui.dialog.NoConnectionsDialog
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
+import moe.feng.danmaqua.ui.main.MainConfirmBlockTextDialogFragment
+import moe.feng.danmaqua.ui.main.MainConfirmBlockUserDialogFragment
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
 import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.TAG
@@ -53,7 +61,8 @@ import moe.feng.danmaqua.util.ext.screenHeight
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MainActivity : BaseActivity(), DrawerViewFragment.Callback, SettingsChangedListener {
+class MainActivity : BaseActivity(),
+    DrawerViewFragment.Callback, SettingsChangedListener, MainDanmakuContextMenuListener {
 
     companion object {
 
@@ -529,6 +538,52 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback, SettingsChange
                 statusView.setText(R.string.status_disconnected)
             }
         }
+    }
+
+    override fun onStartDanmakuContextMenu(item: BiliChatDanmaku) {
+        DanmakuContextMenuDialogFragment.newInstance(item)
+            .show(supportFragmentManager, "danmaku_context_menu")
+    }
+
+    override fun onConfirmBlockText(item: BiliChatDanmaku) {
+        MainConfirmBlockTextDialogFragment.show(this, item)
+    }
+
+    override fun onConfirmBlockUser(item: BiliChatDanmaku) {
+        launch {
+            val info = UserApi.getSpaceInfo(item.senderUid)
+            if (info.code == 0) {
+                MainConfirmBlockUserDialogFragment.show(this@MainActivity, item, info)
+            } else {
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.toast_cannot_find_user_by_uid_format, item.senderUid),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    override fun onBlockText(item: BiliChatDanmaku, blockRule: BlockedTextRule) {
+        launch {
+            onHideDanmaku(item)
+            val patterns = Danmaqua.Settings.Filter.blockedTextPatterns.toMutableList()
+            patterns.add(blockRule)
+            Danmaqua.Settings.Filter.blockedTextPatterns = patterns
+            Danmaqua.Settings.notifyChanged(this@MainActivity)
+        }
+    }
+
+    override fun onBlockUser(item: BiliChatDanmaku, blockUser: BlockedUserRule) {
+        launch {
+            messageAdapter.removeDanmakuByUid(blockUser.uid)
+            database.blockedUsers().add(blockUser)
+            Danmaqua.Settings.notifyChanged(this@MainActivity)
+        }
+    }
+
+    override fun onHideDanmaku(item: BiliChatDanmaku) {
+        messageAdapter.removeDanmaku(item)
     }
 
     private inner class DanmakuListenerCallbackImpl : IDanmakuListenerCallback.Stub() {

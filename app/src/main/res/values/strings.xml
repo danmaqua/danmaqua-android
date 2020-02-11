@@ -27,6 +27,10 @@
     <string name="action_new_subscription">Subscribe streamer…</string>
     <string name="app_name_with_version_text_format">%s · Version %s (%d)</string>
 
+    <string name="action_block_this_text">Block this text</string>
+    <string name="action_block_this_user">Block this user</string>
+    <string name="action_hide_this_danmaku">Hide this danmaku</string>
+
     <string name="no_streamer_selected_title">No streamer selected</string>
     <string name="status_disconnected">Disconnected</string>
     <string name="status_connected_with_popularity">Online. Popularity: %d</string>
@@ -147,9 +151,12 @@
     <string name="uid_text_format">UID: %d</string>
 
     <string name="floating_settings_title">Floating window</string>
+    <string name="floating_settings_summary"><![CDATA[
+    Two-line mode, background transparency, text size
+    ]]></string>
     <string name="floating_two_line_title">Two-line mode</string>
     <string name="floating_two_line_summary">Show two-line caption instead</string>
-    <string name="floating_background_alpha_title">Background transparent</string>
+    <string name="floating_background_alpha_title">Background transparency</string>
     <string name="floating_background_alpha_summary"><![CDATA[
     Range: 100–255. The maximum value means opaque.
     ]]></string>
