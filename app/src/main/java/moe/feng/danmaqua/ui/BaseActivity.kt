@@ -10,7 +10,6 @@ import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import moe.feng.danmaqua.DanmaquaApplication
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.util.ResourcesUtils
 
@@ -18,7 +17,7 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
 
     val defaultPreferences: SharedPreferences get() = MMKV.defaultMMKV()
 
-    val database: DanmaquaDB get() = DanmaquaApplication.getDatabase(this)
+    val database: DanmaquaDB get() = DanmaquaDB.instance
 
     var lightNavBar: Boolean = false
     var hideNavigation: Boolean = true

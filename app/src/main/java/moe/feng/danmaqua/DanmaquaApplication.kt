@@ -7,7 +7,6 @@ import android.content.Context
 import android.os.Build
 import android.os.StatFs
 import androidx.core.content.getSystemService
-import androidx.room.Room
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.tencent.mmkv.MMKV
@@ -18,26 +17,6 @@ import okhttp3.Cache
 import java.io.File
 
 class DanmaquaApplication : Application() {
-
-    companion object {
-
-        const val DATABASE_NAME = "danmaqua"
-
-        private lateinit var danmaquaDB: DanmaquaDB
-
-        fun getDatabase(context: Context): DanmaquaDB {
-            val appContext = if (context is Application) context else context.applicationContext
-            if (!::danmaquaDB.isInitialized) {
-                danmaquaDB = Room.databaseBuilder(
-                    appContext,
-                    DanmaquaDB::class.java,
-                    DATABASE_NAME
-                ).build()
-            }
-            return danmaquaDB
-        }
-
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -56,6 +35,7 @@ class DanmaquaApplication : Application() {
         val okHttpCache = Cache(okHttpCacheDir, cacheSize)
         HttpUtils.setCache(okHttpCache)
 
+        DanmaquaDB.init(this)
         MMKV.initialize(this)
         Picasso.setSingletonInstance(Picasso.Builder(this)
             .downloader(OkHttp3Downloader(HttpUtils.client))

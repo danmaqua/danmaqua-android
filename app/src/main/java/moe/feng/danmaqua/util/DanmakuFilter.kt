@@ -1,6 +1,8 @@
 package moe.feng.danmaqua.util
 
+import kotlinx.coroutines.runBlocking
 import moe.feng.danmaqua.Danmaqua.Settings
+import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import java.lang.Exception
@@ -20,7 +22,13 @@ interface DanmakuFilter {
             } else {
                 null
             }
-            return DanmaquaFilter(pattern, blockedWords = Settings.Filter.blockedTextPatterns)
+            return DanmaquaFilter(
+                pattern = pattern,
+                blockedUids = runBlocking {
+                    DanmaquaDB.instance.blockedUsers().getAll().map { it.uid }
+                },
+                blockedWords = Settings.Filter.blockedTextPatterns
+            )
         }
 
     }
@@ -63,6 +71,9 @@ interface DanmakuFilter {
         }
 
         override fun invoke(msg: BiliChatDanmaku): Boolean {
+            if (msg.senderUid in blockedUids) {
+                return false
+            }
             if (pattern != null) {
                 val matcher = pattern.matcher(msg.text)
                 if (!matcher.matches()) {

@@ -135,6 +135,14 @@
     <string name="toast_empty_input">Your input is empty.</string>
     <string name="checkbox_is_regexp">Regular expression</string>
 
+    <string name="manage_blocked_user_title">Manage blocked users</string>
+    <string name="add_blocked_user_title">Add blocked user</string>
+    <string name="add_blocked_user_uid_input_hint">Currently support uid only</string>
+    <string name="action_search">Search</string>
+    <string name="confirm_add_blocked_user_title">Confirm blocked user</string>
+    <string name="toast_cannot_find_user_by_uid_format">Cannot find user by uid %d</string>
+    <string name="uid_text_format">UID: %d</string>
+
     <string name="floating_settings_title">Floating window</string>
     <string name="floating_two_line_title">Two-line mode</string>
     <string name="floating_two_line_summary">Show two-line caption instead</string>

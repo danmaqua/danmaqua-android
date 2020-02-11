@@ -8,10 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import kotlinx.android.synthetic.main.preference_activity.*
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
-import moe.feng.danmaqua.ui.settings.FloatingSettingsFragment
-import moe.feng.danmaqua.ui.settings.MainSettingsFragment
-import moe.feng.danmaqua.ui.settings.ManageBlockedTextFragment
+import moe.feng.danmaqua.ui.settings.*
 import moe.feng.danmaqua.util.ext.TAG
 
 class PreferenceActivity : BaseActivity() {
@@ -54,6 +51,11 @@ class PreferenceActivity : BaseActivity() {
                 ManageBlockedTextFragment.ACTION -> {
                     setFragment(
                         ManageBlockedTextFragment()
+                    )
+                }
+                ManageBlockedUsersFragment.ACTION -> {
+                    setFragment(
+                        ManageBlockedUsersFragment()
                     )
                 }
                 else -> {

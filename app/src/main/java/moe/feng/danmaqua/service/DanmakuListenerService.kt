@@ -25,13 +25,13 @@ import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmakuApi
 import moe.feng.danmaqua.api.DanmakuListener
+import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
-import moe.feng.danmaqua.util.ext.getDanmaquaDatabase
 import java.io.EOFException
 import java.lang.Exception
 
@@ -183,7 +183,7 @@ class DanmakuListenerService :
     override fun onConnect() {
         danmakuListener?.let {
             launch {
-                val current = getDanmaquaDatabase().subscriptions().findByRoomId(it.roomId)
+                val current = DanmaquaDB.instance.subscriptions().findByRoomId(it.roomId)
                 val username = current?.username ?: it.roomId.toString()
 
                 notificationBuilder.setContentText(getString(

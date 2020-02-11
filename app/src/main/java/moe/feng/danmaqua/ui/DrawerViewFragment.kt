@@ -96,7 +96,7 @@ class DrawerViewFragment : BaseFragment() {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val subscription = data.getParcelableExtra<Subscription>(EXTRA_DATA) ?: return
                     launch {
-                        val dao = DanmaquaApplication.getDatabase(requireContext()).subscriptions()
+                        val dao = database.subscriptions()
                         if (dao.findByUid(subscription.uid) == null) {
                             if (dao.findSelected() == null) {
                                 subscription.selected = true
@@ -120,8 +120,7 @@ class DrawerViewFragment : BaseFragment() {
         val oldItems = drawerListAdapter.items
         val newItems = withContext(Dispatchers.IO) {
             val result = mutableListOf<Any>()
-            val db = DanmaquaApplication.getDatabase(requireContext())
-            result.addAll(updateItems ?: db.subscriptions().getAll())
+            result.addAll(updateItems ?: database.subscriptions().getAll())
             result += SubscriptionAddItemViewDelegate.Item
             result
         }
@@ -152,7 +151,7 @@ class DrawerViewFragment : BaseFragment() {
 
         override fun onSubscriptionItemClick(item: Subscription) {
             launch {
-                val dao = DanmaquaApplication.getDatabase(requireContext()).subscriptions()
+                val dao = database.subscriptions()
                 val items = dao.getAll()
                 items.forEach {
                     it.selected = it.uid == item.uid

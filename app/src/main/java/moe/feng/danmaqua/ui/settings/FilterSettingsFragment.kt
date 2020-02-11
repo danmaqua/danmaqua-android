@@ -20,6 +20,7 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.dialog.PatternTestDialogFragment
 import java.lang.Exception
@@ -63,6 +64,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         }
 
         blockedUsersPref.setOnPreferenceClickListener {
+            PreferenceActivity.launch(activity!!, ManageBlockedUsersFragment.ACTION)
             true
         }
 
@@ -77,6 +79,8 @@ class FilterSettingsFragment : BasePreferenceFragment() {
     private fun updatePrefValues() = launch {
         enabledPref.isChecked = Settings.Filter.enabled
         patternPref.text = Settings.Filter.pattern
+        blockedUsersPref.summary = getString(R.string.filter_settings_blocked_users_summary_format,
+            DanmaquaDB.instance.blockedUsers().count())
         blockedTextPref.summary = getString(R.string.filter_settings_blocked_text_summary_format,
             Settings.Filter.blockedTextPatterns.size)
     }
