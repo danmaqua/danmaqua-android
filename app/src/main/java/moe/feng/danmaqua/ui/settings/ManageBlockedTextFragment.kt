@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.manage_blocked_text_layout.*
 import moe.feng.danmaqua.Danmaqua
@@ -60,11 +61,16 @@ class ManageBlockedTextFragment : BaseFragment() {
         addButton.setOnClickListener(this::onAddButtonClick)
     }
 
+    private fun setItems(items: List<BlockedTextRule>) {
+        val oldItems = this.items
+        val result = DiffUtil.calculateDiff(ListDiffCallback(oldItems, items))
+        this.items = items
+        result.dispatchUpdatesTo(this.adapter)
+    }
+
     private fun onAddButtonClick(view: View) {
         showEditDialog(R.string.action_add_rule) { newValue ->
-            items = (items.toMutableList() + newValue).toList()
-            // TODO Use DiffUtil to notify
-            adapter.notifyDataSetChanged()
+            setItems((items.toMutableList() + newValue).toList())
             Danmaqua.Settings.Filter.blockedTextPatterns = items
             context?.let { Danmaqua.Settings.notifyChanged(it) }
         }
@@ -74,8 +80,7 @@ class ManageBlockedTextFragment : BaseFragment() {
         showEditDialog(R.string.action_edit_rule, items[position]) { newValue ->
             val mutableItems = items.toMutableList()
             mutableItems[position] = newValue
-            items = mutableItems.toList()
-            adapter.notifyDataSetChanged()
+            setItems(mutableItems.toList())
             Danmaqua.Settings.Filter.blockedTextPatterns = items
             context?.let { Danmaqua.Settings.notifyChanged(it) }
         }
@@ -84,8 +89,7 @@ class ManageBlockedTextFragment : BaseFragment() {
     private fun onDeleteButtonClick(position: Int) {
         val mutableItems = items.toMutableList()
         mutableItems.removeAt(position)
-        items = mutableItems.toList()
-        adapter.notifyDataSetChanged()
+        setItems(mutableItems.toList())
         Danmaqua.Settings.Filter.blockedTextPatterns = items
         context?.let { Danmaqua.Settings.notifyChanged(it) }
     }
@@ -148,6 +152,29 @@ class ManageBlockedTextFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.textView.text = items[position].text
+        }
+
+    }
+
+    private class ListDiffCallback(val oldItems: List<BlockedTextRule>,
+                                   val newItems: List<BlockedTextRule>) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int {
+            return oldItems.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newItems.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldItems[oldItemPosition]
+            val newItem = newItems[newItemPosition]
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return areItemsTheSame(oldItemPosition, newItemPosition)
         }
 
     }
