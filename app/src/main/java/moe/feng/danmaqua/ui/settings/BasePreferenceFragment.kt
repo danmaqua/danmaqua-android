@@ -7,29 +7,34 @@ import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
+import moe.feng.common.eventshelper.EventsHelper
+import moe.feng.danmaqua.event.SettingsChangedListener
+import moe.feng.danmaqua.util.ext.eventsHelper
 
-abstract class BasePreferenceFragment : PreferenceFragmentCompat(), CoroutineScope by MainScope() {
+abstract class BasePreferenceFragment :
+    PreferenceFragmentCompat(),
+    CoroutineScope by MainScope() {
 
-    val defaultPreferences: SharedPreferences get() = MMKV.defaultMMKV()
-
-    private val settingsUpdatedReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (!isDetached) {
-                onSettingsUpdated()
-            }
+    private var eventsHelper: EventsHelper? = null
+    private val settingsChangedListener = object : SettingsChangedListener {
+        override fun onSettingsChanged() {
+            this@BasePreferenceFragment.onSettingsChanged()
         }
     }
 
+    val defaultPreferences: SharedPreferences get() = MMKV.defaultMMKV()
+
     override fun onDestroy() {
         super.onDestroy()
-        context?.unregisterReceiver(settingsUpdatedReceiver)
+        eventsHelper?.unregisterListener(settingsChangedListener)
+        eventsHelper = null
         this.cancel()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        context.registerReceiver(settingsUpdatedReceiver, IntentFilter(ACTION_SETTINGS_UPDATED))
+        eventsHelper = context.eventsHelper
+        eventsHelper?.registerListener(settingsChangedListener)
         val title = getActivityTitle(context)
         if (title != null) {
             val activity = if (context is Activity) context else this.activity
@@ -41,7 +46,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), CoroutineSco
         return null
     }
 
-    open fun onSettingsUpdated() {
+    open fun onSettingsChanged() {
 
     }
 

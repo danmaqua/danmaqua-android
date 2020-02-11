@@ -1,9 +1,6 @@
 package moe.feng.danmaqua.ui.settings
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.text.style.TypefaceSpan
 import androidx.appcompat.app.AlertDialog
@@ -17,7 +14,6 @@ import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
-import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
@@ -85,7 +81,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
             Settings.Filter.blockedTextPatterns.size)
     }
 
-    override fun onSettingsUpdated() {
+    override fun onSettingsChanged() {
         updatePrefValues()
     }
 

@@ -4,17 +4,13 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import kotlinx.coroutines.*
-import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
 import moe.feng.danmaqua.Danmaqua.NOTI_ID_LISTENER_STATUS
@@ -26,17 +22,20 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmakuApi
 import moe.feng.danmaqua.api.DanmakuListener
 import moe.feng.danmaqua.data.DanmaquaDB
+import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
+import moe.feng.danmaqua.util.ext.eventsHelper
 import java.io.EOFException
 import java.lang.Exception
 
 class DanmakuListenerService :
-    Service(), CoroutineScope by MainScope(), DanmakuListener.Callback {
+    Service(), CoroutineScope by MainScope(),
+    DanmakuListener.Callback, SettingsChangedListener {
 
     companion object {
 
@@ -59,13 +58,6 @@ class DanmakuListenerService :
     private lateinit var notification: Notification
     private val notificationBuilder: NotificationCompat.Builder =
         NotificationCompat.Builder(this, NOTI_CHANNEL_ID_STATUS)
-
-    private val onSettingsUpdated: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            danmakuFilter = DanmakuFilter.fromSettings()
-            floatingHolder?.loadSettings()
-        }
-    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return binder
@@ -106,7 +98,7 @@ class DanmakuListenerService :
         }
         notification = notificationBuilder.build()
 
-        registerReceiver(onSettingsUpdated, IntentFilter(ACTION_SETTINGS_UPDATED))
+        eventsHelper.registerListener(this)
     }
 
     override fun onDestroy() {
@@ -119,7 +111,7 @@ class DanmakuListenerService :
         } catch (e: Exception) {
 
         }
-        unregisterReceiver(onSettingsUpdated)
+        eventsHelper.unregisterListener(this)
         this.cancel()
     }
 
@@ -142,6 +134,11 @@ class DanmakuListenerService :
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         floatingHolder?.onConfigurationChanged(newConfig)
+    }
+
+    override fun onSettingsChanged() {
+        danmakuFilter = DanmakuFilter.fromSettings()
+        floatingHolder?.loadSettings()
     }
 
     private fun createFloatingView() = launch {

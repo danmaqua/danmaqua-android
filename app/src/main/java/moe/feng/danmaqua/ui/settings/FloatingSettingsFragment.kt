@@ -44,7 +44,7 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
         textSizePref.value = Settings.Floating.textSize
     }
 
-    override fun onSettingsUpdated() {
+    override fun onSettingsChanged() {
         updatePrefsValue()
     }
 

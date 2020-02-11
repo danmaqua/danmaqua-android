@@ -32,11 +32,11 @@ import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import moe.feng.danmaqua.Danmaqua.ACTION_SETTINGS_UPDATED
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
@@ -48,11 +48,12 @@ import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
 import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
+import moe.feng.danmaqua.util.ext.eventsHelper
 import moe.feng.danmaqua.util.ext.screenHeight
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
+class MainActivity : BaseActivity(), DrawerViewFragment.Callback, SettingsChangedListener {
 
     companion object {
 
@@ -88,12 +89,6 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
     private val usernameView by lazy { toolbarView.findViewById<TextView>(R.id.usernameView) }
     private val statusView by lazy { toolbarView.findViewById<TextView>(R.id.statusView) }
-
-    private val onSettingsUpdated = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            danmakuFilter = DanmakuFilter.fromSettings()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,7 +174,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         updateStatusViews()
         checkServiceStatus()
 
-        registerReceiver(onSettingsUpdated, IntentFilter(ACTION_SETTINGS_UPDATED))
+        eventsHelper.registerListener(this)
     }
 
     override fun onResume() {
@@ -229,7 +224,7 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
                 e.printStackTrace()
             }
         }
-        unregisterReceiver(onSettingsUpdated)
+        eventsHelper.unregisterListener(this)
     }
 
     override fun onAttachFragment(fragment: Fragment) {
@@ -299,6 +294,10 @@ class MainActivity : BaseActivity(), DrawerViewFragment.Callback {
         super.setWindowFlags(
             lightNavBar ?: drawerLayout.isDrawerOpen(GravityCompat.START),
             hideNavigation)
+    }
+
+    override fun onSettingsChanged() {
+        danmakuFilter = DanmakuFilter.fromSettings()
     }
 
     private fun updateGestureExclusion() {

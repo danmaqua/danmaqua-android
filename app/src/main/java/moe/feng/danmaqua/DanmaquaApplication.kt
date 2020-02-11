@@ -3,7 +3,6 @@ package moe.feng.danmaqua
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
 import android.os.StatFs
 import androidx.core.content.getSystemService
