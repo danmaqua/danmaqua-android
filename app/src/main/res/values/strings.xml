@@ -228,4 +228,8 @@
     latest information about updates (You can find link in settings).
     ]]></string>
 
+    <string name="development_settings_title">Development</string>
+    <string name="firebase_instance_id_title">Firebase Instance Id</string>
+    <string name="firebase_instance_id_not_registered_yet">Not registered yet</string>
+
 </resources>

@@ -68,6 +68,11 @@ class PreferenceActivity : BaseActivity() {
                         SupportUsFragment()
                     )
                 }
+                DevelopmentFragment.ACTION -> {
+                    setFragment(
+                        DevelopmentFragment()
+                    )
+                }
                 else -> {
                     Log.e(TAG, "Unsupported action $action. PreferenceActivity finished.")
                     finish()

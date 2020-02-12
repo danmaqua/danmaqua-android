@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="firebase_instance_id"
+        android:title="@string/firebase_instance_id_title"
+        android:summary="@string/firebase_instance_id_not_registered_yet"/>
+
+</androidx.preference.PreferenceScreen>

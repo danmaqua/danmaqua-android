@@ -25,6 +25,7 @@ import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
+import moe.feng.danmaqua.ui.settings.DevelopmentFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
 
@@ -43,6 +44,8 @@ class DrawerViewFragment : BaseFragment() {
     }
 
     var callback: Callback? = null
+
+    private var developmentTimes: Int = 0
 
     private val drawerListAdapter: DrawerListAdapter = DrawerListAdapter()
 
@@ -87,6 +90,13 @@ class DrawerViewFragment : BaseFragment() {
         }
         appVersionView.text = getString(R.string.app_name_with_version_text_format,
             appName, versionName, versionCode)
+        appVersionView.setOnClickListener {
+            developmentTimes++
+            if (developmentTimes >= 5) {
+                developmentTimes = 0
+                PreferenceActivity.launch(activity!!, DevelopmentFragment.ACTION)
+            }
+        }
 
         settingsButton.setOnClickListener {
             PreferenceActivity
