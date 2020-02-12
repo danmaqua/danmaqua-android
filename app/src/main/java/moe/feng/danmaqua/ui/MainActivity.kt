@@ -50,6 +50,7 @@ import moe.feng.danmaqua.ui.dialog.NoConnectionsDialog
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
+import moe.feng.danmaqua.ui.main.DrawerViewFragment
 import moe.feng.danmaqua.ui.main.MainConfirmBlockTextDialogFragment
 import moe.feng.danmaqua.ui.main.MainConfirmBlockUserDialogFragment
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
@@ -168,7 +169,9 @@ class MainActivity : BaseActivity(),
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(R.id.drawerView, DrawerViewFragment())
+                replace(R.id.drawerView,
+                    DrawerViewFragment()
+                )
             }
         } else {
             online = savedInstanceState.getInt(STATE_ONLINE)

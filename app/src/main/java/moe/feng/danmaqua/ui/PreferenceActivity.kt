@@ -63,6 +63,11 @@ class PreferenceActivity : BaseActivity() {
                         LicensesFragment()
                     )
                 }
+                SupportUsFragment.ACTION -> {
+                    setFragment(
+                        SupportUsFragment()
+                    )
+                }
                 else -> {
                     Log.e(TAG, "Unsupported action $action. PreferenceActivity finished.")
                     finish()

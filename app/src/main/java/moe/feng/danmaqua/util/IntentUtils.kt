@@ -8,6 +8,8 @@ import moe.feng.danmaqua.R
 
 object IntentUtils {
 
+    private const val ALIPAY_CODE_SIUBENG = "aex07585vva8hhbzjfvv1da"
+
     fun view(uri: String): Intent {
         return view(uri.toUri())
     }
@@ -28,6 +30,20 @@ object IntentUtils {
 
     fun sendMail(address: String): Intent {
         return Intent(Intent.ACTION_SENDTO, "mailto:$address".toUri())
+    }
+
+    fun openAlipayTransfer(targetCode: String = ALIPAY_CODE_SIUBENG): Intent {
+        val qrCodeUrl = "https://qr.alipay.com/$targetCode?_s=web-other"
+        val uri = Uri.Builder()
+            .scheme("alipayqr")
+            .authority("platformapi")
+            .appendPath("startapp")
+            .appendQueryParameter("saId", "10000007")
+            .appendQueryParameter("clientVersion", "3.7.0.0718")
+            .appendQueryParameter("qrcode", qrCodeUrl)
+            .appendQueryParameter("_t", System.currentTimeMillis().toString())
+            .build()
+        return Intent(Intent.ACTION_VIEW, uri)
     }
 
 }

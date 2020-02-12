@@ -71,7 +71,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:icon="@drawable/ic_favorite_24"
-            android:text="@string/action_donate"/>
+            android:text="@string/action_support_us"/>
 
         <View android:layout_width="match_parent" android:layout_height="16dp"/>
 

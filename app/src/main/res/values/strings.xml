@@ -10,7 +10,7 @@
     <string name="action_open_stream">Watch stream</string>
     <string name="action_room_info">Room info</string>
     <string name="action_back_to_latest">Back to latest</string>
-    <string name="action_donate">Support us</string>
+    <string name="action_support_us">Support us</string>
     <string name="action_help">Help</string>
 
     <string name="sys_msg_connected_to_room"><![CDATA[
@@ -194,6 +194,32 @@
     <string name="about_open_source_licenses_title">Open Source Licenses</string>
     <string name="about_open_source_licenses_summary"><![CDATA[
     This project is inseparable from open source community\'s support.
+    ]]></string>
+
+    <string name="support_us_title">Support us</string>
+    <string name="support_us_card_title">Your support give us more energy to develop it!</string>
+    <string name="support_us_card_summary"><![CDATA[
+    This product was originally designed around my personal needs so I enjoy perfecting
+    its features.\nMeanwhile, it costs a lot of time and energy while developing it by myself,
+    but I still make it free and open-source for more people can use it.\nIf you\'re glad to give
+    me a coffee/milk tea, you can click donate buttons to support me.
+    ]]></string>
+    <string name="support_via_alipay">Donate via Alipay</string>
+    <string name="support_via_paypal">Donate via PayPal (Not recommended)</string>
+    <string name="alipay_email" translatable="false"><![CDATA[
+    fythonx#g_m_a_i_l_._c_o_m
+    ]]></string>
+    <string name="paypal_link" translatable="false">https://paypal.me/fython</string>
+    <string name="no_alipay_dialog_title">No Alipay installed</string>
+    <string name="no_alipay_dialog_message"><![CDATA[
+    Failed to launch Alipay app in your phone. You can input my account to "Transfer" page
+    in Alipay manually.<br><br>Here is account email:<br><b>%s</b>
+    ]]></string>
+    <string name="thank_you_dialog_title">Thank you!</string>
+    <string name="thank_you_dialog_message"><![CDATA[
+    In the future we may display donors in our application and websites (maybe looks like a
+    super chat). Welcome to join discussion group or follow author weibo/bilibili to get
+    latest information about updates (You can find link in settings).
     ]]></string>
 
 </resources>

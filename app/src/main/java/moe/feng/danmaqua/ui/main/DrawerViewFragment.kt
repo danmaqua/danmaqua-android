@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.main
 
 import android.app.Activity
 import android.content.Intent
@@ -17,13 +17,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
-import moe.feng.danmaqua.DanmaquaApplication
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
+import moe.feng.danmaqua.ui.BaseFragment
+import moe.feng.danmaqua.ui.NewSubscriptionActivity
+import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
+import moe.feng.danmaqua.ui.settings.SupportUsFragment
 
 class DrawerViewFragment : BaseFragment() {
 
@@ -86,14 +89,16 @@ class DrawerViewFragment : BaseFragment() {
             appName, versionName, versionCode)
 
         settingsButton.setOnClickListener {
-            PreferenceActivity.launch(requireActivity(), MainSettingsFragment.ACTION)
+            PreferenceActivity
+                .launch(requireActivity(), MainSettingsFragment.ACTION)
         }
         helpButton.setOnClickListener {
             TwaLauncher(it.context)
                 .launch(getString(R.string.about_project_repo_url).toUri())
         }
         donateButton.setOnClickListener {
-
+            PreferenceActivity
+                .launch(requireActivity(), SupportUsFragment.ACTION)
         }
 
         updateAdapterData(scrollToSelection = true)
@@ -174,7 +179,9 @@ class DrawerViewFragment : BaseFragment() {
         override fun onSubscriptionAddClick() {
             val intent = Intent(requireContext(), NewSubscriptionActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-            startActivityForResult(intent, REQUEST_CODE_NEW_SUBSCRIPTION)
+            startActivityForResult(intent,
+                REQUEST_CODE_NEW_SUBSCRIPTION
+            )
         }
 
     }
