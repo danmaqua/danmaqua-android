@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
+import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.main_drawer_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -85,6 +87,13 @@ class DrawerViewFragment : BaseFragment() {
 
         settingsButton.setOnClickListener {
             PreferenceActivity.launch(requireActivity(), MainSettingsFragment.ACTION)
+        }
+        helpButton.setOnClickListener {
+            TwaLauncher(it.context)
+                .launch(getString(R.string.about_project_repo_url).toUri())
+        }
+        donateButton.setOnClickListener {
+
         }
 
         updateAdapterData(scrollToSelection = true)

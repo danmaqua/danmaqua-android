@@ -58,6 +58,11 @@ class PreferenceActivity : BaseActivity() {
                         ManageBlockedUsersFragment()
                     )
                 }
+                LicensesFragment.ACTION -> {
+                    setFragment(
+                        LicensesFragment()
+                    )
+                }
                 else -> {
                     Log.e(TAG, "Unsupported action $action. PreferenceActivity finished.")
                     finish()

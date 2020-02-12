@@ -44,4 +44,15 @@
         <item name="android:typeface">monospace</item>
     </style>
 
+    <style name="Widget.Danmaqua.DrawerBottomItemButton" parent="">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingStart">@dimen/subscription_item_view_background_radius</item>
+        <item name="android:paddingEnd">@dimen/subscription_item_view_background_radius</item>
+        <item name="android:background">@drawable/right_round_ripple_background</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
 </resources>

@@ -3,4 +3,9 @@
 
     <attr name="bottomAppBarColor" format="color"/>
 
+    <declare-styleable name="DrawerBottomItemButton">
+        <attr name="android:text"/>
+        <attr name="android:icon"/>
+    </declare-styleable>
+
 </resources>

@@ -2,13 +2,16 @@ package moe.feng.danmaqua.ui.settings
 
 import android.app.Activity
 import android.content.*
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.danmaqua.event.SettingsChangedListener
+import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 abstract class BasePreferenceFragment :
@@ -40,6 +43,26 @@ abstract class BasePreferenceFragment :
             val activity = if (context is Activity) context else this.activity
             activity?.title = title
         }
+    }
+
+    fun setPreferenceClickListener(key: String,
+                                   onClick: suspend CoroutineScope.() -> Unit) {
+        findPreference<Preference>(key)!!.setOnPreferenceClickListener {
+            launch { onClick() }
+            true
+        }
+    }
+
+    inline fun <reified T : Any> setPreferenceChangeListener(
+        key: String,
+        crossinline onChange: (T) -> Boolean) {
+        findPreference<Preference>(key)!!.setOnPreferenceChangeListener { _, newValue ->
+            onChange(newValue as T)
+        }
+    }
+
+    fun launchPreference(action: String) {
+        activity?.let { PreferenceActivity.launch(it, action) }
     }
 
     open fun getActivityTitle(context: Context): CharSequence? {

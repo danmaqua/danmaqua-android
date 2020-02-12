@@ -14,4 +14,32 @@
         android:summary="@string/filter_settings_summary"
         android:icon="@drawable/ic_filter_list_24_text_color_primary"/>
 
+    <androidx.preference.PreferenceCategory android:title="@string/about_title">
+
+        <Preference
+            android:key="about_project_repo"
+            android:title="@string/about_project_repo_title"
+            android:summary="@string/about_project_repo_url"
+            android:icon="@drawable/ic_github_24_text_color_primary"/>
+
+        <Preference
+            android:key="about_contact_author"
+            android:title="@string/about_contact_author_title"
+            android:summary="@string/about_contact_author_summary"
+            android:icon="@drawable/ic_email_24_text_color_primary"/>
+
+        <Preference
+            android:key="about_discussion_group_qq"
+            android:title="@string/about_discussion_group_qq_title"
+            android:summary="@string/about_discussion_group_qq_number"
+            android:icon="@drawable/ic_qq_24_text_color_primary"/>
+
+        <Preference
+            android:key="about_licenses"
+            android:title="@string/about_open_source_licenses_title"
+            android:summary="@string/about_open_source_licenses_summary"
+            android:icon="@drawable/ic_license_24_text_color_primary"/>
+
+    </androidx.preference.PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.dialog
+package moe.feng.danmaqua.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.ui.dialog.BaseBottomSheetDialogFragment
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class DanmakuContextMenuDialogFragment : BaseBottomSheetDialogFragment() {

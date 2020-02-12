@@ -66,7 +66,7 @@
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:drawableStart="@drawable/ic_mood_bad_24"
+        android:drawableStart="@drawable/ic_block_user_action_24"
         android:drawableTint="?android:attr/textColorSecondary"
         android:drawableTintMode="src_in"
         android:drawablePadding="16dp"

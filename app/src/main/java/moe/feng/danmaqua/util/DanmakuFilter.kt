@@ -61,9 +61,13 @@ interface DanmakuFilter {
         val blockedWords: List<BlockedTextRule> = emptyList()
     ) : DanmakuFilter {
 
-        val blockedWordsPattern: List<Pattern> = blockedWords.mapNotNull {
+        val blockedWordsPattern: List<Any> = blockedWords.mapNotNull {
             try {
-                Pattern.compile(if (it.isRegExp) it.text else ".*${it.text}.*")
+                if (it.isRegExp) {
+                    Pattern.compile(it.text)
+                } else {
+                    it.text
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
@@ -81,9 +85,18 @@ interface DanmakuFilter {
                 }
             }
             for (blockedPattern in blockedWordsPattern) {
-                val blockedMatcher = blockedPattern.matcher(msg.text)
-                if (blockedMatcher.matches()) {
-                    return false
+                when (blockedPattern) {
+                    is Pattern -> {
+                        val blockedMatcher = blockedPattern.matcher(msg.text)
+                        if (blockedMatcher.matches()) {
+                            return false
+                        }
+                    }
+                    is String -> {
+                        if (blockedPattern in msg.text) {
+                            return false
+                        }
+                    }
                 }
             }
             return true

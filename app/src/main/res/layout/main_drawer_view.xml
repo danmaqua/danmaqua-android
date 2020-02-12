@@ -39,42 +39,41 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:paddingBottom="16dp"
-        android:background="?attr/colorBackgroundFloating">
+        android:background="?attr/colorBackgroundFloating"
+        tools:ignore="RtlHardcoded">
 
-        <LinearLayout
+        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/right_round_ripple_background"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/subscription_item_view_background_radius"
-            android:paddingEnd="@dimen/subscription_item_view_background_radius"
-            tools:ignore="RtlHardcoded">
+            android:icon="@drawable/ic_settings_applications_24"
+            android:text="@string/action_settings"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:src="@drawable/ic_settings_applications_24"
-                android:tint="?android:attr/textColorPrimary" />
+        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+            android:id="@+id/helpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:icon="@drawable/ic_help_24"
+            android:text="@string/action_help"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:text="@string/action_settings" />
+        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+            android:id="@+id/donateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:icon="@drawable/ic_favorite_24"
+            android:text="@string/action_donate"/>
 
-        </LinearLayout>
-
-        <View android:layout_width="match_parent" android:layout_height="8dp"/>
+        <View android:layout_width="match_parent" android:layout_height="16dp"/>
 
         <TextView
             android:id="@+id/appVersionView"

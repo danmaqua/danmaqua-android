@@ -4,12 +4,14 @@
 
     <string name="action_connect">Connect</string>
     <string name="action_disconnect">Stop</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Settings &amp; About</string>
     <string name="action_set_filter">Filter</string>
     <string name="action_open_a_floating_window">Open a floating window</string>
     <string name="action_open_stream">Watch stream</string>
     <string name="action_room_info">Room info</string>
     <string name="action_back_to_latest">Back to latest</string>
+    <string name="action_donate">Support us</string>
+    <string name="action_help">Help</string>
 
     <string name="sys_msg_connected_to_room"><![CDATA[
     <b>Connected to room:</b> %d
@@ -162,5 +164,36 @@
     ]]></string>
     <string name="floating_text_size_title">Caption text size</string>
     <string name="floating_text_size_summary">Unit: sp</string>
+
+    <string name="about_title">About</string>
+    <string name="about_project_repo_title">GitHub Repository</string>
+    <string name="about_project_repo_url" translatable="false"><![CDATA[
+    https://github.com/fython/danmaqua-android
+    ]]></string>
+    <string name="about_contact_author_title">Contact author</string>
+    <string name="about_contact_author_summary">Find me on Weibo, Bilibili or E-mail</string>
+    <string name="author_siubeng_name">Siubeng</string>
+    <string name="author_siubeng_summary">Programming &amp; Design</string>
+    <string name="about_author_weibo_title">Weibo profile</string>
+    <string name="about_author_weibo_summary" translatable="false">\@烧饼Siubeng</string>
+    <string name="about_author_weibo_url" translatable="false"><![CDATA[
+    https://weibo.com/fython
+    ]]></string>
+    <string name="about_author_bilibili_title">Bilibili profile</string>
+    <string name="about_author_bilibili_summary" translatable="false">\@烧饼Siubeng</string>
+    <string name="about_author_bilibili_url" translatable="false"><![CDATA[
+    https://space.bilibili.com/4432261
+    ]]></string>
+    <string name="about_author_email_title">Send via e-mail</string>
+    <string name="about_author_email_summary" translatable="false"><![CDATA[
+    fythonx#g_m_a_i_l_._c_o_m
+    ]]></string>
+    <string name="about_discussion_group_qq_title">Discussion group (QQ)</string>
+    <string name="about_discussion_group_qq_number" translatable="false">1026979836</string>
+    <string name="toast_copied_to_clipboard">Copied to clipboard</string>
+    <string name="about_open_source_licenses_title">Open Source Licenses</string>
+    <string name="about_open_source_licenses_summary"><![CDATA[
+    This project is inseparable from open source community\'s support.
+    ]]></string>
 
 </resources>

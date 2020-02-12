@@ -45,7 +45,7 @@ import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
-import moe.feng.danmaqua.ui.dialog.DanmakuContextMenuDialogFragment
+import moe.feng.danmaqua.ui.main.DanmakuContextMenuDialogFragment
 import moe.feng.danmaqua.ui.dialog.NoConnectionsDialog
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper

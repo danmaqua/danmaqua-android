@@ -1,6 +1,5 @@
 package moe.feng.danmaqua.ui.settings
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,11 +43,8 @@ class ManageBlockedUsersFragment : BaseFragment() {
         return inflater.inflate(R.layout.manage_blocked_users_layout, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is Activity) {
-            context.setTitle(R.string.manage_blocked_user_title)
-        }
+    override fun getActivityTitle(context: Context): String? {
+        return context.getString(R.string.manage_blocked_user_title)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
