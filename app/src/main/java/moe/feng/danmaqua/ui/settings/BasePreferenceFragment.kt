@@ -73,4 +73,8 @@ abstract class BasePreferenceFragment :
 
     }
 
+    inline fun <reified T : Preference> preference(key: String): Lazy<T> {
+        return lazy { findPreference<T>(key)!! }
+    }
+
 }

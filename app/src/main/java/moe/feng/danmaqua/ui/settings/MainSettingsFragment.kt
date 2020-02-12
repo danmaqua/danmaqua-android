@@ -22,6 +22,9 @@ class MainSettingsFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preference_main)
 
+        setPreferenceClickListener("user_interface_settings") {
+            launchPreference(UserInterfaceSettingsFragment.ACTION)
+        }
         setPreferenceClickListener("filter_settings") {
             launchPreference(FilterSettingsFragment.ACTION)
         }

@@ -232,4 +232,13 @@
     <string name="firebase_instance_id_title">Firebase Instance Id</string>
     <string name="firebase_instance_id_not_registered_yet">Not registered yet</string>
 
+    <string name="user_interface_title">User interface</string>
+    <string name="user_interface_summary"><![CDATA[
+    Dark mode
+    ]]></string>
+    <string name="dark_mode_title">Dark mode</string>
+    <string name="dark_mode_force_off">Force Off</string>
+    <string name="dark_mode_force_on">Force On</string>
+    <string name="dark_mode_follow_system">Follow system</string>
+
 </resources>

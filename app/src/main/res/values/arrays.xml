@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="dark_mode_entries">
+        <item>@string/dark_mode_follow_system</item>
+        <item>@string/dark_mode_force_on</item>
+        <item>@string/dark_mode_force_off</item>
+    </string-array>
+    <string-array name="dark_mode_entry_values">
+        <item>-1</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+
+</resources>

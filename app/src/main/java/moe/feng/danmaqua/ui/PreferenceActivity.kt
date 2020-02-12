@@ -38,6 +38,11 @@ class PreferenceActivity : BaseActivity() {
                         MainSettingsFragment()
                     )
                 }
+                UserInterfaceSettingsFragment.ACTION -> {
+                    setFragment(
+                        UserInterfaceSettingsFragment()
+                    )
+                }
                 FilterSettingsFragment.ACTION -> {
                     setFragment(
                         FilterSettingsFragment()
