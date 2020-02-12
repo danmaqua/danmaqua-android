@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <bool name="base_theme_light_status_bar">true</bool>
+    <bool name="danmaqua_theme_light_nav_bar">true</bool>
+
+</resources>

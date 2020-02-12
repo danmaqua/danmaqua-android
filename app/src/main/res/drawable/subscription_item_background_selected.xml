@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/material_purple_200">
+    android:color="@color/subscription_item_background_selected_ripple">
     <item>
         <shape android:shape="rectangle">
             <corners
@@ -9,7 +9,7 @@
                 android:bottomLeftRadius="0dp"
                 android:topRightRadius="@dimen/subscription_item_view_background_radius"
                 android:bottomRightRadius="@dimen/subscription_item_view_background_radius"/>
-            <solid android:color="@color/material_purple_100"/>
+            <solid android:color="@color/subscription_item_background_selected"/>
         </shape>
     </item>
     <item android:id="@android:id/mask">
@@ -19,7 +19,7 @@
                 android:bottomLeftRadius="0dp"
                 android:topRightRadius="@dimen/subscription_item_view_background_radius"
                 android:bottomRightRadius="@dimen/subscription_item_view_background_radius"/>
-            <solid android:color="@color/material_purple_200"/>
+            <solid android:color="@color/subscription_item_background_selected_mask"/>
         </shape>
     </item>
 </ripple>

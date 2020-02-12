@@ -7,6 +7,6 @@
 
     <size android:width="54dp" android:height="54dp"/>
 
-    <stroke android:width="2dp" android:color="@color/material_purple_500"/>
+    <stroke android:width="2dp" android:color="@color/subscription_item_avatar_ring"/>
 
 </shape>

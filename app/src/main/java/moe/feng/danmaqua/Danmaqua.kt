@@ -1,6 +1,7 @@
 package moe.feng.danmaqua
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import com.tencent.mmkv.MMKV
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.common.eventshelper.of
@@ -34,6 +35,14 @@ object Danmaqua {
     object Settings {
 
         private val mmkv: MMKV get() = MMKV.defaultMMKV()
+
+        object UI {
+
+            var darkMode: Int by mmkv.intProperty(
+                key = "dark_mode", defaultValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            )
+
+        }
 
         object Filter {
 

@@ -2,6 +2,7 @@
 <resources>
 
     <attr name="bottomAppBarColor" format="color"/>
+    <attr name="appBarTheme" format="reference"/>
 
     <declare-styleable name="DrawerBottomItemButton">
         <attr name="android:text"/>

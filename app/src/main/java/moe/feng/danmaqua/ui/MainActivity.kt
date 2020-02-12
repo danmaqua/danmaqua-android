@@ -122,7 +122,7 @@ class MainActivity : BaseActivity(),
             it.setDisplayShowTitleEnabled(false)
             it.setDisplayShowCustomEnabled(true)
         }
-        toolbarView = LayoutInflater.from(this)
+        toolbarView = LayoutInflater.from(toolbar.context)
             .inflate(R.layout.main_toolbar_layout, toolbar, false)
         toolbarView.findViewById<View>(R.id.titleButton).setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)

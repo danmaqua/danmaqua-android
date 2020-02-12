@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.StatFs
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
@@ -49,6 +50,8 @@ class DanmaquaApplication : Application() {
             )
             manager.createNotificationChannel(channel)
         }
+
+        AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.UI.darkMode)
     }
 
 }

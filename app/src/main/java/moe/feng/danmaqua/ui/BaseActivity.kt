@@ -31,8 +31,16 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
         }
 
         var lightNavBarFlag = this.lightNavBar
-        var flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        var flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+        val lightStatusArray = obtainStyledAttributes(
+            intArrayOf(android.R.attr.windowLightStatusBar))
+        val lightStatus = lightStatusArray.getBoolean(0, true)
+        lightStatusArray.recycle()
+        if (lightStatus) {
+            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
         if (this.hideNavigation) {
             flags = flags or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
             window.navigationBarColor = Color.TRANSPARENT

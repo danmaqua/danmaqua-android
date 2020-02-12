@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Danmaqua" parent="BaseTheme">
+    <style name="Theme.Danmaqua" parent="BaseTheme.DayNight">
         <item name="android:navigationBarColor">@color/light_nav_bar</item>
-        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightNavigationBar">@bool/danmaqua_theme_light_nav_bar</item>
     </style>
 
 </resources>

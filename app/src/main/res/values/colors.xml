@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">@color/material_deep_purple_500</color>
+    <color name="colorPrimaryDark">@color/material_deep_purple_700</color>
+    <color name="colorAccent">@color/material_blue_A400</color>
+
+    <color name="material_surface_dark">#121212</color>
+
     <color name="bottom_appbar_color">@color/material_grey_900</color>
     <color name="darken_nav_bar">#181818</color>
     <color name="light_nav_bar">@color/material_grey_200</color>
+    <color name="status_bar_color">@color/material_grey_50</color>
+    <color name="app_bar_color">@color/material_grey_50</color>
+
+    <color name="subscription_item_background_normal_ripple">@color/material_purple_100</color>
+    <color name="subscription_item_background_normal_mask">@color/material_purple_50</color>
+    <color name="subscription_item_background_selected_ripple">@color/material_purple_200</color>
+    <color name="subscription_item_background_selected">@color/material_purple_100</color>
+    <color name="subscription_item_background_selected_mask">@color/material_purple_200</color>
+
+    <color name="subscription_item_avatar_ring">@color/material_purple_500</color>
 
 </resources>
