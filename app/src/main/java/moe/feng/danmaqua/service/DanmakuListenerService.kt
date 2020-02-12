@@ -31,7 +31,6 @@ import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.eventsHelper
 import java.io.EOFException
-import java.lang.Exception
 
 class DanmakuListenerService :
     Service(), CoroutineScope by MainScope(),
@@ -163,7 +162,11 @@ class DanmakuListenerService :
         } catch (ignored: Exception) {
 
         }
-        danmakuListener = DanmakuApi.listen(roomId, this)
+        try {
+            danmakuListener = DanmakuApi.listen(roomId, this)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         // TODO Save local history
     }

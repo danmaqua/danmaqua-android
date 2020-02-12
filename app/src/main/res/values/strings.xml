@@ -37,6 +37,12 @@
     <string name="status_disconnected">Disconnected</string>
     <string name="status_connected_with_popularity">Online. Popularity: %d</string>
 
+    <string name="no_streamer_selected_dialog_title">No streamer selected</string>
+    <string name="no_streamer_selected_dialog_message"><![CDATA[
+    You have to subscribe a streamer to connect its room. Click right-top button or drag out left
+    drawer to start add subscription.
+    ]]></string>
+
     <string name="new_subscription_title">New subscription</string>
     <string name="room_id_edit_hint">Enter Room ID here…</string>
     <string name="action_subscribe">Subscribe</string>

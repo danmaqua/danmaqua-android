@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,6 +29,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_toolbar_layout.*
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua
@@ -39,14 +39,15 @@ import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.UserApi
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
+import moe.feng.danmaqua.event.NoConnectionsDialogListener
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
+import moe.feng.danmaqua.ui.dialog.NoConnectionsDialogFragment
 import moe.feng.danmaqua.ui.main.DanmakuContextMenuDialogFragment
-import moe.feng.danmaqua.ui.dialog.NoConnectionsDialog
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
@@ -55,7 +56,6 @@ import moe.feng.danmaqua.ui.main.MainConfirmBlockTextDialogFragment
 import moe.feng.danmaqua.ui.main.MainConfirmBlockUserDialogFragment
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
 import moe.feng.danmaqua.util.*
-import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
 import moe.feng.danmaqua.util.ext.eventsHelper
 import moe.feng.danmaqua.util.ext.screenHeight
@@ -99,6 +99,14 @@ class MainActivity : BaseActivity(),
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
     private val usernameView by lazy { toolbarView.findViewById<TextView>(R.id.usernameView) }
     private val statusView by lazy { toolbarView.findViewById<TextView>(R.id.statusView) }
+
+    private val noConnectionsDialogListener = object : NoConnectionsDialogListener {
+        override fun onIgnore() {
+            launch {
+                connectToCurrentSubscription()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,7 +194,7 @@ class MainActivity : BaseActivity(),
         updateStatusViews()
         checkServiceStatus()
 
-        eventsHelper.registerListener(this)
+        eventsHelper.registerListeners(this, noConnectionsDialogListener)
     }
 
     override fun onResume() {
@@ -236,7 +244,7 @@ class MainActivity : BaseActivity(),
                 e.printStackTrace()
             }
         }
-        eventsHelper.unregisterListener(this)
+        eventsHelper.unregisterListeners(this, noConnectionsDialogListener)
     }
 
     override fun onAttachFragment(fragment: Fragment) {
@@ -402,11 +410,7 @@ class MainActivity : BaseActivity(),
                     showConnectivityDialog = connectivityManager?.isDefaultNetworkActive != true
                 }
                 if (showConnectivityDialog) {
-                    NoConnectionsDialog.show(this@MainActivity) {
-                        launch {
-                            connectToCurrentSubscription()
-                        }
-                    }
+                    NoConnectionsDialogFragment.show(supportFragmentManager)
                     return@launch
                 }
                 connectToCurrentSubscription()
@@ -419,7 +423,13 @@ class MainActivity : BaseActivity(),
         if (current != null) {
             connectRoom(current.roomId)
         } else {
-            Log.e(TAG, "No subscriptions selected.")
+            withContext(Main) {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle(R.string.no_streamer_selected_dialog_title)
+                    .setMessage(R.string.no_streamer_selected_dialog_message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+            }
         }
     }
 
