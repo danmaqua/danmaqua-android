@@ -1,15 +1,16 @@
 package moe.feng.danmaqua.ui.settings
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.*
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.getSystemService
+import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.google.firebase.iid.FirebaseInstanceId
+import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.MainActivity
 
 class DevelopmentFragment : BasePreferenceFragment() {
 
@@ -39,6 +40,24 @@ class DevelopmentFragment : BasePreferenceFragment() {
                 R.string.toast_copied_to_clipboard,
                 Toast.LENGTH_LONG).show()
             true
+        }
+
+        val enabledAnalyticsPref = findPreference<CheckBoxPreference>("enabled_analytics")!!
+        enabledAnalyticsPref.isChecked = Danmaqua.Settings.enabledAnalytics
+        enabledAnalyticsPref.setOnPreferenceChangeListener { _, newValue ->
+            val value = newValue as Boolean
+            Danmaqua.Settings.enabledAnalytics = value
+            Danmaqua.Settings.notifyChanged(context!!)
+            true
+        }
+
+        setPreferenceClickListener("restart_to_intro") {
+            Danmaqua.Settings.introduced = false
+            val intent = Intent.makeRestartActivityTask(ComponentName(context!!, MainActivity::class.java))
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            activity?.finish()
+            Runtime.getRuntime().exit(0)
         }
 
         val instanceId = FirebaseInstanceId.getInstance().instanceId

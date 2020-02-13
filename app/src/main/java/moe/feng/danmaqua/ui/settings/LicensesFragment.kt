@@ -79,6 +79,17 @@ class LicensesFragment : BaseFragment() {
                 author = "lovelyyoshino"
                 githubUrl("lovelyyoshino/Bilibili-Live-API")
             }
+            license {
+                name = "Material Design Icons (Community)"
+                author = "Austin Andrews & Other contributors"
+                license = "SIL Open Font License 1.1"
+                githubUrl("Templarian/MaterialDesign")
+            }
+            apache2 {
+                name = "Material Design Icons (Google)"
+                author = "Google"
+                githubUrl("google/material-design-icons")
+            }
             sortByName()
         }
 

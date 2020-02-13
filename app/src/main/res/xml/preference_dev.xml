@@ -7,4 +7,13 @@
         android:title="@string/firebase_instance_id_title"
         android:summary="@string/firebase_instance_id_not_registered_yet"/>
 
+    <androidx.preference.CheckBoxPreference
+        android:key="enabled_analytics"
+        android:title="@string/enabled_analytics_settings_title"
+        android:summary="@string/enabled_analytics_settings_summary"/>
+
+    <Preference
+        android:key="restart_to_intro"
+        android:title="@string/restart_to_intro_title"/>
+
 </androidx.preference.PreferenceScreen>

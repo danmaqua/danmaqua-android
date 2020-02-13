@@ -231,6 +231,12 @@
     <string name="development_settings_title">Development</string>
     <string name="firebase_instance_id_title">Firebase Instance Id</string>
     <string name="firebase_instance_id_not_registered_yet">Not registered yet</string>
+    <string name="enabled_analytics_settings_title">Firebase Analytics &amp; Crashlytics</string>
+    <string name="enabled_analytics_settings_summary"><![CDATA[
+    Help us to improve our product\'s experience better. It collects anonymous data such as
+    in-app usage and crash logs only!
+    ]]></string>
+    <string name="restart_to_intro_title">Restart to Intro page</string>
 
     <string name="user_interface_title">User interface</string>
     <string name="user_interface_summary"><![CDATA[
