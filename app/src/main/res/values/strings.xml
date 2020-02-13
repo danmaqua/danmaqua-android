@@ -241,4 +241,24 @@
     <string name="dark_mode_force_on">Force On</string>
     <string name="dark_mode_follow_system">Follow system</string>
 
+    <string name="intro_konaqua" translatable="false">こんあくあーー</string>
+    <string name="intro_allow_collect_data"><![CDATA[
+    3.Allow FloatingCaption to <b>collect and upload anonymous data</b>
+    such as in-app usage and crash logs so that we can improve its experience better. (Optional)
+    ]]></string>
+    <string name="intro_allow_internet_access"><![CDATA[
+    1.Allow <b>Internet permissions</b> for FloatingCaption to access Bilibili API.
+    <b>(Required)</b>
+    ]]></string>
+    <string name="intro_allow_background_service"><![CDATA[
+    2.Allow FloatingCaption to <b>run a background service</b> while user
+    is watching live danmaku/caption. <b>(Required)</b>
+    ]]></string>
+    <string name="intro_start_button">Start</string>
+    <string name="intro_collect_data_disabled_title">Disabled Analytics SDK</string>
+    <string name="intro_collect_data_disabled_message"><![CDATA[
+    Now we won\'t collect or upload anonymous data any more. Recommend to re-enable it in order
+    that we can improve app experience better.
+    ]]></string>
+
 </resources>

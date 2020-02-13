@@ -36,6 +36,14 @@ object Danmaqua {
 
         private val mmkv: MMKV get() = MMKV.defaultMMKV()
 
+        var introduced: Boolean by mmkv.booleanProperty(
+            key = "introduced", defaultValue = false
+        )
+
+        var enabledAnalytics: Boolean by mmkv.booleanProperty(
+            key = "enabled_analytics", defaultValue = true
+        )
+
         object UI {
 
             var darkMode: Int by mmkv.intProperty(

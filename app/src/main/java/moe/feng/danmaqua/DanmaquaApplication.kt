@@ -5,18 +5,28 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.StatFs
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.tencent.mmkv.MMKV
 import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
 import moe.feng.danmaqua.data.DanmaquaDB
+import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.util.HttpUtils
+import moe.feng.danmaqua.util.ext.TAG
+import moe.feng.danmaqua.util.ext.eventsHelper
 import okhttp3.Cache
 import java.io.File
 
-class DanmaquaApplication : Application() {
+class DanmaquaApplication : Application(), SettingsChangedListener {
+
+    private var firebaseSdkEnabled: Boolean = true
+    private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(this) }
+    private val firebaseCrashlytics by lazy { FirebaseCrashlytics.getInstance() }
 
     override fun onCreate() {
         super.onCreate()
@@ -41,6 +51,8 @@ class DanmaquaApplication : Application() {
             .downloader(OkHttp3Downloader(HttpUtils.client))
             .build())
 
+        updateSdkEnabled()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = getSystemService<NotificationManager>()!!
             val channel = NotificationChannel(
@@ -52,6 +64,22 @@ class DanmaquaApplication : Application() {
         }
 
         AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.UI.darkMode)
+
+        eventsHelper.registerListener(this)
+    }
+
+    override fun onSettingsChanged() {
+        updateSdkEnabled()
+    }
+
+    private fun updateSdkEnabled() {
+        val newState = Danmaqua.Settings.enabledAnalytics
+        if (newState != firebaseSdkEnabled) {
+            Log.d(TAG, "Firebase SDK status changed to enabled=$newState")
+            firebaseAnalytics.setAnalyticsCollectionEnabled(newState)
+            firebaseCrashlytics.setCrashlyticsCollectionEnabled(newState)
+            firebaseSdkEnabled = newState
+        }
     }
 
 }
