@@ -195,6 +195,9 @@
     <string name="about_project_repo_url" translatable="false"><![CDATA[
     https://github.com/fython/danmaqua-android
     ]]></string>
+    <string name="help_url" translatable="false"><![CDATA[
+    https://github.com/fython/danmaqua-android/blob/master/docs/HELP.md
+    ]]></string>
     <string name="about_contact_author_title">Contact author</string>
     <string name="about_contact_author_summary">Find me on Weibo, Bilibili or E-mail</string>
     <string name="author_siubeng_name">Siubeng</string>

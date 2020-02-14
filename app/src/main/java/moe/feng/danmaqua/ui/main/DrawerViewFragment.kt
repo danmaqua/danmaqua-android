@@ -100,7 +100,7 @@ class DrawerViewFragment : BaseFragment() {
         }
         helpButton.setOnClickListener {
             TwaLauncher(it.context)
-                .launch(getString(R.string.about_project_repo_url).toUri())
+                .launch(getString(R.string.help_url).toUri())
         }
         donateButton.setOnClickListener {
             PreferenceActivity

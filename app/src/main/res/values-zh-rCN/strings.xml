@@ -197,7 +197,7 @@
     <string name="toast_copied_to_clipboard">已复制到粘贴板</string>
     <string name="about_open_source_licenses_title">开源项目许可证</string>
     <string name="about_open_source_licenses_summary"><![CDATA[
-    这个项目离不开开源社区的支持
+    这个项目的诞生离不开开源社区的支持
     ]]></string>
     <string name="about_road_map_title">路线图</string>
     <string name="about_road_map_summary">看看接下来我们想做什么</string>
