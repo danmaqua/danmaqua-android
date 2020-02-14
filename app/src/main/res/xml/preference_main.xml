@@ -46,6 +46,12 @@
             android:summary="@string/about_open_source_licenses_summary"
             android:icon="@drawable/ic_license_24_text_color_primary"/>
 
+        <Preference
+            android:key="about_road_map"
+            android:title="@string/about_road_map_title"
+            android:summary="@string/about_road_map_summary"
+            android:icon="@drawable/ic_sprout_24_text_color_primary"/>
+
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

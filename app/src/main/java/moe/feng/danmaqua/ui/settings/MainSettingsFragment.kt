@@ -51,6 +51,12 @@ class MainSettingsFragment : BasePreferenceFragment() {
         setPreferenceClickListener("about_licenses") {
             launchPreference(LicensesFragment.ACTION)
         }
+        setPreferenceClickListener("about_road_map") {
+            context?.let {
+                TwaLauncher(it)
+                    .launch(getString(R.string.about_road_map_url).toUri())
+            }
+        }
     }
 
 }

@@ -220,6 +220,11 @@
     <string name="about_open_source_licenses_summary"><![CDATA[
     This project is inseparable from open source community\'s support.
     ]]></string>
+    <string name="about_road_map_title">Road map</string>
+    <string name="about_road_map_summary">See what we want to do next</string>
+    <string name="about_road_map_url" translatable="false"><![CDATA[
+    https://github.com/fython/danmaqua-android/blob/master/ROADMAP.md
+    ]]></string>
 
     <string name="support_us_title">Support us</string>
     <string name="support_us_card_title">Your support give us more energy to develop it!</string>
