@@ -39,6 +39,7 @@ import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.bili.UserApi
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
+import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.event.NoConnectionsDialogListener
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
@@ -63,7 +64,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : BaseActivity(),
-    DrawerViewFragment.Callback, SettingsChangedListener, MainDanmakuContextMenuListener {
+    SettingsChangedListener, MainDanmakuContextMenuListener, MainDrawerCallback {
 
     companion object {
 
@@ -255,12 +256,6 @@ class MainActivity : BaseActivity(),
         eventsHelper.unregisterListeners(this, noConnectionsDialogListener)
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        if (fragment is DrawerViewFragment) {
-            fragment.callback = this
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_CODE_OVERLAY_PERMISSION -> {
@@ -305,15 +300,26 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    override fun onSubscriptionChange(current: Subscription) {
+    override fun onSubscriptionChange(current: Subscription?) {
         drawerLayout.closeDrawer(GravityCompat.START)
         updateAvatarAndNameViews()
         launch {
-            val needReconnect = withContext(IO) {
-                service?.isConnected == true && service?.roomId != current.roomId
-            }
-            if (needReconnect) {
-                connectRoom(current.roomId)
+            if (current != null) {
+                val needReconnect = withContext(IO) {
+                    service?.isConnected == true && service?.roomId != current.roomId
+                }
+                if (needReconnect) {
+                    connectRoom(current.roomId)
+                }
+            } else {
+                if (withContext(IO) { service?.isConnected } == true) {
+                    try {
+                        service?.disconnect()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    updateStatusViews()
+                }
             }
         }
     }

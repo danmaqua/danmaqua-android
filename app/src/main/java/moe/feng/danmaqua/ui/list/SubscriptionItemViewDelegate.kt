@@ -9,11 +9,8 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import com.drakeet.multitype.ItemViewDelegate
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.util.HttpUtils
 
 class SubscriptionItemViewDelegate(var callback: Callback? = null)
     : ItemViewDelegate<Subscription, SubscriptionItemViewDelegate.ViewHolder>() {
@@ -21,6 +18,8 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
     interface Callback {
 
         fun onSubscriptionItemClick(item: Subscription)
+
+        fun onSubscriptionItemLongClick(item: Subscription)
 
     }
 
@@ -40,6 +39,10 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
             .apply {
                 itemView.setOnClickListener {
                     callback?.onSubscriptionItemClick(item)
+                }
+                itemView.setOnLongClickListener {
+                    callback?.onSubscriptionItemLongClick(item)
+                    true
                 }
             }
     }

@@ -43,6 +43,12 @@
     drawer to start add subscription.
     ]]></string>
 
+    <string name="unsubscribe_dialog_title">Unsubscribe</string>
+    <string name="unsubscribe_dialog_message"><![CDATA[
+    Do you want to unsubscribe %s? This room will be removed from list but you
+    can re-subscribe him/her later.
+    ]]></string>
+
     <string name="new_subscription_title">New subscription</string>
     <string name="room_id_edit_hint">Enter Room ID here…</string>
     <string name="action_subscribe">Subscribe</string>

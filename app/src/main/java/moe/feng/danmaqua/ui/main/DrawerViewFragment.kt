@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -16,8 +17,10 @@ import kotlinx.android.synthetic.main.main_drawer_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.ui.NewSubscriptionActivity
@@ -28,6 +31,7 @@ import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
 import moe.feng.danmaqua.ui.settings.DevelopmentFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
+import moe.feng.danmaqua.util.ext.eventsHelper
 
 class DrawerViewFragment : BaseFragment() {
 
@@ -36,14 +40,6 @@ class DrawerViewFragment : BaseFragment() {
         const val REQUEST_CODE_NEW_SUBSCRIPTION = 10000
 
     }
-
-    interface Callback {
-
-        fun onSubscriptionChange(current: Subscription)
-
-    }
-
-    var callback: Callback? = null
 
     private var developmentTimes: Int = 0
 
@@ -127,7 +123,8 @@ class DrawerViewFragment : BaseFragment() {
                             }
                             dao.add(subscription)
                             if (subscription.selected) {
-                                callback?.onSubscriptionChange(subscription)
+                                context?.eventsHelper?.of<MainDrawerCallback>()
+                                    ?.onSubscriptionChange(subscription)
                             }
                             updateAdapterData()
                         }
@@ -182,8 +179,40 @@ class DrawerViewFragment : BaseFragment() {
                     dao.update(it)
                 }
                 updateAdapterData(items)
-                callback?.onSubscriptionChange(item)
+                context?.eventsHelper?.of<MainDrawerCallback>()
+                    ?.onSubscriptionChange(item)
             }
+        }
+
+        override fun onSubscriptionItemLongClick(item: Subscription) {
+            AlertDialog.Builder(activity!!)
+                .setTitle(R.string.unsubscribe_dialog_title)
+                .setMessage(getString(R.string.unsubscribe_dialog_message, item.username))
+                .setPositiveButton(android.R.string.yes) { _, _ ->
+                    launch {
+                        val dao = database.subscriptions()
+                        val lastSelected = item.selected
+                        dao.delete(item)
+                        val items = dao.getAll()
+                        if (lastSelected) {
+                            var selectedItem: Subscription? = null
+                            items.forEachIndexed { index, value ->
+                                if (index == 0) {
+                                    value.selected = true
+                                    selectedItem = value
+                                } else {
+                                    value.selected = false
+                                }
+                                dao.update(value)
+                            }
+                            context?.eventsHelper?.of<MainDrawerCallback>()
+                                ?.onSubscriptionChange(selectedItem)
+                        }
+                        updateAdapterData(items)
+                    }
+                }
+                .setNegativeButton(android.R.string.no, null)
+                .show()
         }
 
         override fun onSubscriptionAddClick() {
