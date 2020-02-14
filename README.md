@@ -18,9 +18,9 @@ Currently English version documentation is unavailable.
 
 ## 下载
 
-目前还在测试中，可先加入交流群查看可用的测试包。
+目前还在测试中，可在 [GitHub Releases](https://github.com/fython/danmaqua-android/releases) 中获取可用安装包。
 
-计划发布在 GitHub Releases、Play Store 和酷安上。
+计划后续发布在 Play Store 和酷安上。
 
 ## 使用方法
 
