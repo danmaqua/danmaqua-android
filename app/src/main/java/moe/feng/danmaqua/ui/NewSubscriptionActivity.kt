@@ -134,7 +134,11 @@ class NewSubscriptionActivity : BaseActivity(),
 
     private suspend fun loadRecommendation() {
         setRecommendationViews(true)
-        recommendation = DanmaquaApi.getRecommendation()
+        try {
+            recommendation = DanmaquaApi.getRecommendation()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         setRecommendationViews(false)
     }
 
