@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.view.*
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -198,7 +197,7 @@ class MainActivity : BaseActivity(),
             }
         }
 
-        updateGestureExclusion()
+        setGestureExclusionEnabled(!drawerLayout.isDrawerOpen(GravityCompat.START))
         updateAvatarAndNameViews()
         updateStatusViews()
         checkServiceStatus()
@@ -222,7 +221,7 @@ class MainActivity : BaseActivity(),
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updateGestureExclusion()
+        setGestureExclusionEnabled(!drawerLayout.isDrawerOpen(GravityCompat.START))
         setWindowFlags()
     }
 
@@ -334,14 +333,18 @@ class MainActivity : BaseActivity(),
         danmakuFilter = DanmakuFilter.fromSettings()
     }
 
-    private fun updateGestureExclusion() {
+    private fun setGestureExclusionEnabled(enabled: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val screenHeight = windowManager.defaultDisplay.screenHeight
-            val height = resources.getDimensionPixelSize(R.dimen.max_gesture_exclusion_height)
-            val width = resources.getDimensionPixelSize(R.dimen.drawer_layout_start_area_width)
-            drawerLayout.systemGestureExclusionRects = listOf(
-                Rect(0, (screenHeight - height) / 2, width, (screenHeight + height) / 2)
-            )
+            if (enabled) {
+                val screenHeight = windowManager.defaultDisplay.screenHeight
+                val height = resources.getDimensionPixelSize(R.dimen.max_gesture_exclusion_height)
+                val width = resources.getDimensionPixelSize(R.dimen.drawer_layout_start_area_width)
+                drawerLayout.systemGestureExclusionRects = listOf(
+                    Rect(0, (screenHeight - height) / 2, width, (screenHeight + height) / 2)
+                )
+            } else {
+                drawerLayout.systemGestureExclusionRects = emptyList()
+            }
         }
     }
 
@@ -682,9 +685,13 @@ class MainActivity : BaseActivity(),
             }
         }
 
-        override fun onDrawerClosed(drawerView: View) {}
+        override fun onDrawerClosed(drawerView: View) {
+            setGestureExclusionEnabled(true)
+        }
 
-        override fun onDrawerOpened(drawerView: View) {}
+        override fun onDrawerOpened(drawerView: View) {
+            setGestureExclusionEnabled(false)
+        }
 
     }
 
