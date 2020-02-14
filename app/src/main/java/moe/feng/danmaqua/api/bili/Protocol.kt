@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.api
+package moe.feng.danmaqua.api.bili
 
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -41,9 +41,15 @@ object Protocol {
 
             val pack = buffer.slice(offset, offset + size)
 
-            val body = pack.slice(PACKET_HEADER_LENGTH)
-            val protocol = pack.getShort(PACKET_IDX_PROTOCOL).toInt()
-            val operation = pack.getInt(PACKET_IDX_OPERATION)
+            val body = pack.slice(
+                PACKET_HEADER_LENGTH
+            )
+            val protocol = pack.getShort(
+                PACKET_IDX_PROTOCOL
+            ).toInt()
+            val operation = pack.getInt(
+                PACKET_IDX_OPERATION
+            )
 
             val data: Any = when {
                 protocol == PROTOCOL_JSON ->
@@ -51,7 +57,11 @@ object Protocol {
                 protocol == PROTOCOL_INT32BE && body.capacity() == 4 ->
                     body.getUInt(0).toLong()
                 protocol == PROTOCOL_ZIP_BUFFER ->
-                    decodePackets(ByteBuffer.wrap(zipInflate(body.currentSliceArray())))
+                    decodePackets(
+                        ByteBuffer.wrap(
+                            zipInflate(body.currentSliceArray())
+                        )
+                    )
                 else -> body
             }
 
@@ -69,12 +79,18 @@ object Protocol {
 
     suspend fun encodePacket(operation: Int, protocol: Int = PROTOCOL_INT32BE,
                              body: ByteArray = byteArrayOf()): ByteArray = withContext(IO) {
-        val header = ByteBuffer.allocate(PACKET_HEADER_LENGTH).apply {
+        val header = ByteBuffer.allocate(
+            PACKET_HEADER_LENGTH
+        ).apply {
             putInt(PACKET_IDX_DATA_LENGTH, body.size + capacity())
-            putShort(PACKET_IDX_HEADER_LENGTH, PACKET_HEADER_LENGTH.toShort())
+            putShort(
+                PACKET_IDX_HEADER_LENGTH, PACKET_HEADER_LENGTH.toShort())
             putShort(PACKET_IDX_PROTOCOL, protocol.toShort())
             putInt(PACKET_IDX_OPERATION, operation)
-            putInt(PACKET_IDX_SEQUENCE_ID, PACKET_SEQUENCE_ID)
+            putInt(
+                PACKET_IDX_SEQUENCE_ID,
+                PACKET_SEQUENCE_ID
+            )
         }
 
         val bos = ByteArrayOutputStream().apply {
@@ -86,7 +102,11 @@ object Protocol {
 
     suspend fun encodeJsonPacket(operation: Int, body: Any): ByteArray = withContext(IO) {
         val json = if (body is String) body else body.toJson()
-        return@withContext encodePacket(operation, PROTOCOL_JSON, json.toByteArray())
+        return@withContext encodePacket(
+            operation,
+            PROTOCOL_JSON,
+            json.toByteArray()
+        )
     }
 
     suspend fun zipInflate(data: ByteArray): ByteArray = withContext(IO) {

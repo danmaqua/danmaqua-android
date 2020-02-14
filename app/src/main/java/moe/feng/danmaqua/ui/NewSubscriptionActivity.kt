@@ -3,27 +3,63 @@ package moe.feng.danmaqua.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.TooltipCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.new_subscription_activity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.RoomApi
-import moe.feng.danmaqua.api.UserApi
+import moe.feng.danmaqua.api.DanmaquaApi
+import moe.feng.danmaqua.api.bili.RoomApi
+import moe.feng.danmaqua.api.bili.UserApi
+import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
+import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
+import moe.feng.danmaqua.model.Recommendation
 import moe.feng.danmaqua.model.Subscription
-import java.lang.Exception
+import moe.feng.danmaqua.ui.dialog.ConfirmSubscribeStreamerDialogFragment
+import moe.feng.danmaqua.ui.list.RecommendedStreamerItemViewDelegate
+import moe.feng.danmaqua.util.ext.eventsHelper
 
-class NewSubscriptionActivity : BaseActivity() {
+class NewSubscriptionActivity : BaseActivity(),
+    OnRecommendedStreamerItemClickListener, OnConfirmSubscribeStreamerListener {
+
+    companion object {
+
+        private const val STATE_RECOMMENDATION = "state:RECOMMENDATION"
+
+    }
+
+    private var recommendation: Recommendation? = null
+
+    private val adapter: MultiTypeAdapter = MultiTypeAdapter().also {
+        it.register(RecommendedStreamerItemViewDelegate())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_subscription_activity)
 
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        subscribeButton.setOnClickListener {
+        roomIdEdit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchButton.performClick()
+                true
+            } else {
+                false
+            }
+        }
+
+        TooltipCompat.setTooltipText(searchButton, getString(R.string.action_search_room_id))
+        searchButton.setOnClickListener {
             launch {
                 val id = roomIdEdit.text.toString().trim().toLongOrNull() ?: 0L
                 if (id <= 0) {
@@ -35,21 +71,103 @@ class NewSubscriptionActivity : BaseActivity() {
                 }
                 try {
                     val subscription = getSubscription(id)
-                    val result = Intent()
-                    result.putExtra(EXTRA_DATA, subscription)
-                    setResult(Activity.RESULT_OK, result)
-                    finish()
+                    if (subscription != null) {
+                        ConfirmSubscribeStreamerDialogFragment.show(
+                            supportFragmentManager, subscription
+                        )
+                        return@launch
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+                AlertDialog.Builder(this@NewSubscriptionActivity)
+                    .setTitle(R.string.search_room_id_no_result_dialog_title)
+                    .setMessage(R.string.search_room_id_no_result_dialog_message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+            }
+        }
+
+        recommendationList.adapter = adapter
+
+        if (savedInstanceState == null) {
+            launch { loadRecommendation() }
+        } else {
+            recommendation = savedInstanceState.getParcelable(STATE_RECOMMENDATION)
+            setRecommendationViews(false)
+        }
+
+        eventsHelper.registerListener(this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        recommendation?.let { outState.putParcelable(STATE_RECOMMENDATION, it) }
+    }
+
+    override fun onRecommendedStreamerItemClick(item: Recommendation.Item) {
+        launch {
+            val subscription = database.subscriptions().findByUid(item.uid)
+            if (subscription != null) {
+                val msg = getString(
+                    R.string.subscribe_recommended_streamer_dialog_existing_message,
+                    item.name)
+                AlertDialog.Builder(this@NewSubscriptionActivity)
+                    .setTitle(R.string.subscribe_recommended_streamer_dialog_existing_title)
+                    .setMessage(msg)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+            } else {
+                ConfirmSubscribeStreamerDialogFragment.show(
+                    supportFragmentManager, Subscription(item.uid, item.room, item.name, item.face)
+                )
             }
         }
     }
 
-    private suspend fun getSubscription(roomId: Long): Subscription = withContext(Dispatchers.IO) {
-        val roomInitInfo = RoomApi.getRoomInitInfo(roomId)
-        val spaceInfo = UserApi.getSpaceInfo(roomInitInfo.data.uid)
-        Subscription(spaceInfo.data.uid, roomId, spaceInfo.data.name, spaceInfo.data.face)
+    override fun onConfirmSubscribeStreamer(subscription: Subscription) {
+        val result = Intent()
+        result.putExtra(EXTRA_DATA, subscription)
+        setResult(Activity.RESULT_OK, result)
+        finish()
+    }
+
+    private suspend fun loadRecommendation() {
+        setRecommendationViews(true)
+        recommendation = DanmaquaApi.getRecommendation()
+        setRecommendationViews(false)
+    }
+
+    private fun setRecommendationViews(loading: Boolean = false) {
+        if (recommendation != null) {
+            recommendationProgress.isGone = true
+            recommendationList.isVisible = true
+            recommendationFailedView.isGone = true
+
+            adapter.items = recommendation!!.data
+            adapter.notifyDataSetChanged()
+        } else {
+            if (loading) {
+                recommendationProgress.isVisible = true
+                recommendationList.isGone = true
+                recommendationFailedView.isGone = true
+            } else {
+                recommendationProgress.isGone = true
+                recommendationList.isGone = true
+                recommendationFailedView.isVisible = true
+            }
+        }
+    }
+
+    private suspend fun getSubscription(roomId: Long): Subscription? = withContext(Dispatchers.IO) {
+        try {
+            val roomInitInfo = RoomApi.getRoomInitInfo(roomId)
+            val spaceInfo = UserApi.getSpaceInfo(roomInitInfo.data.uid)
+            Subscription(spaceInfo.data.uid, roomId, spaceInfo.data.name, spaceInfo.data.face)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
 }

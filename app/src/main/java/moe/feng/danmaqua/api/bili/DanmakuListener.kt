@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.api
+package moe.feng.danmaqua.api.bili
 
 import kotlinx.coroutines.*
 import moe.feng.danmaqua.model.BiliChatMessage
@@ -71,7 +71,8 @@ class DanmakuListener internal constructor(
 
     private suspend fun heartbeat() = withContext(Dispatchers.IO) {
         webSocket?.let {
-            val heartbeatPacket = Protocol.encodePacket(Protocol.OP_HEARTBEAT)
+            val heartbeatPacket = Protocol
+                .encodePacket(Protocol.OP_HEARTBEAT)
             it.send(heartbeatPacket.toByteString())
         }
     }
@@ -140,7 +141,9 @@ class DanmakuListener internal constructor(
     override fun onOpen(webSocket: WebSocket, response: Response) {
         launch(Dispatchers.IO) {
             val joinPacket = Protocol.encodeJsonPacket(
-                Protocol.OP_JOIN, Protocol.buildJoinMessageBody(realRoomId))
+                Protocol.OP_JOIN,
+                Protocol.buildJoinMessageBody(realRoomId)
+            )
             webSocket.send(joinPacket.toByteString())
         }
     }
@@ -161,7 +164,8 @@ class DanmakuListener internal constructor(
 
     private fun onMessage(webSocket: WebSocket, byteBuffer: ByteBuffer) {
         launch(Dispatchers.IO) {
-            for ((operation, _, data) in Protocol.decodePackets(byteBuffer)) {
+            for ((operation, _, data) in Protocol
+                .decodePackets(byteBuffer)) {
                 when (operation) {
                     Protocol.OP_WELCOME -> {
                         isConnected = true

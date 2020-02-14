@@ -1,7 +1,7 @@
 package moe.feng.danmaqua
 
 import kotlinx.coroutines.runBlocking
-import moe.feng.danmaqua.api.RoomApi
+import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.util.ext.toJson
 import org.junit.Test
 

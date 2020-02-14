@@ -47,6 +47,19 @@
     <string name="room_id_edit_hint">Enter Room ID here…</string>
     <string name="action_subscribe">Subscribe</string>
     <string name="toast_invalid_room_id">Invalid Room ID. Please input a positive number.</string>
+    <string name="action_search_room_id">Search room</string>
+    <string name="search_room_id_no_result_dialog_title">No result</string>
+    <string name="search_room_id_no_result_dialog_message"><![CDATA[
+    Cannot find any streamer by this room id. Please check your input and try again.
+    ]]></string>
+    <string name="recommended_streamers_title">Recommended streamers</string>
+    <string name="cannot_load_data_text">Cannot load data</string>
+    <string name="subscribe_recommended_streamer_dialog_existing_title">Subscribed</string>
+    <string name="subscribe_recommended_streamer_dialog_existing_message"><![CDATA[
+    You have been subscribed streamer %s.
+    ]]></string>
+    <string name="confirm_subscribe_streamer_dialog_title">Subscribe streamer</string>
+    <string name="room_id_text_format">Room ID: %d</string>
 
     <string name="noti_channel_status">Status notification</string>
 

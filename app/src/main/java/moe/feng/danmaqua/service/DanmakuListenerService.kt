@@ -19,8 +19,8 @@ import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_STOP
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.DanmakuApi
-import moe.feng.danmaqua.api.DanmakuListener
+import moe.feng.danmaqua.api.bili.DanmakuApi
+import moe.feng.danmaqua.api.bili.DanmakuListener
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
@@ -163,7 +163,8 @@ class DanmakuListenerService :
 
         }
         try {
-            danmakuListener = DanmakuApi.listen(roomId, this)
+            danmakuListener = DanmakuApi
+                .listen(roomId, this)
         } catch (e: Exception) {
             e.printStackTrace()
         }

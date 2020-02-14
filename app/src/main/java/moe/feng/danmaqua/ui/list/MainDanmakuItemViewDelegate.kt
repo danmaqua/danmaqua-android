@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import com.drakeet.multitype.ItemViewDelegate
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.danmaku_simple_item_view.*
 import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
@@ -17,8 +16,7 @@ import moe.feng.danmaqua.util.ext.eventsHelper
 class MainDanmakuItemViewDelegate :
     ItemViewDelegate<BiliChatDanmaku, MainDanmakuItemViewDelegate.ViewHolder>() {
 
-    class ViewHolder(override val containerView: View)
-        : BaseViewHolder(containerView), LayoutContainer {
+    class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         var data: BiliChatDanmaku? = null
 

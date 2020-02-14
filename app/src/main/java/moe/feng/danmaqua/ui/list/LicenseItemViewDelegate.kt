@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import com.drakeet.multitype.ItemViewDelegate
 import com.google.androidbrowserhelper.trusted.TwaLauncher
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.licenses_item_layout.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.LicenseItem
@@ -15,8 +14,7 @@ import moe.feng.danmaqua.model.LicenseItem
 class LicenseItemViewDelegate
     : ItemViewDelegate<LicenseItem, LicenseItemViewDelegate.ViewHolder>() {
 
-    class ViewHolder(override val containerView: View)
-        : BaseViewHolder(containerView), LayoutContainer {
+    class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
         lateinit var data: LicenseItem
 

@@ -34,7 +34,7 @@
         <activity
             android:name=".ui.NewSubscriptionActivity"
             android:label="@string/new_subscription_title"
-            android:theme="@style/Theme.Danmaqua"
+            android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="false"/>
 
         <activity

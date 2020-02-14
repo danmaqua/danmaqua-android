@@ -2,8 +2,8 @@ package moe.feng.danmaqua
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import moe.feng.danmaqua.api.DanmakuApi
-import moe.feng.danmaqua.api.DanmakuListener
+import moe.feng.danmaqua.api.bili.DanmakuApi
+import moe.feng.danmaqua.api.bili.DanmakuListener
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.util.ext.toJson
 import org.junit.Test

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.UserApi
+import moe.feng.danmaqua.api.bili.UserApi
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
 import moe.feng.danmaqua.ui.BaseFragment

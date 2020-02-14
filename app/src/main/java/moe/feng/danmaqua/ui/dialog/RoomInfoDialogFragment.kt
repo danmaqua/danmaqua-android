@@ -13,7 +13,7 @@ import androidx.core.view.isVisible
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.RoomApi
+import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.model.RoomInfo
 
 class RoomInfoDialogFragment : BaseDialogFragment() {

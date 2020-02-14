@@ -37,7 +37,7 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.UserApi
+import moe.feng.danmaqua.api.bili.UserApi
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
 import moe.feng.danmaqua.event.NoConnectionsDialogListener
 import moe.feng.danmaqua.event.SettingsChangedListener

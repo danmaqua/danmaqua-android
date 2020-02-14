@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.api
+package moe.feng.danmaqua.api.bili
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

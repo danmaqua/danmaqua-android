@@ -1,6 +1,6 @@
 package moe.feng.danmaqua.model
 
-import moe.feng.danmaqua.api.Protocol
+import moe.feng.danmaqua.api.bili.Protocol
 import moe.feng.danmaqua.util.ext.toJson
 
 class BiliChatPacket(
