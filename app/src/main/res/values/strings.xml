@@ -124,7 +124,7 @@
     Show filtered danmaku only, filter pattern, test pattern, blocked users and text.
     ]]></string>
     <string name="filter_settings_enabled_title">Show filtered danmaku only</string>
-    <string name="filter_settings_enabled_summary">Help you easier to read translation</string>
+    <string name="filter_settings_enabled_summary">Help you to read translation easily</string>
     <string name="filter_settings_pattern_title">Filter Pattern</string>
     <string name="filter_settings_pattern_summary_format"><![CDATA[
     Translation/caption danmaku will be filtered with this pattern: %s
