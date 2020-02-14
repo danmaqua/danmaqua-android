@@ -82,7 +82,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginBottom="8dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            tools:text="FloatingCaption · Version 1.0.0 (1)"/>
+            tools:text="FloatingSubtitle · Version 1.0.0 (1)"/>
 
     </LinearLayout>
 

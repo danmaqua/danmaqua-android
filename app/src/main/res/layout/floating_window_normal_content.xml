@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:layout_margin="12dp"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="Test Caption"/>
+        tools:text="Test Subtitle"/>
 
     <ImageButton
         android:id="@+id/expandButton"

@@ -1,7 +1,7 @@
 Design material
 ------
 
-This is FloatingCaption (Danmaqua) project's design material.
+This is FloatingSubtitle (Danmaqua) project's design material.
 
 Includes Launcher Icons psd and png.
 

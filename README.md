@@ -1,4 +1,4 @@
-FloatingCaption
+FloatingSubtitle
 ===============
 
 <img width="240px" src="./design/png/danmaqua_960px.png"></img>
