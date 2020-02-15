@@ -61,7 +61,7 @@
         <item name="android:paddingStart">@dimen/subscription_item_view_background_radius</item>
         <item name="android:paddingEnd">@dimen/subscription_item_view_background_radius</item>
         <item name="android:background">@drawable/right_round_ripple_background</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">42dp</item>
     </style>
 
 </resources>
