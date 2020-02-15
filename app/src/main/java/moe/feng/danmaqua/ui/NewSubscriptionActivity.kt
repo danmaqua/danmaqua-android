@@ -71,6 +71,9 @@ class NewSubscriptionActivity : BaseActivity(),
                 }
                 try {
                     val subscription = getSubscription(id)
+                    if (isFinishing) {
+                        return@launch
+                    }
                     if (subscription != null) {
                         ConfirmSubscribeStreamerDialogFragment.show(
                             supportFragmentManager, subscription
@@ -79,6 +82,9 @@ class NewSubscriptionActivity : BaseActivity(),
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                }
+                if (isFinishing) {
+                    return@launch
                 }
                 AlertDialog.Builder(this@NewSubscriptionActivity)
                     .setTitle(R.string.search_room_id_no_result_dialog_title)
@@ -115,6 +121,9 @@ class NewSubscriptionActivity : BaseActivity(),
     override fun onRecommendedStreamerItemClick(item: Recommendation.Item) {
         launch {
             val subscription = database.subscriptions().findByUid(item.uid)
+            if (isFinishing) {
+                return@launch
+            }
             if (subscription != null) {
                 val msg = getString(
                     R.string.subscribe_recommended_streamer_dialog_existing_message,
