@@ -254,4 +254,10 @@
     现在我们不会收集或上传匿名数据了，推荐重新打开以便我们更好地改善应用。
     ]]></string>
 
+    <string name="action_reload">重新加载</string>
+    <string name="failed_to_connect_dialog_title">无法连接</string>
+    <string name="failed_to_connect_dialog_message"><![CDATA[
+    请检查你的网络是否能够连接到哔哩哔哩然后再重试。如果问题无法解决，你可能需要升级应用。
+    ]]></string>
+
 </resources>

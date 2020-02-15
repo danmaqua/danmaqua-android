@@ -1,8 +1,10 @@
 package moe.feng.danmaqua.api.bili
 
+import android.util.Log
 import kotlinx.coroutines.*
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.util.HttpUtils
+import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.toJson
 import okhttp3.Request
 import okhttp3.Response
@@ -38,6 +40,8 @@ class DanmakuListener internal constructor(
     private var heartbeatTimer: Timer? = null
     private var userReasonClose: Boolean = false
     private var calledOnDisconnect: Boolean = false
+    var isConnecting: Boolean = false
+        private set
     var isConnected: Boolean = false
         private set
     var isClosed: Boolean = false
@@ -45,13 +49,16 @@ class DanmakuListener internal constructor(
     var realRoomId: Long = 0L
         private set
 
-    init {
-        launch {
-            connect()
+    suspend fun connect() = withContext(Dispatchers.IO) {
+        if (isConnected) {
+            Log.e(TAG, "Listener is connected")
+            return@withContext
         }
-    }
-
-    private suspend fun connect() = withContext(Dispatchers.IO) {
+        if (isConnecting) {
+            Log.e(TAG, "Listener is connecting")
+            return@withContext
+        }
+        isConnecting = true
         if (roomId <= 0) {
             throw IllegalArgumentException("Non-positive room id")
         }
@@ -118,6 +125,7 @@ class DanmakuListener internal constructor(
         }
         webSocket?.close(1000, null)
         heartbeatTimer?.cancel()
+        isConnecting = false
         isConnected = false
         isClosed = true
         callOnDisconnect(userReasonClose)
@@ -168,6 +176,7 @@ class DanmakuListener internal constructor(
                 .decodePackets(byteBuffer)) {
                 when (operation) {
                     Protocol.OP_WELCOME -> {
+                        isConnecting = false
                         isConnected = true
                         heartbeat()
                         callOnConnect()

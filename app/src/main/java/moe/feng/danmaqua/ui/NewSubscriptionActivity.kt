@@ -90,6 +90,13 @@ class NewSubscriptionActivity : BaseActivity(),
 
         recommendationList.adapter = adapter
 
+        reloadButton.setOnClickListener {
+            launch {
+                recommendation = null
+                loadRecommendation()
+            }
+        }
+
         if (savedInstanceState == null) {
             launch { loadRecommendation() }
         } else {

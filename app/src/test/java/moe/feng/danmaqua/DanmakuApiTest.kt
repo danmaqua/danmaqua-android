@@ -17,25 +17,25 @@ class DanmakuApiTest {
     }
     @Test
     fun test_listen() {
-        DanmakuApi.listen(1016, object : DanmakuListener.Callback {
-            override fun onConnect() {
-                println("onConnect")
-            }
-
-            override fun onDisconnect(userReason: Boolean) {
-                println("onDisconnect: userReason=$userReason")
-            }
-            override fun onHeartbeat(online: Int) {
-                println("onHeartBeat: online=$online")
-            }
-            override fun onMessage(msg: BiliChatMessage) {
-                println("onMessage: $msg")
-            }
-            override fun onFailure(t: Throwable) {
-                throw t
-            }
-        })
         runBlocking {
+            DanmakuListener(1016, object : DanmakuListener.Callback {
+                override fun onConnect() {
+                    println("onConnect")
+                }
+
+                override fun onDisconnect(userReason: Boolean) {
+                    println("onDisconnect: userReason=$userReason")
+                }
+                override fun onHeartbeat(online: Int) {
+                    println("onHeartBeat: online=$online")
+                }
+                override fun onMessage(msg: BiliChatMessage) {
+                    println("onMessage: $msg")
+                }
+                override fun onFailure(t: Throwable) {
+                    throw t
+                }
+            }).connect()
             delay(60000)
         }
     }

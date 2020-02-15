@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.getSystemService
-import androidx.core.text.HtmlCompat
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isGone
@@ -150,6 +149,8 @@ class FloatingWindowHolder(
 
         captionView.textSize = textSize.toFloat()
         backgroundView.alpha = backgroundAlpha.toFloat() / 255F
+
+        danmakuAdapter.notifyDataSetChanged()
     }
 
     fun addToWindowManager() {
@@ -232,10 +233,16 @@ class FloatingWindowHolder(
         }
         captionView.text = if (twoLine && danmakuList.size >= 2) {
             val reversed = danmakuList.asReversed()
+            val prevSubtitle = danmakuFilter.unescapeCaption(reversed[1])
+            val currSubtitle = danmakuFilter.unescapeCaption(reversed[0])
             buildSpannedString {
-                append(danmakuFilter.unescapeCaption(reversed[1]))
-                append("\n")
-                bold { append(danmakuFilter.unescapeCaption(reversed[0])) }
+                prevSubtitle?.let {
+                    append(it)
+                    append("\n")
+                }
+                currSubtitle?.let {
+                    bold { append(it) }
+                }
             }
         } else {
             danmakuList.lastOrNull()?.let { danmakuFilter.unescapeCaption(it) } ?: ""

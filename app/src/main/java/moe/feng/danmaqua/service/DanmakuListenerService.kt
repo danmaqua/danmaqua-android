@@ -103,6 +103,7 @@ class DanmakuListenerService :
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "Called onDestroy")
+        disconnect()
         destroyFloatingView()
         try {
             stopForeground(true)
@@ -120,12 +121,6 @@ class DanmakuListenerService :
         when (action) {
             ACTION_START -> {
                 startForeground(NOTI_ID_LISTENER_STATUS, notification)
-            }
-            ACTION_STOP -> {
-                disconnect()
-                stopForeground(true)
-                stopSelf()
-                return START_NOT_STICKY
             }
         }
         return START_STICKY
@@ -156,17 +151,22 @@ class DanmakuListenerService :
     }
 
     private fun connect(roomId: Long) {
-        Log.d(TAG, "connect roomId=$roomId")
-        try {
-            danmakuListener?.close()
-        } catch (ignored: Exception) {
+        launch {
+            Log.d(TAG, "connect roomId=$roomId")
+            try {
+                danmakuListener?.close()
+            } catch (ignored: Exception) {
 
-        }
-        try {
-            danmakuListener = DanmakuApi
-                .listen(roomId, this)
-        } catch (e: Exception) {
-            e.printStackTrace()
+            }
+            try {
+                danmakuListener = DanmakuListener(roomId, this@DanmakuListenerService)
+                danmakuListener?.connect()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                for ((callback, _) in serviceCallbacks) {
+                    callback.onConnectFailed(0)
+                }
+            }
         }
 
         // TODO Save local history

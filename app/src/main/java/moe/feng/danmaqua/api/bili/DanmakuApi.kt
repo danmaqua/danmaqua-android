@@ -18,8 +18,4 @@ object DanmakuApi {
         HttpUtils.requestAsJson<RoomDanmuConf>(request)
     }
 
-    fun listen(roomId: Long, callback: DanmakuListener.Callback): DanmakuListener {
-        return DanmakuListener(roomId, callback)
-    }
-
 }

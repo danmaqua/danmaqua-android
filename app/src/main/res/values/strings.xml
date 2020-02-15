@@ -294,4 +294,11 @@
     that we can improve app experience better.
     ]]></string>
 
+    <string name="action_reload">Reload</string>
+    <string name="failed_to_connect_dialog_title">Failed to connect</string>
+    <string name="failed_to_connect_dialog_message"><![CDATA[
+    Please check if your network can connect to Bilibili and try again. If this problem cannot
+    be solved, you may need to upgrade the application.
+    ]]></string>
+
 </resources>

@@ -12,4 +12,6 @@ interface IDanmakuListenerCallback {
 
     void onReceiveDanmaku(in BiliChatDanmaku danmaku);
 
+    void onConnectFailed(int reason);
+
 }

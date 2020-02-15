@@ -494,15 +494,16 @@ class MainActivity : BaseActivity(),
     private fun stopListenerService() {
         val serviceIntent = Intent(this, DanmakuListenerService::class.java)
         serviceIntent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_STOP)
-        startService(serviceIntent)
 
-        serviceConnection?.let {
-            try {
+        try {
+            stopService(serviceIntent)
+            serviceConnection?.let {
                 unbindService(it)
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
         service = null
         serviceConnection = null
     }
@@ -639,6 +640,14 @@ class MainActivity : BaseActivity(),
         override fun onHeartbeat(online: Int) {
             this@MainActivity.online = online
             updateStatusViews()
+        }
+
+        override fun onConnectFailed(reason: Int) {
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle(R.string.failed_to_connect_dialog_title)
+                .setMessage(R.string.failed_to_connect_dialog_message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
         }
 
     }

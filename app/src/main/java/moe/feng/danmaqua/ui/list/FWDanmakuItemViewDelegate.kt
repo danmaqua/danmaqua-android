@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import androidx.core.view.updateLayoutParams
 import com.drakeet.multitype.ItemViewDelegate
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
@@ -29,14 +30,24 @@ class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     override fun onBindViewHolder(holder: ViewHolder, item: BiliChatDanmaku) {
         val itemText = fwHolder.danmakuFilter.unescapeCaption(item)
         with (holder) {
-            textView.textSize = fwHolder.textSize.toFloat()
-            val latest = holder.adapterPosition + 1 == fwHolder.listView.layoutManager?.itemCount
-            textView.text = if (latest) {
-                buildSpannedString {
-                    bold { append(itemText) }
+            if (itemText != null) {
+                textView.textSize = fwHolder.textSize.toFloat()
+                val latest = holder.adapterPosition + 1 ==
+                        fwHolder.listView.layoutManager?.itemCount
+                textView.text = if (latest) {
+                    buildSpannedString {
+                        bold { append(itemText) }
+                    }
+                } else {
+                    itemText
+                }
+                holder.itemView.updateLayoutParams {
+                    height = ViewGroup.LayoutParams.WRAP_CONTENT
                 }
             } else {
-                itemText
+                holder.itemView.updateLayoutParams {
+                    height = 0
+                }
             }
         }
     }
