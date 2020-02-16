@@ -58,8 +58,8 @@
     ]]></string>
     <string name="recommended_streamers_title">推荐主播</string>
     <string name="cannot_load_data_text">无法加载数据</string>
-    <string name="subscribe_recommended_streamer_dialog_existing_title">已订阅</string>
-    <string name="subscribe_recommended_streamer_dialog_existing_message"><![CDATA[
+    <string name="subscribe_existing_streamer_dialog_title">已订阅</string>
+    <string name="subscribe_existing_streamer_dialog_message"><![CDATA[
     你已经订阅过主播 %s 了。
     ]]></string>
     <string name="confirm_subscribe_streamer_dialog_title">订阅主播</string>
@@ -259,5 +259,13 @@
     <string name="failed_to_connect_dialog_message"><![CDATA[
     请检查你的网络是否能够连接到哔哩哔哩然后再重试。如果问题无法解决，你可能需要升级应用。
     ]]></string>
+
+    <string name="view_vtubers_catalog_title">虚拟主播目录</string>
+    <string name="view_vtubers_catalog_summary"><![CDATA[
+    只有拥有哔哩哔哩官方直播间的虚拟主播才会显示在这里
+    ]]></string>
+
+    <string name="view_vtubers_group_title">查看虚拟主播团体</string>
+    <string name="cannot_find_vtuber_in_catalog">目录里找不到虚拟主播？</string>
 
 </resources>

@@ -38,6 +38,18 @@
             android:exported="false"/>
 
         <activity
+            android:name=".ui.VTubersCatalogActivity"
+            android:label="@string/view_vtubers_catalog_title"
+            android:theme="@style/Theme.Danmaqua.NoActionBar"
+            android:exported="false"/>
+
+        <activity
+            android:name=".ui.VTubersGroupActivity"
+            android:label="@string/view_vtubers_group_title"
+            android:theme="@style/Theme.Danmaqua.NoActionBar"
+            android:exported="false"/>
+
+        <activity
             android:name=".ui.PreferenceActivity"
             android:label="@string/settings_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"

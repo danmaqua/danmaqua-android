@@ -34,6 +34,8 @@ class NewSubscriptionActivity : BaseActivity(),
 
         private const val STATE_RECOMMENDATION = "state:RECOMMENDATION"
 
+        const val REQUEST_CODE_CHOOSE_SUBSCRIPTION = 10
+
     }
 
     private var recommendation: Recommendation? = null
@@ -69,6 +71,18 @@ class NewSubscriptionActivity : BaseActivity(),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                val idResultInDB = database.subscriptions().findByUid(id)
+                if (idResultInDB != null) {
+                    val msg = getString(
+                        R.string.subscribe_existing_streamer_dialog_message,
+                        idResultInDB.username)
+                    AlertDialog.Builder(this@NewSubscriptionActivity)
+                        .setTitle(R.string.subscribe_existing_streamer_dialog_title)
+                        .setMessage(msg)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show()
+                    return@launch
+                }
                 try {
                     val subscription = getSubscription(id)
                     if (isFinishing) {
@@ -103,6 +117,12 @@ class NewSubscriptionActivity : BaseActivity(),
             }
         }
 
+        viewCatalogButton.setOnClickListener {
+            val intent = Intent(this, VTubersCatalogActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            startActivityForResult(intent, REQUEST_CODE_CHOOSE_SUBSCRIPTION)
+        }
+
         if (savedInstanceState == null) {
             launch { loadRecommendation() }
         } else {
@@ -113,9 +133,24 @@ class NewSubscriptionActivity : BaseActivity(),
         eventsHelper.registerListener(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        eventsHelper.unregisterListener(this)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         recommendation?.let { outState.putParcelable(STATE_RECOMMENDATION, it) }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CHOOSE_SUBSCRIPTION && resultCode == RESULT_OK) {
+            data?.getParcelableExtra<Subscription>(EXTRA_DATA)?.let {
+                setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_DATA, it) })
+                finish()
+            }
+        }
     }
 
     override fun onRecommendedStreamerItemClick(item: Recommendation.Item) {
@@ -126,10 +161,10 @@ class NewSubscriptionActivity : BaseActivity(),
             }
             if (subscription != null) {
                 val msg = getString(
-                    R.string.subscribe_recommended_streamer_dialog_existing_message,
+                    R.string.subscribe_existing_streamer_dialog_message,
                     item.name)
                 AlertDialog.Builder(this@NewSubscriptionActivity)
-                    .setTitle(R.string.subscribe_recommended_streamer_dialog_existing_title)
+                    .setTitle(R.string.subscribe_existing_streamer_dialog_title)
                     .setMessage(msg)
                     .setPositiveButton(android.R.string.ok, null)
                     .show()

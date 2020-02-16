@@ -60,8 +60,8 @@
     ]]></string>
     <string name="recommended_streamers_title">Recommended streamers</string>
     <string name="cannot_load_data_text">Cannot load data</string>
-    <string name="subscribe_recommended_streamer_dialog_existing_title">Subscribed</string>
-    <string name="subscribe_recommended_streamer_dialog_existing_message"><![CDATA[
+    <string name="subscribe_existing_streamer_dialog_title">Subscribed</string>
+    <string name="subscribe_existing_streamer_dialog_message"><![CDATA[
     You have been subscribed streamer %s.
     ]]></string>
     <string name="confirm_subscribe_streamer_dialog_title">Subscribe streamer</string>
@@ -299,6 +299,17 @@
     <string name="failed_to_connect_dialog_message"><![CDATA[
     Please check if your network can connect to Bilibili and try again. If this problem cannot
     be solved, you may need to upgrade the application.
+    ]]></string>
+
+    <string name="view_vtubers_catalog_title">VTubers catalog</string>
+    <string name="view_vtubers_catalog_summary"><![CDATA[
+    Only VTubers who has official Bilibili live room will be displayed
+    ]]></string>
+
+    <string name="view_vtubers_group_title">View VTubers group</string>
+    <string name="cannot_find_vtuber_in_catalog">Cannot find VTubers in catalog?</string>
+    <string name="cannot_find_vtuber_in_catalog_url" translatable="false"><![CDATA[
+    https://github.com/fython/danmaqua-android/blob/master/docs/CATALOG_DATA.md
     ]]></string>
 
 </resources>

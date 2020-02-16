@@ -16,7 +16,7 @@ import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.view.CircleImageView
 import moe.feng.danmaqua.util.ext.eventsHelper
 
-class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
+open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
 
     companion object {
 
@@ -30,7 +30,7 @@ class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
 
     }
 
-    private lateinit var subscription: Subscription
+    protected lateinit var subscription: Subscription
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +45,7 @@ class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
         return AlertDialog.Builder(activity!!)
             .setTitle(R.string.confirm_subscribe_streamer_dialog_title)
             .setView(dialogView)
-            .setPositiveButton(R.string.action_subscribe) { _, _ ->
-                context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>()
-                    .onConfirmSubscribeStreamer(subscription)
-            }
+            .setPositiveButton(R.string.action_subscribe) { _, _ -> onPositiveButtonClick() }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
@@ -68,6 +65,11 @@ class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
         }
         usernameView.text = subscription.username
         uidView.text = getString(R.string.room_id_text_format, subscription.roomId)
+    }
+
+    open fun onPositiveButtonClick() {
+        context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>()
+            .onConfirmSubscribeStreamer(subscription)
     }
 
 }
