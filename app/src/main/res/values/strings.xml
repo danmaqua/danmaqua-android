@@ -309,7 +309,7 @@
     <string name="view_vtubers_group_title">View VTubers group</string>
     <string name="cannot_find_vtuber_in_catalog">Cannot find VTubers in catalog?</string>
     <string name="cannot_find_vtuber_in_catalog_url" translatable="false"><![CDATA[
-    https://github.com/fython/danmaqua-android/blob/master/docs/CATALOG_DATA.md
+    https://github.com/danmaqua/danmaqua-data/blob/master/README.md#增加更新虚拟主播目录
     ]]></string>
 
 </resources>
