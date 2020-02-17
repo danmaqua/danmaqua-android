@@ -1,12 +1,13 @@
 package moe.feng.danmaqua.util
 
+import androidx.annotation.VisibleForTesting
+import com.google.code.regexp.Pattern
 import kotlinx.coroutines.runBlocking
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import java.lang.Exception
-import java.util.regex.Pattern
 
 interface DanmakuFilter {
 
@@ -31,6 +32,13 @@ interface DanmakuFilter {
             )
         }
 
+        @VisibleForTesting
+        internal fun create(pattern: Pattern?,
+                            blockedUids: List<Long>,
+                            blockedWords: List<BlockedTextRule>): DanmakuFilter {
+            return DanmaquaFilter(pattern, blockedUids, blockedWords)
+        }
+
     }
 
     /**
@@ -41,7 +49,7 @@ interface DanmakuFilter {
      */
     operator fun invoke(msg: BiliChatDanmaku): Boolean
 
-    fun unescapeCaption(msg: BiliChatDanmaku): String?
+    fun unescapeSubtitle(msg: BiliChatDanmaku): Subtitle?
 
     private object AcceptAllFilter : DanmakuFilter {
 
@@ -49,8 +57,8 @@ interface DanmakuFilter {
             return true
         }
 
-        override fun unescapeCaption(msg: BiliChatDanmaku): String? {
-            return msg.text
+        override fun unescapeSubtitle(msg: BiliChatDanmaku): Subtitle? {
+            return null to msg.text
         }
 
     }
@@ -60,6 +68,8 @@ interface DanmakuFilter {
         val blockedUids: List<Long> = emptyList(),
         val blockedWords: List<BlockedTextRule> = emptyList()
     ) : DanmakuFilter {
+
+        val hasTextGroup = pattern?.groupNames()?.contains("text") == true
 
         val blockedWordsPattern: List<Any> = blockedWords.mapNotNull {
             try {
@@ -102,13 +112,22 @@ interface DanmakuFilter {
             return true
         }
 
-        override fun unescapeCaption(msg: BiliChatDanmaku): String? {
+        override fun unescapeSubtitle(msg: BiliChatDanmaku): Subtitle? {
             if (pattern == null) {
-                return msg.text
+                return null to msg.text
             }
             val matcher = pattern.matcher(msg.text)
-            if (matcher.find() && matcher.groupCount() > 0) {
-                return matcher.group(1)
+            if (matcher.find()) {
+                if (hasTextGroup) {
+                    val who = matcher.group("who")
+                    val text = matcher.group("text")
+                    if (text != null) {
+                        return who to text
+                    }
+                }
+                if (matcher.groupCount() > 0) {
+                    return null to matcher.group(1)
+                }
             }
             return null
         }

@@ -273,4 +273,9 @@
     触摸代替长按开始移动
     ]]></string>
 
+    <string name="successfully_updated_dialog_title">更新日志</string>
+    <string name="successfully_updated_dialog_message"><![CDATA[
+    你已经成功升级应用版本到 %s！你想要了解这个版本更改了什么吗？
+    ]]></string>
+
 </resources>

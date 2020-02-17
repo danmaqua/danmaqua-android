@@ -317,4 +317,13 @@
     Touch to start moving instead of long press
     ]]></string>
 
+    <string name="successfully_updated_dialog_title">Changelog</string>
+    <string name="successfully_updated_dialog_message"><![CDATA[
+    You have successfully updated application version to %s! Do you want to learn changes about
+    this version?
+    ]]></string>
+    <string name="changelog_url" translatable="false"><![CDATA[
+    https://github.com/danmaqua/danmaqua-data/blob/master/CHANGELOG.md
+    ]]></string>
+
 </resources>

@@ -1,16 +1,14 @@
 package moe.feng.danmaqua
 
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.tencent.mmkv.MMKV
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BlockedTextRule
-import moe.feng.danmaqua.util.ext.booleanProperty
-import moe.feng.danmaqua.util.ext.intProperty
-import moe.feng.danmaqua.util.ext.jsonArrayProperty
-import moe.feng.danmaqua.util.ext.notnullStringProperty
+import moe.feng.danmaqua.util.ext.*
 
 /**
  * Danmaqua constants and settings
@@ -20,7 +18,6 @@ object Danmaqua {
     const val EXTRA_PREFIX = "${BuildConfig.APPLICATION_ID}.extra"
     const val EXTRA_DATA = "${EXTRA_PREFIX}.DATA"
     const val EXTRA_ACTION = "${EXTRA_PREFIX}.ACTION"
-    const val EXTRA_CONNECT_ROOM_ID = "${EXTRA_PREFIX}.CONNECT_ROOM_ID"
 
     const val ACTION_PREFIX = "${BuildConfig.APPLICATION_ID}.action"
 
@@ -30,7 +27,11 @@ object Danmaqua {
     const val PENDING_INTENT_REQUEST_STOP = 10
     const val PENDING_INTENT_REQUEST_ENTER_MAIN = 11
 
-    const val DEFAULT_FILTER_PATTERN = "【(.*)】"
+    const val LEFT_PARENTHESIS = "〈｛『〖［《〔「【"
+    const val RIGHT_PARENTHESIS = "〉｝『〗］》〕」】"
+
+    const val DEFAULT_FILTER_PATTERN =
+        "(?<who>[^$LEFT_PARENTHESIS]*)[$LEFT_PARENTHESIS](?<text>[^$RIGHT_PARENTHESIS]*)[$RIGHT_PARENTHESIS]?"
 
     object Settings {
 
@@ -40,6 +41,19 @@ object Danmaqua {
             Settings.block()
             notifyChanged(context)
         }
+
+        fun updateVersionCode(context: Context) {
+            try {
+                val pi = context.packageManager.getPackageInfo(context.packageName, 0)
+                lastVersionCode = pi.versionCode
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to update current used version code to settings", e)
+            }
+        }
+
+        var lastVersionCode: Int by mmkv.intProperty(
+            key = "last_version_code", defaultValue = 0
+        )
 
         var introduced: Boolean by mmkv.booleanProperty(
             key = "introduced", defaultValue = false
@@ -91,8 +105,9 @@ object Danmaqua {
         )
 
         fun notifyChanged(context: Context? = null) {
-            val helper = context?.let { EventsHelper.getInstance(it) } ?: EventsHelper.getInstance()
-            helper.of<SettingsChangedListener>().onSettingsChanged()
+            EventsHelper.getInstance(context)
+                .of<SettingsChangedListener>()
+                .onSettingsChanged()
         }
 
     }

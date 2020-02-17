@@ -28,6 +28,7 @@ import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.screenHeight
 import moe.feng.danmaqua.util.ext.screenWidth
+import moe.feng.danmaqua.util.flattenToString
 import java.lang.Exception
 
 @SuppressLint("ClickableViewAccessibility")
@@ -235,19 +236,21 @@ class FloatingWindowHolder(
         }
         captionView.text = if (twoLine && danmakuList.size >= 2) {
             val reversed = danmakuList.asReversed()
-            val prevSubtitle = danmakuFilter.unescapeCaption(reversed[1])
-            val currSubtitle = danmakuFilter.unescapeCaption(reversed[0])
+            val prevSubtitle = danmakuFilter.unescapeSubtitle(reversed[1])
+            val currSubtitle = danmakuFilter.unescapeSubtitle(reversed[0])
             buildSpannedString {
                 prevSubtitle?.let {
-                    append(it)
+                    append(it.flattenToString())
                     append("\n")
                 }
                 currSubtitle?.let {
-                    bold { append(it) }
+                    bold { append(it.flattenToString()) }
                 }
             }
         } else {
-            danmakuList.lastOrNull()?.let { danmakuFilter.unescapeCaption(it) } ?: ""
+            danmakuList.lastOrNull()
+                ?.let { danmakuFilter.unescapeSubtitle(it) }
+                ?.flattenToString() ?: ""
         }
     }
 

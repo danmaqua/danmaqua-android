@@ -43,7 +43,7 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
             cacheSize = available / 50
         } catch (ignored: IllegalArgumentException) {
         }
-        val okHttpCache = Cache(okHttpCacheDir, cacheSize)
+        val okHttpCache = Cache(okHttpCacheDir, cacheSize.coerceAtLeast(1))
         HttpUtils.setCache(okHttpCache)
 
         EventsHelper.getInstance(this)

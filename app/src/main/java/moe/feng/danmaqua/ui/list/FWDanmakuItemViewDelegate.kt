@@ -12,6 +12,7 @@ import com.drakeet.multitype.ItemViewDelegate
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
+import moe.feng.danmaqua.util.flattenToString
 
 class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     ItemViewDelegate<BiliChatDanmaku, FWDanmakuItemViewDelegate.ViewHolder>(){
@@ -28,7 +29,7 @@ class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, item: BiliChatDanmaku) {
-        val itemText = fwHolder.danmakuFilter.unescapeCaption(item)
+        val itemText = fwHolder.danmakuFilter.unescapeSubtitle(item)?.flattenToString()
         with (holder) {
             if (itemText != null) {
                 textView.textSize = fwHolder.textSize.toFloat()

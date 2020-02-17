@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
+import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
@@ -49,6 +51,7 @@ import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.dialog.NoConnectionsDialogFragment
 import moe.feng.danmaqua.ui.main.DanmakuContextMenuDialogFragment
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
+import moe.feng.danmaqua.ui.dialog.SuccessfullyUpdatedDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
 import moe.feng.danmaqua.ui.main.DrawerViewFragment
@@ -56,9 +59,7 @@ import moe.feng.danmaqua.ui.main.MainConfirmBlockTextDialogFragment
 import moe.feng.danmaqua.ui.main.MainConfirmBlockUserDialogFragment
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
 import moe.feng.danmaqua.util.*
-import moe.feng.danmaqua.util.ext.compoundDrawableStartRes
-import moe.feng.danmaqua.util.ext.eventsHelper
-import moe.feng.danmaqua.util.ext.screenHeight
+import moe.feng.danmaqua.util.ext.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -111,7 +112,7 @@ class MainActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!Danmaqua.Settings.introduced) {
+        if (!Settings.introduced) {
             val intent = Intent(this, IntroActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -203,6 +204,12 @@ class MainActivity : BaseActivity(),
         checkServiceStatus()
 
         eventsHelper.registerListeners(this, noConnectionsDialogListener)
+
+        val lastVersionCode = Settings.lastVersionCode
+        if ((packageVersionCode ?: 0) > lastVersionCode) {
+            SuccessfullyUpdatedDialogFragment().show(supportFragmentManager, "updated_tip")
+            Settings.updateVersionCode(this)
+        }
     }
 
     override fun onResume() {
@@ -598,10 +605,10 @@ class MainActivity : BaseActivity(),
     override fun onBlockText(item: BiliChatDanmaku, blockRule: BlockedTextRule) {
         launch {
             onHideDanmaku(item)
-            val patterns = Danmaqua.Settings.Filter.blockedTextPatterns.toMutableList()
+            val patterns = Settings.Filter.blockedTextPatterns.toMutableList()
             patterns.add(blockRule)
-            Danmaqua.Settings.Filter.blockedTextPatterns = patterns
-            Danmaqua.Settings.notifyChanged(this@MainActivity)
+            Settings.Filter.blockedTextPatterns = patterns
+            Settings.notifyChanged(this@MainActivity)
         }
     }
 
@@ -609,7 +616,7 @@ class MainActivity : BaseActivity(),
         launch {
             messageAdapter.removeDanmakuByUid(blockUser.uid)
             database.blockedUsers().add(blockUser)
-            Danmaqua.Settings.notifyChanged(this@MainActivity)
+            Settings.notifyChanged(this@MainActivity)
         }
     }
 
