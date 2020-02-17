@@ -11,6 +11,7 @@ import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.OnCatalogSingleItemClickListener
 import moe.feng.danmaqua.model.VTuberSingleItem
+import moe.feng.danmaqua.util.ext.avatarUrl
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class VTuberSingleItemViewDelegate :
@@ -37,14 +38,7 @@ class VTuberSingleItemViewDelegate :
     override fun onBindViewHolder(holder: ViewHolder, item: VTuberSingleItem) {
         with(holder) {
             data = item
-            if (item.face.isEmpty()) {
-                avatarView.setImageResource(R.drawable.avatar_placeholder_empty)
-            } else {
-                Picasso.get()
-                    .load(item.face)
-                    .placeholder(R.drawable.avatar_placeholder_empty)
-                    .into(avatarView)
-            }
+            avatarView.avatarUrl = item.face
             nameText.text = item.name
             descText.text = item.description
         }

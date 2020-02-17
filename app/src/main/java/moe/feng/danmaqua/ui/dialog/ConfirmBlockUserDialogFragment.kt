@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.ui.view.CircleImageView
+import moe.feng.danmaqua.util.ext.avatarUrl
 
 abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {
 
@@ -64,14 +65,7 @@ abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {
         val usernameView = view.findViewById<TextView>(R.id.usernameView)
         val uidView = view.findViewById<TextView>(R.id.uidView)
 
-        if (face != null) {
-            Picasso.get()
-                .load(face)
-                .placeholder(R.drawable.avatar_placeholder_empty)
-                .into(avatarView)
-        } else {
-            avatarView.setImageResource(R.drawable.avatar_placeholder_empty)
-        }
+        avatarView.avatarUrl = face
         usernameView.text = username
         uidView.text = getString(R.string.uid_text_format, uid)
     }

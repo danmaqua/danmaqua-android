@@ -22,6 +22,7 @@ import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.ui.view.CircleImageView
+import moe.feng.danmaqua.util.ext.avatarUrl
 
 class ManageBlockedUsersFragment : BaseFragment() {
 
@@ -107,10 +108,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
         val avatarView = dialogView.findViewById<CircleImageView>(R.id.avatarView)
         val usernameView = dialogView.findViewById<TextView>(R.id.usernameView)
         val uidView = dialogView.findViewById<TextView>(R.id.uidView)
-        Picasso.get()
-            .load(info.data.face)
-            .placeholder(R.drawable.avatar_placeholder_empty)
-            .into(avatarView)
+        avatarView.avatarUrl = info.data.face
         usernameView.text = info.data.name
         uidView.text = getString(R.string.uid_text_format, info.data.uid)
         AlertDialog.Builder(activity!!)
@@ -168,10 +166,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
             with(holder) {
                 usernameView.text = item.username
                 uidView.text = getString(R.string.uid_text_format, item.uid)
-                Picasso.get()
-                    .load(item.face)
-                    .placeholder(R.drawable.avatar_placeholder_empty)
-                    .into(avatarView)
+                avatarView.avatarUrl = item.face
             }
         }
 

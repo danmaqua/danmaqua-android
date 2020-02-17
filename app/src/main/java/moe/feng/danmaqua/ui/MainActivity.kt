@@ -546,9 +546,7 @@ class MainActivity : BaseActivity(),
         val cur = database.subscriptions().findSelected()
         if (cur != null) {
             usernameView.text = cur.username
-            Picasso.get().load(cur.avatar)
-                .placeholder(R.drawable.avatar_placeholder_empty)
-                .into(avatarView)
+            avatarView.avatarUrl = cur.avatar
         } else {
             usernameView.setText(R.string.no_streamer_selected_title)
             Picasso.get().cancelRequest(avatarView)

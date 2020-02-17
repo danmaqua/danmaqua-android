@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.contact_author_dialog_layout.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.util.IntentUtils
+import moe.feng.danmaqua.util.ext.avatarUrl
 import java.lang.Exception
 
 class ContactAuthorDialogFragment : BaseBottomSheetDialogFragment() {
@@ -30,10 +31,7 @@ class ContactAuthorDialogFragment : BaseBottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Picasso.get()
-            .load("https://avatars.githubusercontent.com/fython")
-            .placeholder(R.drawable.avatar_placeholder_empty)
-            .into(avatarView)
+        avatarView.avatarUrl = "https://avatars.githubusercontent.com/fython"
 
         emailSummary.text = email
 

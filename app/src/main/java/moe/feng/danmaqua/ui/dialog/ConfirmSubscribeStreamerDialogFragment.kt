@@ -14,6 +14,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.view.CircleImageView
+import moe.feng.danmaqua.util.ext.avatarUrl
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
@@ -55,14 +56,7 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
         val usernameView = view.findViewById<TextView>(R.id.usernameView)
         val uidView = view.findViewById<TextView>(R.id.uidView)
 
-        if (subscription.avatar.isNotEmpty()) {
-            Picasso.get()
-                .load(subscription.avatar)
-                .placeholder(R.drawable.avatar_placeholder_empty)
-                .into(avatarView)
-        } else {
-            avatarView.setImageResource(R.drawable.avatar_placeholder_empty)
-        }
+        avatarView.avatarUrl = subscription.avatar
         usernameView.text = subscription.username
         uidView.text = getString(R.string.room_id_text_format, subscription.roomId)
     }

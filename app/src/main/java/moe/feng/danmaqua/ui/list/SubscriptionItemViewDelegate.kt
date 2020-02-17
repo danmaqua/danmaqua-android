@@ -11,6 +11,7 @@ import com.drakeet.multitype.ItemViewDelegate
 import com.squareup.picasso.Picasso
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
+import moe.feng.danmaqua.util.ext.avatarUrl
 
 class SubscriptionItemViewDelegate(var callback: Callback? = null)
     : ItemViewDelegate<Subscription, SubscriptionItemViewDelegate.ViewHolder>() {
@@ -59,10 +60,7 @@ class SubscriptionItemViewDelegate(var callback: Callback? = null)
         })
         avatarRing.isVisible = item.selected
 
-        Picasso.get()
-            .load(item.avatar)
-            .placeholder(R.drawable.avatar_placeholder_empty)
-            .into(avatarView)
+        avatarView.avatarUrl = item.avatar
     }
 
 }

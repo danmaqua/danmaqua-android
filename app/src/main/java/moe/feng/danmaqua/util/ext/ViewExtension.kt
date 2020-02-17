@@ -36,7 +36,7 @@ fun Float.spToPx(context: Context): Float {
 var ImageView.avatarUrl: String?
     get() = throw UnsupportedOperationException("ImageView#avatarUrl can only set")
     set(value) {
-        if (value == null) {
+        if (value.isNullOrEmpty()) {
             setImageResource(R.drawable.avatar_placeholder_empty)
         } else {
             Picasso.get()

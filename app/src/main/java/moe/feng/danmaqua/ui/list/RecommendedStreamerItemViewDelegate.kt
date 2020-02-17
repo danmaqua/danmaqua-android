@@ -11,6 +11,7 @@ import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation
+import moe.feng.danmaqua.util.ext.avatarUrl
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class RecommendedStreamerItemViewDelegate :
@@ -38,11 +39,7 @@ class RecommendedStreamerItemViewDelegate :
         with(holder) {
             this.item = item
 
-            Picasso.get()
-                .load(item.face)
-                .placeholder(R.drawable.avatar_placeholder_empty)
-                .into(avatarView)
-
+            avatarView.avatarUrl = item.face
             nameText.text = item.name
             reasonText.text = item.reason
         }
