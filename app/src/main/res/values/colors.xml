@@ -20,5 +20,9 @@
     <color name="subscription_item_background_selected_mask">@color/material_purple_200</color>
 
     <color name="subscription_item_avatar_ring">@color/material_purple_500</color>
+    <color name="subscription_item_add_icon_tint">@color/material_purple_800</color>
+    <color name="subscription_item_add_icon_background">@color/material_purple_50</color>
+    <color name="subscription_item_manage_icon_tint">@color/material_light_blue_700</color>
+    <color name="subscription_item_manage_icon_background">@color/material_light_blue_50</color>
 
 </resources>

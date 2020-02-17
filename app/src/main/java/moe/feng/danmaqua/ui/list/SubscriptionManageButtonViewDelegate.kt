@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.drakeet.multitype.ItemViewDelegate
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate.Item
-import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate.ViewHolder
+import moe.feng.danmaqua.ui.list.SubscriptionManageButtonViewDelegate.Item
+import moe.feng.danmaqua.ui.list.SubscriptionManageButtonViewDelegate.ViewHolder
 
-class SubscriptionAddItemViewDelegate(var callback: Callback? = null)
+class SubscriptionManageButtonViewDelegate(var callback: Callback? = null)
     : ItemViewDelegate<Item, ViewHolder>() {
 
     interface Callback {
 
-        fun onSubscriptionAddClick()
+        fun onSubscriptionManageClick()
 
     }
 
@@ -24,8 +24,8 @@ class SubscriptionAddItemViewDelegate(var callback: Callback? = null)
 
     override fun onCreateViewHolder(context: Context, parent: ViewGroup): ViewHolder {
         return ViewHolder(LayoutInflater.from(context)
-            .inflate(R.layout.subscription_add_item_view, parent, false))
-            .apply { itemView.setOnClickListener { callback?.onSubscriptionAddClick() } }
+            .inflate(R.layout.subscription_manage_item_view, parent, false))
+            .apply { itemView.setOnClickListener { callback?.onSubscriptionManageClick() } }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, item: Item) {}

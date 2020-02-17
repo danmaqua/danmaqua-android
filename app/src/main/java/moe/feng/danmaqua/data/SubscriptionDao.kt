@@ -18,7 +18,7 @@ interface SubscriptionDao {
     @Query("SELECT COUNT(*) FROM subscription")
     suspend fun count(): Int
 
-    @Query("SELECT * FROM subscription")
+    @Query("SELECT * FROM subscription ORDER BY `order`")
     suspend fun getAll(): List<Subscription>
 
     @Query("SELECT * FROM subscription WHERE selected = 1 LIMIT 1")

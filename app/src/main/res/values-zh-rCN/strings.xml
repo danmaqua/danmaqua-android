@@ -27,6 +27,7 @@
     <string name="chooser_title_choose_apps_to_watch_stream">选择用于观看直播的应用</string>
 
     <string name="action_new_subscription">订阅主播…</string>
+    <string name="action_manage_subscription">管理列表</string>
     <string name="app_name_with_version_text_format">%s · 版本 %s (%d)</string>
 
     <string name="action_block_this_text">屏蔽这个文本</string>
@@ -276,6 +277,11 @@
     <string name="successfully_updated_dialog_title">更新日志</string>
     <string name="successfully_updated_dialog_message"><![CDATA[
     你已经成功升级应用版本到 %s！你想要了解这个版本更改了什么吗？
+    ]]></string>
+
+    <string name="manage_subscription_title">管理订阅</string>
+    <string name="manage_subscription_empty_text"><![CDATA[
+    没有订阅，请先在主菜单订阅主播。
     ]]></string>
 
 </resources>

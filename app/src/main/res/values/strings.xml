@@ -27,6 +27,7 @@
     <string name="chooser_title_choose_apps_to_watch_stream">Choose apps to watch stream</string>
 
     <string name="action_new_subscription">Subscribe streamer…</string>
+    <string name="action_manage_subscription">Manage list</string>
     <string name="app_name_with_version_text_format">%s · Version %s (%d)</string>
 
     <string name="action_block_this_text">Block this text</string>
@@ -323,7 +324,12 @@
     this version?
     ]]></string>
     <string name="changelog_url" translatable="false"><![CDATA[
-    https://github.com/danmaqua/danmaqua-data/blob/master/CHANGELOG.md
+    https://github.com/danmaqua/danmaqua-data/blob/master/CHANGELOG.md#101-2
+    ]]></string>
+
+    <string name="manage_subscription_title">Manage Subscription</string>
+    <string name="manage_subscription_empty_text"><![CDATA[
+    No subscriptions. Please subscribe streamer from main drawer first.
     ]]></string>
 
 </resources>

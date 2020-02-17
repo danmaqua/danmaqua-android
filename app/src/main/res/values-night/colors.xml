@@ -16,5 +16,9 @@
     <color name="subscription_item_background_selected_mask">#66BA68C8</color>
 
     <color name="subscription_item_avatar_ring">@color/material_purple_200</color>
+    <color name="subscription_item_add_icon_tint">@color/material_purple_100</color>
+    <color name="subscription_item_add_icon_background">#997B1FA2</color>
+    <color name="subscription_item_manage_icon_tint">@color/material_light_blue_100</color>
+    <color name="subscription_item_manage_icon_background">#990277BD</color>
 
 </resources>

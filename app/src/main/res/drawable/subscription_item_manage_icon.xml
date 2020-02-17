@@ -3,8 +3,8 @@
     <item>
         <shape android:shape="oval">
             <size android:width="48dp" android:height="48dp"/>
-            <solid android:color="@color/subscription_item_add_icon_background"/>
+            <solid android:color="@color/subscription_item_manage_icon_background"/>
         </shape>
     </item>
-    <item android:width="24dp" android:height="24dp" android:gravity="center" android:drawable="@drawable/ic_add_24_purple"/>
+    <item android:width="24dp" android:height="24dp" android:gravity="center" android:drawable="@drawable/ic_sort_24_light_blue"/>
 </layer-list>

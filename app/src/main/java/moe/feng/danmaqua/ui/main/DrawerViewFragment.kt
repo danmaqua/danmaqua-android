@@ -23,11 +23,13 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.BaseFragment
+import moe.feng.danmaqua.ui.ManageSubscriptionActivity
 import moe.feng.danmaqua.ui.NewSubscriptionActivity
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
-import moe.feng.danmaqua.ui.list.SubscriptionAddItemViewDelegate
+import moe.feng.danmaqua.ui.list.SubscriptionAddButtonViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
+import moe.feng.danmaqua.ui.list.SubscriptionManageButtonViewDelegate
 import moe.feng.danmaqua.ui.settings.DevelopmentFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
@@ -38,6 +40,7 @@ class DrawerViewFragment : BaseFragment() {
     companion object {
 
         const val REQUEST_CODE_NEW_SUBSCRIPTION = 10000
+        const val REQUEST_CODE_MANAGE_SUBSCRIPTION = 10001
 
     }
 
@@ -131,6 +134,19 @@ class DrawerViewFragment : BaseFragment() {
                     }
                 }
             }
+            REQUEST_CODE_MANAGE_SUBSCRIPTION -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    launch {
+                        val dao = database.subscriptions()
+                        val selectedSubscription = dao.findSelected() ?: dao.getAll().firstOrNull()
+                        selectedSubscription?.selected = true
+                        selectedSubscription?.let { dao.update(it) }
+                        context?.eventsHelper?.of<MainDrawerCallback>()
+                            ?.onSubscriptionChange(selectedSubscription)
+                        updateAdapterData()
+                    }
+                }
+            }
         }
     }
 
@@ -142,7 +158,8 @@ class DrawerViewFragment : BaseFragment() {
         val newItems = withContext(Dispatchers.IO) {
             val result = mutableListOf<Any>()
             result.addAll(updateItems ?: database.subscriptions().getAll())
-            result += SubscriptionAddItemViewDelegate.Item
+            result += SubscriptionAddButtonViewDelegate.Item
+            result += SubscriptionManageButtonViewDelegate.Item
             result
         }
         val callback = DrawerListDiffCallback(oldItems, newItems)
@@ -160,14 +177,18 @@ class DrawerViewFragment : BaseFragment() {
     }
 
     private inner class DrawerListAdapter : MultiTypeAdapter(),
-        SubscriptionItemViewDelegate.Callback, SubscriptionAddItemViewDelegate.Callback {
+        SubscriptionItemViewDelegate.Callback,
+        SubscriptionAddButtonViewDelegate.Callback,
+        SubscriptionManageButtonViewDelegate.Callback {
 
         val subscriptionItemDelegate = SubscriptionItemViewDelegate(this)
-        val subscriptionAddDelegate = SubscriptionAddItemViewDelegate(this)
+        val subscriptionAddDelegate = SubscriptionAddButtonViewDelegate(this)
+        val subscriptionManageDelegate = SubscriptionManageButtonViewDelegate(this)
 
         init {
             register(subscriptionItemDelegate)
             register(subscriptionAddDelegate)
+            register(subscriptionManageDelegate)
         }
 
         override fun onSubscriptionItemClick(item: Subscription) {
@@ -218,9 +239,13 @@ class DrawerViewFragment : BaseFragment() {
         override fun onSubscriptionAddClick() {
             val intent = Intent(requireContext(), NewSubscriptionActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-            startActivityForResult(intent,
-                REQUEST_CODE_NEW_SUBSCRIPTION
-            )
+            startActivityForResult(intent, REQUEST_CODE_NEW_SUBSCRIPTION)
+        }
+
+        override fun onSubscriptionManageClick() {
+            val intent = Intent(requireContext(), ManageSubscriptionActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            startActivityForResult(intent, REQUEST_CODE_MANAGE_SUBSCRIPTION)
         }
 
     }

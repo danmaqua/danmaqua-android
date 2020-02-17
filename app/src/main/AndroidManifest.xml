@@ -50,6 +50,12 @@
             android:exported="false"/>
 
         <activity
+            android:name=".ui.ManageSubscriptionActivity"
+            android:label="@string/manage_subscription_title"
+            android:theme="@style/Theme.Danmaqua.NoActionBar"
+            android:exported="false"/>
+
+        <activity
             android:name=".ui.PreferenceActivity"
             android:label="@string/settings_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
