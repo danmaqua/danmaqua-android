@@ -63,30 +63,22 @@ object Danmaqua {
             key = "enabled_analytics", defaultValue = true
         )
 
-        object UI {
+        var darkMode: Int by mmkv.intProperty(
+            key = "dark_mode", defaultValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        )
 
-            var darkMode: Int by mmkv.intProperty(
-                key = "dark_mode", defaultValue = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            )
+        var filterEnabled: Boolean by mmkv.booleanProperty(
+            key = "filter_enabled", defaultValue = false
+        )
 
-        }
+        var filterPattern: String by mmkv.notnullStringProperty(
+            key = "filter_pattern", defaultValue = DEFAULT_FILTER_PATTERN
+        )
 
-        object Filter {
-
-            var enabled: Boolean by mmkv.booleanProperty(
-                key = "filter_enabled", defaultValue = false
-            )
-
-            var pattern: String by mmkv.notnullStringProperty(
-                key = "filter_pattern", defaultValue = DEFAULT_FILTER_PATTERN
-            )
-
-            var blockedTextPatterns: List<BlockedTextRule> by mmkv.jsonArrayProperty(
-                key = "filter_blocked_text_rules",
-                arrayClass = Array<BlockedTextRule>::class.java
-            )
-
-        }
+        var blockedTextPatterns: List<BlockedTextRule> by mmkv.jsonArrayProperty(
+            key = "filter_blocked_text_rules",
+            arrayClass = Array<BlockedTextRule>::class.java
+        )
 
         var floatingBackgroundAlpha: Int by mmkv.intProperty(
             key = "floating_alpha", defaultValue = 255

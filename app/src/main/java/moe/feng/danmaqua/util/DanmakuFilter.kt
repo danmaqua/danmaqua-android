@@ -18,8 +18,8 @@ interface DanmakuFilter {
         }
 
         fun fromSettings(): DanmakuFilter {
-            val pattern = if (Settings.Filter.enabled) {
-                Pattern.compile(Settings.Filter.pattern)
+            val pattern = if (Settings.filterEnabled) {
+                Pattern.compile(Settings.filterPattern)
             } else {
                 null
             }
@@ -28,7 +28,7 @@ interface DanmakuFilter {
                 blockedUids = runBlocking {
                     DanmaquaDB.instance.blockedUsers().getAll().map { it.uid }
                 },
-                blockedWords = Settings.Filter.blockedTextPatterns
+                blockedWords = Settings.blockedTextPatterns
             )
         }
 

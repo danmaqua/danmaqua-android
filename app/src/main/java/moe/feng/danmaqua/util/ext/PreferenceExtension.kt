@@ -1,9 +1,6 @@
 package moe.feng.danmaqua.util.ext
 
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.SeekBarPreference
-import androidx.preference.TwoStatePreference
+import androidx.preference.*
 
 inline fun <T : TwoStatePreference> T.onValueChanged(
     crossinline block: T.(value: Boolean) -> Boolean
@@ -26,6 +23,14 @@ inline fun <T : SeekBarPreference> T.onValueChanged(
 ) {
     setOnPreferenceChangeListener { preference, newValue ->
         (preference as T).block(newValue as Int)
+    }
+}
+
+inline fun <T : EditTextPreference> T.onValueChanged(
+    crossinline block: T.(value: String) -> Boolean
+) {
+    setOnPreferenceChangeListener { preference, newValue ->
+        (preference as T).block(newValue as? String ?: "")
     }
 }
 

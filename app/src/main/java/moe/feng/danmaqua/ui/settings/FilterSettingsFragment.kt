@@ -19,6 +19,8 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.dialog.PatternTestDialogFragment
+import moe.feng.danmaqua.util.ext.onClick
+import moe.feng.danmaqua.util.ext.onValueChanged
 import java.lang.Exception
 import java.util.regex.Pattern
 
@@ -30,55 +32,53 @@ class FilterSettingsFragment : BasePreferenceFragment() {
 
     }
 
-    private val enabledPref by lazy { findPreference<SwitchPreference>("filter_enabled")!! }
-    private val patternPref by lazy { findPreference<EditTextPreference>("filter_pattern")!! }
-    private val testPatternPref by lazy {
-        findPreference<Preference>("filter_test_pattern")!!
-    }
-    private val blockedUsersPref by lazy {
-        findPreference<Preference>("filter_blocked_users")!!
-    }
-    private val blockedTextPref by lazy {
-        findPreference<Preference>("filter_blocked_text")!!
-    }
+    private val enabledPref by preference<SwitchPreference>("filter_enabled")
+    private val patternPref by preference<EditTextPreference>("filter_pattern")
+    private val testPatternPref by preference<Preference>("filter_test_pattern")
+    private val blockedUsersPref by preference<Preference>("filter_blocked_users")
+    private val blockedTextPref by preference<Preference>("filter_blocked_text")
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preference_filter)
 
-        enabledPref.setOnPreferenceChangeListener(this::onEnabledChanged)
+        enabledPref.onValueChanged { value ->
+            Settings.commit {
+                filterEnabled = value
+            }
+            true
+        }
 
-        patternPref.setOnPreferenceChangeListener(this::onPatternChanged)
+        patternPref.onValueChanged { value ->
+            onPatternChanged(value)
+        }
         patternPref.setSummaryProvider {
             getString(R.string.filter_settings_pattern_summary_format, patternPref.text)
         }
 
-        testPatternPref.setOnPreferenceClickListener {
+        testPatternPref.onClick {
             PatternTestDialogFragment.newInstance(
-                pattern = Settings.Filter.pattern, sampleText = "【测试弹幕】"
+                pattern = Settings.filterPattern, sampleText = "【测试弹幕】"
             ).show(childFragmentManager, "pattern_test_dialog")
-            true
         }
 
-        blockedUsersPref.setOnPreferenceClickListener {
+        blockedUsersPref.onClick {
             PreferenceActivity.launch(activity!!, ManageBlockedUsersFragment.ACTION)
-            true
         }
 
-        blockedTextPref.setOnPreferenceClickListener {
+        blockedTextPref.onClick {
             PreferenceActivity.launch(activity!!, ManageBlockedTextFragment.ACTION)
-            true
         }
 
         updatePrefValues()
     }
 
     private fun updatePrefValues() = launch {
-        enabledPref.isChecked = Settings.Filter.enabled
-        patternPref.text = Settings.Filter.pattern
+        enabledPref.isChecked = Settings.filterEnabled
+        patternPref.text = Settings.filterPattern
         blockedUsersPref.summary = getString(R.string.filter_settings_blocked_users_summary_format,
             DanmaquaDB.instance.blockedUsers().count())
         blockedTextPref.summary = getString(R.string.filter_settings_blocked_text_summary_format,
-            Settings.Filter.blockedTextPatterns.size)
+            Settings.blockedTextPatterns.size)
     }
 
     override fun onSettingsChanged() {
@@ -89,17 +89,9 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         return context.getString(R.string.filter_settings_title)
     }
 
-    private fun onEnabledChanged(pref: Preference, newValue: Any): Boolean {
-        val value = newValue as? Boolean ?: false
-        Settings.Filter.enabled = value
-        Settings.notifyChanged(context!!)
-        return true
-    }
-
-    private fun onPatternChanged(pref: Preference, newValue: Any): Boolean {
-        val value = newValue as? String
-        if (value.isNullOrEmpty()) {
-            Settings.Filter.pattern = Danmaqua.DEFAULT_FILTER_PATTERN
+    private fun onPatternChanged(value: String): Boolean {
+        if (value.isEmpty()) {
+            Settings.filterPattern = Danmaqua.DEFAULT_FILTER_PATTERN
             patternPref.text = Danmaqua.DEFAULT_FILTER_PATTERN
         } else {
             try {
@@ -124,7 +116,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
                 }
                 return false
             }
-            Settings.Filter.pattern = value
+            Settings.filterPattern = value
         }
         Settings.notifyChanged(context!!)
         return true

@@ -65,7 +65,7 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
             manager.createNotificationChannel(channel)
         }
 
-        AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.UI.darkMode)
+        AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.darkMode)
 
         eventsHelper.registerListener(this)
     }

@@ -15,8 +15,8 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.manage_blocked_text_layout.*
-import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
+import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.ui.BaseFragment
@@ -36,7 +36,7 @@ class ManageBlockedTextFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        items = Danmaqua.Settings.Filter.blockedTextPatterns
+        items = Settings.blockedTextPatterns
     }
 
     override fun onCreateView(
@@ -67,8 +67,9 @@ class ManageBlockedTextFragment : BaseFragment() {
     private fun onAddButtonClick(view: View) {
         showEditDialog(R.string.action_add_rule) { newValue ->
             setItems((items.toMutableList() + newValue).toList())
-            Danmaqua.Settings.Filter.blockedTextPatterns = items
-            context?.let { Danmaqua.Settings.notifyChanged(it) }
+            Settings.commit {
+                blockedTextPatterns = items
+            }
         }
     }
 
@@ -77,8 +78,9 @@ class ManageBlockedTextFragment : BaseFragment() {
             val mutableItems = items.toMutableList()
             mutableItems[position] = newValue
             setItems(mutableItems.toList())
-            Danmaqua.Settings.Filter.blockedTextPatterns = items
-            context?.let { Danmaqua.Settings.notifyChanged(it) }
+            Settings.commit {
+                blockedTextPatterns = items
+            }
         }
     }
 
@@ -86,8 +88,9 @@ class ManageBlockedTextFragment : BaseFragment() {
         val mutableItems = items.toMutableList()
         mutableItems.removeAt(position)
         setItems(mutableItems.toList())
-        Danmaqua.Settings.Filter.blockedTextPatterns = items
-        context?.let { Danmaqua.Settings.notifyChanged(it) }
+        Settings.commit {
+            blockedTextPatterns = items
+        }
     }
 
     private fun showEditDialog(@StringRes titleRes: Int,

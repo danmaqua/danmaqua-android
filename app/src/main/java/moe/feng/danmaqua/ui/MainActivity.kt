@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,7 +31,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.IDanmakuListenerCallback
@@ -605,10 +603,11 @@ class MainActivity : BaseActivity(),
     override fun onBlockText(item: BiliChatDanmaku, blockRule: BlockedTextRule) {
         launch {
             onHideDanmaku(item)
-            val patterns = Settings.Filter.blockedTextPatterns.toMutableList()
+            val patterns = Settings.blockedTextPatterns.toMutableList()
             patterns.add(blockRule)
-            Settings.Filter.blockedTextPatterns = patterns
-            Settings.notifyChanged(this@MainActivity)
+            Settings.commit {
+                blockedTextPatterns = patterns
+            }
         }
     }
 
