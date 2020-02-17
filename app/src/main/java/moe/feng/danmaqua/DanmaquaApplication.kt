@@ -13,6 +13,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.tencent.mmkv.MMKV
+import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.event.SettingsChangedListener
@@ -45,6 +46,7 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
         val okHttpCache = Cache(okHttpCacheDir, cacheSize)
         HttpUtils.setCache(okHttpCache)
 
+        EventsHelper.getInstance(this)
         DanmaquaDB.init(this)
         MMKV.initialize(this)
         Picasso.setSingletonInstance(Picasso.Builder(this)

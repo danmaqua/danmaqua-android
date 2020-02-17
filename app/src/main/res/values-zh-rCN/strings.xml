@@ -173,7 +173,7 @@
 
     <string name="floating_settings_title">悬浮窗</string>
     <string name="floating_settings_summary"><![CDATA[
-    两行模式，背景透明度，字体大小
+    两行模式，简化移动手势，背景透明度，字体大小
     ]]></string>
     <string name="floating_two_line_title">两行模式</string>
     <string name="floating_two_line_summary">显示成两行字幕</string>
@@ -267,5 +267,10 @@
 
     <string name="view_vtubers_group_title">查看虚拟主播团体</string>
     <string name="cannot_find_vtuber_in_catalog">目录里找不到虚拟主播？</string>
+
+    <string name="floating_touch_to_move_title">简化移动手势</string>
+    <string name="floating_touch_to_move_summary"><![CDATA[
+    触摸代替长按开始移动
+    ]]></string>
 
 </resources>

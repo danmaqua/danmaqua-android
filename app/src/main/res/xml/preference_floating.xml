@@ -9,6 +9,12 @@
         android:summary="@string/floating_two_line_summary"
         android:icon="@drawable/ic_two_line_24_text_color_primary"/>
 
+    <androidx.preference.SwitchPreference
+        android:key="floating_touch_to_move"
+        android:title="@string/floating_touch_to_move_title"
+        android:summary="@string/floating_touch_to_move_summary"
+        android:icon="@drawable/ic_trip_origin_24_text_color_primary"/>
+
     <androidx.preference.SeekBarPreference
         android:key="floating_background_alpha"
         android:title="@string/floating_background_alpha_title"

@@ -80,6 +80,7 @@ class FloatingWindowHolder(
     var textSize: Int = 14
     var twoLine: Boolean = false
     var backgroundAlpha: Int = 255
+    var touchToMoveEnabled: Boolean = true
     val danmakuFilter: DanmakuFilter get() = onGetDanmakuFilter()
 
     val backgroundView: View = rootView.findViewById(R.id.floatingBackground)
@@ -143,9 +144,10 @@ class FloatingWindowHolder(
     }
 
     fun loadSettings() {
-        textSize = Settings.Floating.textSize
-        twoLine = Settings.Floating.twoLine
-        backgroundAlpha = Settings.Floating.backgroundAlpha
+        textSize = Settings.floatingTextSize
+        twoLine = Settings.floatingTwoLine
+        backgroundAlpha = Settings.floatingBackgroundAlpha
+        touchToMoveEnabled = Settings.floatingTouchToMove
 
         captionView.textSize = textSize.toFloat()
         backgroundView.alpha = backgroundAlpha.toFloat() / 255F
@@ -284,16 +286,27 @@ class FloatingWindowHolder(
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         if (!isDragging) {
-                            dragStartJob = launch {
-                                delay(longPressDuration)
-                                synchronized(calcLock) {
-                                    if (!isTouchOutOfView) {
-                                        v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                                        initialX = windowLayoutParams.x
-                                        initialY = windowLayoutParams.y
-                                        initialTouchX = currentTouchX
-                                        initialTouchY = currentTouchY
-                                        isDragging = true
+                            if (touchToMoveEnabled) {
+                                v.performHapticFeedback(
+                                    HapticFeedbackConstants.CLOCK_TICK)
+                                initialX = windowLayoutParams.x
+                                initialY = windowLayoutParams.y
+                                initialTouchX = event.rawX
+                                initialTouchY = event.rawY
+                                isDragging = true
+                            } else {
+                                dragStartJob = launch {
+                                    delay(longPressDuration)
+                                    synchronized(calcLock) {
+                                        if (!isTouchOutOfView) {
+                                            v.performHapticFeedback(
+                                                HapticFeedbackConstants.LONG_PRESS)
+                                            initialX = windowLayoutParams.x
+                                            initialY = windowLayoutParams.y
+                                            initialTouchX = currentTouchX
+                                            initialTouchY = currentTouchY
+                                            isDragging = true
+                                        }
                                     }
                                 }
                             }

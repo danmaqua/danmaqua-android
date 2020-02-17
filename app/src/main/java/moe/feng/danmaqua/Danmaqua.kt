@@ -36,6 +36,11 @@ object Danmaqua {
 
         private val mmkv: MMKV get() = MMKV.defaultMMKV()
 
+        fun commit(context: Context? = null, block: Settings.() -> Unit) {
+            Settings.block()
+            notifyChanged(context)
+        }
+
         var introduced: Boolean by mmkv.booleanProperty(
             key = "introduced", defaultValue = false
         )
@@ -69,26 +74,25 @@ object Danmaqua {
 
         }
 
-        object Floating {
+        var floatingBackgroundAlpha: Int by mmkv.intProperty(
+            key = "floating_alpha", defaultValue = 255
+        )
 
-            var backgroundAlpha: Int by mmkv.intProperty(
-                key = "floating_alpha", defaultValue = 255
-            )
+        var floatingTextSize: Int by mmkv.intProperty(
+            key = "floating_text_size", defaultValue = 14
+        )
 
-            var textSize: Int by mmkv.intProperty(
-                key = "floating_text_size", defaultValue = 14
-            )
+        var floatingTwoLine: Boolean by mmkv.booleanProperty(
+            key = "floating_two_line", defaultValue = false
+        )
 
-            var twoLine: Boolean by mmkv.booleanProperty(
-                key = "floating_two_line", defaultValue = false
-            )
+        var floatingTouchToMove: Boolean by mmkv.booleanProperty(
+            key = "floating_touch_to_move", defaultValue = true
+        )
 
-        }
-
-        fun notifyChanged(context: Context) {
-            EventsHelper.getInstance(context)
-                .of<SettingsChangedListener>()
-                .onSettingsChanged()
+        fun notifyChanged(context: Context? = null) {
+            val helper = context?.let { EventsHelper.getInstance(it) } ?: EventsHelper.getInstance()
+            helper.of<SettingsChangedListener>().onSettingsChanged()
         }
 
     }
