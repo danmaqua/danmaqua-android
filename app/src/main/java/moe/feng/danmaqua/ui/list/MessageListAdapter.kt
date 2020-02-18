@@ -1,14 +1,22 @@
 package moe.feng.danmaqua.ui.list
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
 import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.util.ext.TAG
 
 class MessageListAdapter(
     val list: MutableList<Parcelable> = mutableListOf(),
     val onItemAdded: (MessageListAdapter) -> Unit = {}
 ) : MultiTypeAdapter(items = list) {
+
+    companion object {
+
+        const val MAX_ITEMS_COUNT = 100
+
+    }
 
     private val listLock: Any = object {}
 
@@ -17,10 +25,21 @@ class MessageListAdapter(
         register(SystemMessageItemViewDelegate())
     }
 
+    private fun modifyListAndDispatchUpdate(block: () -> Unit) {
+        val oldList = list.toList()
+        block()
+        DiffUtil.calculateDiff(ListDiffCallback(oldList, list))
+            .dispatchUpdatesTo(this)
+    }
+
     fun addDanmaku(danmaku: BiliChatDanmaku) {
         synchronized(listLock) {
-            list += danmaku
-            notifyItemInserted(list.size - 1)
+            modifyListAndDispatchUpdate {
+                list += danmaku
+                if (list.size > MAX_ITEMS_COUNT) {
+                    list.removeAt(0)
+                }
+            }
         }
 
         onItemAdded(this)
@@ -28,8 +47,12 @@ class MessageListAdapter(
 
     fun addSystemMessage(text: String) {
         synchronized(listLock) {
-            list += SystemMessageItemViewDelegate.Item(text)
-            notifyItemInserted(list.size - 1)
+            modifyListAndDispatchUpdate {
+                list += SystemMessageItemViewDelegate.Item(text)
+                if (list.size > MAX_ITEMS_COUNT) {
+                    list.removeAt(0)
+                }
+            }
         }
 
         onItemAdded(this)
@@ -47,10 +70,9 @@ class MessageListAdapter(
 
     fun removeDanmakuByUid(uid: Long) {
         synchronized(listLock) {
-            val oldList = list.toList()
-            list.removeAll { it is BiliChatDanmaku && it.senderUid == uid }
-            DiffUtil.calculateDiff(ListDiffCallback(oldList, list))
-                .dispatchUpdatesTo(this)
+            modifyListAndDispatchUpdate {
+                list.removeAll { it is BiliChatDanmaku && it.senderUid == uid }
+            }
         }
     }
 

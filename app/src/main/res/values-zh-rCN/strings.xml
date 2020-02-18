@@ -284,4 +284,9 @@
     没有订阅，请先在主菜单订阅主播。
     ]]></string>
 
+    <string name="listener_service_noti_disconnected_text_format"><![CDATA[
+    已从房间 %1$s(%2$d) 断开。点击这里打开主界面。
+    ]]></string>
+    <string name="listener_service_noti_reconnect">重连</string>
+
 </resources>
