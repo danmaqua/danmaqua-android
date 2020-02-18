@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
 import com.google.androidbrowserhelper.trusted.TwaLauncher
@@ -118,7 +119,7 @@ class DrawerViewFragment : BaseFragment() {
             REQUEST_CODE_NEW_SUBSCRIPTION -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val subscription = data.getParcelableExtra<Subscription>(EXTRA_DATA) ?: return
-                    launch {
+                    lifecycleScope.launch {
                         val dao = database.subscriptions()
                         if (dao.findByUid(subscription.uid) == null) {
                             if (dao.findSelected() == null) {
@@ -136,7 +137,7 @@ class DrawerViewFragment : BaseFragment() {
             }
             REQUEST_CODE_MANAGE_SUBSCRIPTION -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    launch {
+                    lifecycleScope.launch {
                         val dao = database.subscriptions()
                         val selectedSubscription = dao.findSelected() ?: dao.getAll().firstOrNull()
                         selectedSubscription?.selected = true
@@ -153,7 +154,7 @@ class DrawerViewFragment : BaseFragment() {
     private fun updateAdapterData(
         updateItems: List<Subscription>? = null,
         scrollToSelection: Boolean = false
-    ) = launch {
+    ) = lifecycleScope.launch {
         val oldItems = drawerListAdapter.items
         val newItems = withContext(Dispatchers.IO) {
             val result = mutableListOf<Any>()
@@ -192,7 +193,7 @@ class DrawerViewFragment : BaseFragment() {
         }
 
         override fun onSubscriptionItemClick(item: Subscription) {
-            launch {
+            lifecycleScope.launch {
                 val dao = database.subscriptions()
                 val items = dao.getAll()
                 items.forEach {
@@ -210,7 +211,7 @@ class DrawerViewFragment : BaseFragment() {
                 .setTitle(R.string.unsubscribe_dialog_title)
                 .setMessage(getString(R.string.unsubscribe_dialog_message, item.username))
                 .setPositiveButton(android.R.string.yes) { _, _ ->
-                    launch {
+                    lifecycleScope.launch {
                         val dao = database.subscriptions()
                         val lastSelected = item.selected
                         dao.delete(item)

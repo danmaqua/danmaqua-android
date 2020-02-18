@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.manage_blocked_users_layout.*
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua
@@ -53,7 +53,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
 
         addButton.setOnClickListener(this::onAddButtonClick)
 
-        launch {
+        lifecycleScope.launch {
             items = database.blockedUsers().getAll()
             adapter.notifyDataSetChanged()
         }
@@ -77,7 +77,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
                     ).show()
                     return@setPositiveButton
                 }
-                launch {
+                lifecycleScope.launchWhenResumed {
                     val info = UserApi.getSpaceInfo(uid)
                     if (info.code == 0) {
                         showConfirmDialog(info)
@@ -95,7 +95,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
     }
 
     private fun onDeleteButtonClick(position: Int) {
-        launch {
+        lifecycleScope.launch {
             database.blockedUsers().delete(items[position])
             setItems(database.blockedUsers().getAll())
             context?.let { Danmaqua.Settings.notifyChanged(it) }
@@ -115,7 +115,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
             .setTitle(R.string.confirm_add_blocked_user_title)
             .setView(dialogView)
             .setPositiveButton(android.R.string.yes) { _, _ ->
-                launch {
+                lifecycleScope.launch {
                     database.blockedUsers().add(BlockedUserRule(
                         info.data.uid,
                         info.data.name,
