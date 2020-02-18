@@ -1,0 +1,292 @@
+<resources>
+
+    <string name="app_name">懸浮字幕</string>
+
+    <string name="action_connect">連接</string>
+    <string name="action_disconnect">停止</string>
+    <string name="action_settings">設定 &amp; 關於</string>
+    <string name="action_set_filter">過濾</string>
+    <string name="action_open_a_floating_window">打開懸浮窗</string>
+    <string name="action_open_stream">觀看直播</string>
+    <string name="action_room_info">房間資訊</string>
+    <string name="action_back_to_latest">回到最新</string>
+    <string name="action_support_us">支援我們</string>
+    <string name="action_help">幫助</string>
+
+    <string name="sys_msg_connected_to_room"><![CDATA[
+    <b>已連接到房間：</b> %d
+    ]]></string>
+    <string name="sys_msg_disconnected"><![CDATA[
+    已從直播間斷開。
+    ]]></string>
+
+    <string name="toast_connect_room_before_opening_float"><![CDATA[
+    請在顯示懸浮窗前連接一個直播間。
+    ]]></string>
+
+    <string name="chooser_title_choose_apps_to_watch_stream">選擇用於觀看直播的應用程式</string>
+
+    <string name="action_new_subscription">訂閱主播…</string>
+    <string name="action_manage_subscription">管理列表</string>
+    <string name="app_name_with_version_text_format">%s · 版本 %s (%d)</string>
+
+    <string name="action_block_this_text">屏蔽這個文本</string>
+    <string name="action_block_this_user">屏蔽這個使用者</string>
+    <string name="action_hide_this_danmaku">隱藏這條彈幕</string>
+
+    <string name="no_streamer_selected_title">未選擇主播</string>
+    <string name="status_disconnected">未連接</string>
+    <string name="status_connected_with_popularity">線上。人氣值：%d</string>
+
+    <string name="no_streamer_selected_dialog_title">未選擇主播</string>
+    <string name="no_streamer_selected_dialog_message"><![CDATA[
+    你必須先訂閱一個主播來連接他的直播間。點按左上角的按鈕或拉出左側抽屜來開始訂閱。
+    ]]></string>
+
+    <string name="unsubscribe_dialog_title">取消訂閱</string>
+    <string name="unsubscribe_dialog_message"><![CDATA[
+    你要取消訂閱 %s 嗎？這個直播間將會從列表中移除，但稍後你可以重新訂閱他。
+    ]]></string>
+
+    <string name="new_subscription_title">新增訂閱</string>
+    <string name="room_id_edit_hint">在這鍵入房間號…</string>
+    <string name="action_subscribe">訂閱</string>
+    <string name="toast_invalid_room_id">無效的房間號，請輸入一個正整數。</string>
+    <string name="action_search_room_id">搜尋房間</string>
+    <string name="search_room_id_no_result_dialog_title">沒有結果</string>
+    <string name="search_room_id_no_result_dialog_message"><![CDATA[
+    無法根據房間號找到主播，請檢查你的輸入是否正確然後重試。
+    ]]></string>
+    <string name="recommended_streamers_title">推薦主播</string>
+    <string name="cannot_load_data_text">無法載入資料</string>
+    <string name="subscribe_existing_streamer_dialog_title">已訂閱</string>
+    <string name="subscribe_existing_streamer_dialog_message"><![CDATA[
+    你已經訂閱過 %s 了。
+    ]]></string>
+    <string name="confirm_subscribe_streamer_dialog_title">訂閱主播</string>
+    <string name="room_id_text_format">房間號：%d</string>
+
+    <string name="noti_channel_status">通知狀態</string>
+
+    <string name="listener_service_label">彈幕背景服務</string>
+    <string name="listener_service_noti_title">懸浮字幕正在為你監聽彈幕</string>
+    <string name="listener_service_noti_text_no_connected"><![CDATA[
+    未進入直播間，點擊這裡打開主頁。
+    ]]></string>
+    <string name="listener_service_noti_text_connected">已連接至：%1$s（%2$d）</string>
+    <string name="listener_service_noti_stop">停止</string>
+
+    <string name="room_info_title">房間資料</string>
+    <string name="room_info_loading_text">獲取資訊中…</string>
+    <string name="room_info_room_title">房間標題</string>
+    <string name="room_info_user_name_and_id">主播 ID</string>
+    <string name="room_info_room_id">房間號</string>
+    <string name="room_info_area">直播分區</string>
+    <string name="room_info_live_status">直播狀態</string>
+    <string name="room_info_copy_url">拷貝直播地址</string>
+
+    <string name="live_status_closed">已離線</string>
+    <string name="live_status_active">直播中</string>
+    <string name="live_status_carousel">輪播中</string>
+
+    <string name="overlay_permission_request_title">需要遮罩/懸浮窗權限</string>
+    <string name="overlay_permission_request_message"><![CDATA[
+    顯示懸浮窗需要申請遮罩/懸浮窗權限，點按“允許”然後遵循系統指引為這個程式打開權限。
+    ]]></string>
+    <string name="action_allow">允許</string>
+    <string name="action_deny">拒絕</string>
+
+    <string name="ask_show_floating_title">顯示懸浮窗</string>
+    <string name="ask_show_floating_message"><![CDATA[
+    懸浮窗可以在本程式主頁隱藏后繼續閱讀過濾後的彈幕（如同傳翻譯），你需要事先打開過濾開關並設定規則。\n\n
+    選擇懸浮窗顯示後的動作。
+    ]]></string>
+    <string name="action_stay_here">留在這裡</string>
+    <string name="action_minimize">最小化</string>
+
+    <string name="toast_floating_is_showing">懸浮窗顯示中。</string>
+
+    <string name="no_connections_available_title">無連接可用</string>
+    <string name="no_connections_available_message"><![CDATA[
+    我們檢查到你的手機未連接到任何網路，可能無法存取嗶哩嗶哩接口。如果你確定已經連接至網際網路，
+    點按“忽略”按鈕跳過這個檢查。
+    ]]></string>
+    <string name="action_ignore">忽略</string>
+    <string name="action_open_settings">打開設定</string>
+
+    <string name="settings_title">設定</string>
+
+    <string name="filter_settings_title">過濾</string>
+    <string name="filter_settings_summary"><![CDATA[
+    僅顯示過濾彈幕，過濾規則，測試過濾，屏蔽的文本與使用者
+    ]]></string>
+    <string name="filter_settings_enabled_title">僅顯示過濾彈幕</string>
+    <string name="filter_settings_enabled_summary">幫助你更容易閱讀同傳翻譯</string>
+    <string name="filter_settings_pattern_title">過濾規則</string>
+    <string name="filter_settings_pattern_summary_format"><![CDATA[
+    翻譯/字幕彈幕會以這個正則表達式進行篩選：%s
+    ]]></string>
+    <string name="filter_settings_blocked_users_title">已屏蔽的使用者</string>
+    <string name="filter_settings_blocked_users_summary_format"><![CDATA[
+    無論過濾開關是否打開，由這些使用者發送的彈幕都不會顯示。\n已屏蔽的使用者數量：%d
+    ]]></string>
+    <string name="filter_settings_blocked_text_title">已屏蔽的文本</string>
+    <string name="filter_settings_blocked_text_summary_format"><![CDATA[
+    無論過濾開關是否打開，符合這些文本規則的彈幕都不會顯示。\n規則數量：%d
+    ]]></string>
+    <string name="filter_settings_invalid_pattern_title">規則錯誤</string>
+    <string name="filter_settings_invalid_pattern_message"><![CDATA[
+    你的正則表達式規則是不合法的，這裡是回報日誌：
+    ]]></string>
+    <string name="action_what_is_regexp">正則表達式是什麼</string>
+    <string name="what_is_regexp_tutorial_url"><![CDATA[
+    https://www.runoob.com/regexp/regexp-tutorial.html
+    ]]></string>
+    <string name="filter_settings_test_pattern_title">調試過濾規則</string>
+    <string name="filter_settings_test_pattern_summary"><![CDATA[
+    測試規則是否能夠篩選出翻譯/字幕彈幕
+    ]]></string>
+
+    <string name="test_pattern_dialog_title">規則調試</string>
+    <string name="test_pattern_dialog_regexp">正則表達式（規則）</string>
+    <string name="test_pattern_dialog_sample_text">樣例文本</string>
+    <string name="test_pattern_dialog_status">匹配結果</string>
+    <string name="test_pattern_dialog_status_invalid_pattern">規則錯誤</string>
+    <string name="test_pattern_dialog_status_no_matches">沒有匹配</string>
+    <string name="test_pattern_dialog_status_matched">匹配到 %1$s → %2$s</string>
+    <string name="action_go_to_regexr_com">在 regexr.com 上調試</string>
+
+    <string name="manage_blocked_text_title">管理已屏蔽的文本</string>
+    <string name="action_add_rule">添加規則</string>
+    <string name="action_edit_rule">編輯規則</string>
+    <string name="action_delete_rule">移除規則</string>
+    <string name="rule_support_regexp_hint">這裡支持正則表達式</string>
+    <string name="toast_empty_input">你的輸入是空的。</string>
+    <string name="checkbox_is_regexp">正則表達式</string>
+
+    <string name="manage_blocked_user_title">管理已屏蔽的使用者</string>
+    <string name="add_blocked_user_title">添加屏蔽使用者</string>
+    <string name="add_blocked_user_uid_input_hint">當前只支持使用者 UID</string>
+    <string name="action_search">搜尋</string>
+    <string name="confirm_add_blocked_user_title">確定屏蔽使用者</string>
+    <string name="toast_cannot_find_user_by_uid_format">無法通過 UID %d 找到使用者</string>
+    <string name="uid_text_format">UID：%d</string>
+
+    <string name="floating_settings_title">懸浮窗</string>
+    <string name="floating_settings_summary"><![CDATA[
+    兩行模式，簡化移動手勢，背景透明度，字體大小
+    ]]></string>
+    <string name="floating_two_line_title">兩行模式</string>
+    <string name="floating_two_line_summary">顯示為兩行字幕</string>
+    <string name="floating_background_alpha_title">背景透明度</string>
+    <string name="floating_background_alpha_summary"><![CDATA[
+    範圍在 100–255 之間，最大值代表不透明。
+    ]]></string>
+    <string name="floating_text_size_title">字幕字體大小</string>
+    <string name="floating_text_size_summary">單位：sp</string>
+
+    <string name="about_title">關於</string>
+    <string name="about_project_repo_title">GitHub 倉庫</string>
+    <string name="about_contact_author_title">聯絡作者</string>
+    <string name="about_contact_author_summary">在微博、嗶哩嗶哩或電子郵箱上找到我</string>
+    <string name="author_siubeng_name">Siubeng</string>
+    <string name="author_siubeng_summary">程式 &amp; 設計</string>
+    <string name="about_author_weibo_title">微博主頁</string>
+    <string name="about_author_bilibili_title">嗶哩嗶哩空間</string>
+    <string name="about_author_email_title">通過電子郵件發送</string>
+    <string name="about_discussion_group_qq_title">討論 QQ 群</string>
+    <string name="toast_copied_to_clipboard">已拷貝至粘貼板</string>
+    <string name="about_open_source_licenses_title">開放式源碼項目許可證</string>
+    <string name="about_open_source_licenses_summary"><![CDATA[
+    這個項目的誕生離不開開源社區的支援
+    ]]></string>
+    <string name="about_road_map_title">路線圖</string>
+    <string name="about_road_map_summary">看看接下來我們想做什麼</string>
+
+    <string name="support_us_title">支援我們</string>
+    <string name="support_us_card_title">你的支援給予我們開發的動力</string>
+    <string name="support_us_card_summary"><![CDATA[
+    這個項目原先是處於我的個人需求去設計開發的，所以我很享受完善它的過程。\n
+    與此同時，我一個人花費了很多時間精力去開發它，但我仍然打算讓它開放免費無廣告來吸引更多的人去使用。\n
+    如果你樂意請我喝一杯奶茶的話，可以點按捐贈按鈕來支援我。我將十分感激！
+    ]]></string>
+    <string name="support_via_alipay">支付寶捐贈</string>
+    <string name="support_via_paypal">PayPal 捐贈（不推薦）</string>
+    <string name="no_alipay_dialog_title">沒有安裝支付寶</string>
+    <string name="no_alipay_dialog_message"><![CDATA[
+    啟動支付寶失敗了，但你仍可以手動鍵入我的帳號到支付寶轉賬頁面中。<br><br>這裡是帳號郵箱：<br><b>%s</b>
+    ]]></string>
+    <string name="thank_you_dialog_title">感謝你！</string>
+    <string name="thank_you_dialog_message"><![CDATA[
+    未來我們會在應用程式和網站上顯示捐贈者名單（或許會做成 Super Chat 的樣子）。歡迎加入討論群或關注作者
+    微博/嗶哩嗶哩帳號來獲取最新的更新資訊（你可以在設定中找到鏈接）。
+    ]]></string>
+
+    <string name="development_settings_title">開發者選項</string>
+    <string name="firebase_instance_id_title">Firebase 實例編號</string>
+    <string name="firebase_instance_id_not_registered_yet">未註冊</string>
+    <string name="enabled_analytics_settings_title">Firebase 分析 &amp; 崩潰統計</string>
+    <string name="enabled_analytics_settings_summary"><![CDATA[
+    幫助我們更好地改善我們的產品體驗，它只會收集程式內使用狀況、崩潰日誌這類的匿名資料。
+    ]]></string>
+    <string name="restart_to_intro_title">重啟到引導頁</string>
+
+    <string name="user_interface_title">使用者介面</string>
+    <string name="user_interface_summary"><![CDATA[
+    夜間主題
+    ]]></string>
+    <string name="dark_mode_title">夜間主題</string>
+    <string name="dark_mode_force_off">始終停用</string>
+    <string name="dark_mode_force_on">始終啟用</string>
+    <string name="dark_mode_follow_system">跟隨系統</string>
+
+    <string name="intro_allow_collect_data"><![CDATA[
+    3.允許懸浮字幕<b>收集並上載匿名資料</b>如程式內使用狀況和崩潰日誌以便我們更好地改善體驗。（可選）
+    ]]></string>
+    <string name="intro_allow_internet_access"><![CDATA[
+    1.允許懸浮字幕使用<b>網際網路權限</b>來存取嗶哩嗶哩接口。<b>（必選）</b>
+    ]]></string>
+    <string name="intro_allow_background_service"><![CDATA[
+    2.允許懸浮字幕在使用者檢視直播彈幕/字幕時<b>運行背景服務</b>。<b>（必選）</b>
+    ]]></string>
+    <string name="intro_start_button">開始使用</string>
+    <string name="intro_collect_data_disabled_title">禁用了統計 SDK</string>
+    <string name="intro_collect_data_disabled_message"><![CDATA[
+    現在我們不會收集或上載匿名資料了，推薦重新打開以便我們更好地改善程式。
+    ]]></string>
+
+    <string name="action_reload">重新加載</string>
+    <string name="failed_to_connect_dialog_title">無法連接</string>
+    <string name="failed_to_connect_dialog_message"><![CDATA[
+    請檢查你的網路是否能夠連接到嗶哩嗶哩然後再重試。如果問題無法解決，你可能需要升級應用程式。
+    ]]></string>
+
+    <string name="view_vtubers_catalog_title">虛擬主播目錄</string>
+    <string name="view_vtubers_catalog_summary"><![CDATA[
+    僅有擁有嗶哩嗶哩官方直播間的虛擬主播才會顯示在這裡
+    ]]></string>
+
+    <string name="view_vtubers_group_title">查看虛擬主播團體</string>
+    <string name="cannot_find_vtuber_in_catalog">目錄里找不到虛擬主播？</string>
+
+    <string name="floating_touch_to_move_title">簡化移動手勢</string>
+    <string name="floating_touch_to_move_summary"><![CDATA[
+    觸摸代替長按開始移動
+    ]]></string>
+
+    <string name="successfully_updated_dialog_title">更新日誌</string>
+    <string name="successfully_updated_dialog_message"><![CDATA[
+    你已經成功升級應用版本到 %s！你想要了解這個版本變更了什麼嗎？
+    ]]></string>
+
+    <string name="manage_subscription_title">管理訂閱</string>
+    <string name="manage_subscription_empty_text"><![CDATA[
+    沒有訂閱，請先在主菜單訂閱主播。
+    ]]></string>
+
+    <string name="listener_service_noti_disconnected_text_format"><![CDATA[
+    已從房間 %1$s(%2$d) 斷開。點按這裡打開主頁。
+    ]]></string>
+    <string name="listener_service_noti_reconnect">重連</string>
+
+</resources>

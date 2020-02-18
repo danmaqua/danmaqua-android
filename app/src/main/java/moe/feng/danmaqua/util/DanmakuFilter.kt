@@ -7,7 +7,7 @@ import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
-import java.lang.Exception
+import kotlin.Exception
 
 interface DanmakuFilter {
 
@@ -30,6 +30,12 @@ interface DanmakuFilter {
                 },
                 blockedWords = if (patternOnly) emptyList() else Settings.blockedTextPatterns
             )
+        }
+
+        @Throws(Exception::class)
+        fun forTest(patternText: String?): DanmakuFilter? {
+            val pattern = Pattern.compile(patternText)
+            return DanmaquaFilter(pattern, emptyList(), emptyList())
         }
 
         @VisibleForTesting

@@ -117,7 +117,7 @@ class PatternTestDialogFragment : BaseDialogFragment() {
         updateStatusJob = lifecycleScope.launch {
             val textResult = withContext(Dispatchers.IO) {
                 try {
-                    val danmakuFilter = DanmakuFilter.fromSettings(true)
+                    val danmakuFilter = DanmakuFilter.forTest(pattern)
                     val sampleDanmaku = BiliChatDanmaku(
                         cmd = BiliChatMessage.CMD_DANMAKU,
                         text = sampleText,
@@ -125,7 +125,7 @@ class PatternTestDialogFragment : BaseDialogFragment() {
                         senderName = "",
                         timestamp = System.currentTimeMillis() / 2
                     )
-                    if (danmakuFilter(sampleDanmaku)) {
+                    if (danmakuFilter?.invoke(sampleDanmaku) == true) {
                         getString(R.string.test_pattern_dialog_status_matched,
                             sampleText,
                             danmakuFilter.unescapeSubtitle(sampleDanmaku)?.flattenToString())
