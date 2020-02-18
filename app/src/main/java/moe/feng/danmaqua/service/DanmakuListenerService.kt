@@ -1,5 +1,6 @@
 package moe.feng.danmaqua.service
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -15,6 +16,7 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
 import moe.feng.danmaqua.Danmaqua.NOTI_ID_LISTENER_STATUS
 import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_ENTER_MAIN
+import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_RECONNECT
 import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_STOP
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
@@ -28,6 +30,7 @@ import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.util.DanmakuFilter
+import moe.feng.danmaqua.util.ListenerServiceNotificationHelper
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.eventsHelper
 import java.io.EOFException
@@ -40,23 +43,23 @@ class DanmakuListenerService :
 
         const val ACTION_START = "start"
         const val ACTION_STOP = "stop"
+        const val ACTION_RECONNECT = "reconnect"
 
     }
 
     private val binder: AidlInterfaceImpl = AidlInterfaceImpl()
-    private val notificationManager by lazy { getSystemService<NotificationManager>()!! }
 
     private var danmakuFilter: DanmakuFilter = DanmakuFilter.fromSettings()
 
+    private var lastConnectedRoom: Long? = null
     private var danmakuListener: DanmakuListener? = null
     private val serviceCallbacks: MutableList<CallbackHolder> = mutableListOf()
 
     private var floatingHolder: FloatingWindowHolder? = null
     private val isFloatingShowing: Boolean get() = floatingHolder?.isAdded == true
 
-    private lateinit var notification: Notification
-    private val notificationBuilder: NotificationCompat.Builder =
-        NotificationCompat.Builder(this, NOTI_CHANNEL_ID_STATUS)
+    private val notiHelper: ListenerServiceNotificationHelper =
+        ListenerServiceNotificationHelper(this)
 
     override fun onBind(intent: Intent?): IBinder? {
         return binder
@@ -67,35 +70,7 @@ class DanmakuListenerService :
         Log.d(TAG, "Called onCreate")
 
         // Initialize status notification
-        val enterIntent = Intent(this, MainActivity::class.java)
-        val enterPi = PendingIntent.getActivity(
-            this,
-            PENDING_INTENT_REQUEST_ENTER_MAIN,
-            enterIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
-        val stopIntent = Intent(this, DanmakuListenerService::class.java)
-        stopIntent.putExtra(EXTRA_ACTION, ACTION_STOP)
-        val stopPi = PendingIntent.getService(
-            this,
-            PENDING_INTENT_REQUEST_STOP,
-            stopIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
-        with (notificationBuilder) {
-            setSmallIcon(R.drawable.ic_noti_subtitles_24)
-            setContentTitle(getString(R.string.listener_service_noti_title))
-            setContentText(getString(R.string.listener_service_noti_text_no_connected))
-            setOngoing(true)
-            setShowWhen(false)
-            setContentIntent(enterPi)
-            addAction(
-                R.drawable.ic_noti_action_stop_24,
-                getString(R.string.listener_service_noti_stop),
-                stopPi
-            )
-        }
-        notification = notificationBuilder.build()
+        notiHelper.onCreate()
 
         eventsHelper.registerListener(this)
     }
@@ -107,7 +82,7 @@ class DanmakuListenerService :
         destroyFloatingView()
         try {
             stopForeground(true)
-            notificationManager.cancel(NOTI_ID_LISTENER_STATUS)
+            notiHelper.cancel()
         } catch (e: Exception) {
 
         }
@@ -120,7 +95,13 @@ class DanmakuListenerService :
         Log.d(TAG, "onStartCommand: action=$action")
         when (action) {
             ACTION_START -> {
-                startForeground(NOTI_ID_LISTENER_STATUS, notification)
+                notiHelper.startForegroundForService()
+            }
+            ACTION_STOP -> {
+                stopSelf()
+            }
+            ACTION_RECONNECT -> {
+                lastConnectedRoom?.run(::connect)
             }
         }
         return START_STICKY
@@ -159,6 +140,7 @@ class DanmakuListenerService :
 
             }
             try {
+                lastConnectedRoom = roomId
                 danmakuListener = DanmakuListener(roomId, this@DanmakuListenerService)
                 danmakuListener?.connect()
             } catch (e: Exception) {
@@ -181,20 +163,16 @@ class DanmakuListenerService :
         }
     }
 
+    @SuppressLint("RestrictedApi")
+    private fun NotificationCompat.Builder.setNotificationActions(showReconnect: Boolean = false) {
+        val service = this@DanmakuListenerService
+
+
+    }
+
     override fun onConnect() {
         danmakuListener?.let {
-            launch {
-                val current = DanmaquaDB.instance.subscriptions().findByRoomId(it.roomId)
-                val username = current?.username ?: it.roomId.toString()
-
-                notificationBuilder.setContentText(getString(
-                    R.string.listener_service_noti_text_connected,
-                    username,
-                    it.roomId
-                ))
-                notification = notificationBuilder.build()
-                notificationManager.notify(NOTI_ID_LISTENER_STATUS, notification)
-            }
+            notiHelper.showConnectedNotification(it.roomId)
 
             for ((callback, _) in serviceCallbacks) {
                 callback.onConnect(it.roomId)
@@ -203,10 +181,7 @@ class DanmakuListenerService :
     }
 
     override fun onDisconnect(userReason: Boolean) {
-        notificationBuilder.setContentText(
-            getString(R.string.listener_service_noti_text_no_connected))
-        notification = notificationBuilder.build()
-        notificationManager.notify(NOTI_ID_LISTENER_STATUS, notification)
+        notiHelper.showDisconnectedNotification(lastConnectedRoom)
 
         for ((callback, _) in serviceCallbacks) {
             callback.onDisconnect()

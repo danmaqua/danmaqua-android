@@ -26,6 +26,7 @@ object Danmaqua {
 
     const val PENDING_INTENT_REQUEST_STOP = 10
     const val PENDING_INTENT_REQUEST_ENTER_MAIN = 11
+    const val PENDING_INTENT_REQUEST_RECONNECT = 12
 
     const val LEFT_PARENTHESIS = "〈｛『〖［《〔「【"
     const val RIGHT_PARENTHESIS = "〉｝『〗］》〕」】"

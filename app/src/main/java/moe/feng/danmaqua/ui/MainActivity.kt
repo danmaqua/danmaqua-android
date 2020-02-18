@@ -22,6 +22,7 @@ import androidx.core.content.getSystemService
 import androidx.core.view.*
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -537,8 +538,12 @@ class MainActivity : BaseActivity(),
             }
         }
         this.serviceConnection = serviceConnection
-        if (!bindService(serviceIntent, serviceConnection, 0)) {
-            startForegroundListenerService()
+        try {
+            if (!bindService(serviceIntent, serviceConnection, 0)) {
+                startForegroundListenerService()
+            }
+        } catch (ignored: Exception) {
+
         }
     }
 
@@ -586,6 +591,9 @@ class MainActivity : BaseActivity(),
     override fun onConfirmBlockUser(item: BiliChatDanmaku) {
         launch {
             val info = UserApi.getSpaceInfo(item.senderUid)
+            if (!isResumed) {
+                return@launch
+            }
             if (info.code == 0) {
                 MainConfirmBlockUserDialogFragment.show(this@MainActivity, item, info)
             } else {

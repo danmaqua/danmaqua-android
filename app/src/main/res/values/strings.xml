@@ -332,4 +332,9 @@
     No subscriptions. Please subscribe streamer from main drawer first.
     ]]></string>
 
+    <string name="listener_service_noti_disconnected_text_format"><![CDATA[
+    Disconnected from room: %1$s(%2$d). Click here to open main page.
+    ]]></string>
+    <string name="listener_service_noti_reconnect">Reconnect</string>
+
 </resources>
