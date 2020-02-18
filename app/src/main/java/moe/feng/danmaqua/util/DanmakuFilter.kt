@@ -17,7 +17,7 @@ interface DanmakuFilter {
             return AcceptAllFilter
         }
 
-        fun fromSettings(): DanmakuFilter {
+        fun fromSettings(patternOnly: Boolean = false): DanmakuFilter {
             val pattern = if (Settings.filterEnabled) {
                 Pattern.compile(Settings.filterPattern)
             } else {
@@ -25,10 +25,10 @@ interface DanmakuFilter {
             }
             return DanmaquaFilter(
                 pattern = pattern,
-                blockedUids = runBlocking {
+                blockedUids = if (patternOnly) emptyList() else runBlocking {
                     DanmaquaDB.instance.blockedUsers().getAll().map { it.uid }
                 },
-                blockedWords = Settings.blockedTextPatterns
+                blockedWords = if (patternOnly) emptyList() else Settings.blockedTextPatterns
             )
         }
 

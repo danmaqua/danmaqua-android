@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
@@ -54,7 +55,7 @@ abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {
             .setTitle(R.string.confirm_add_blocked_user_title)
             .setView(dialogView)
             .setPositiveButton(android.R.string.yes) { _, _ ->
-                launch { onConfirmBlock(BlockedUserRule(uid, username, face)) }
+                lifecycleScope.launch { onConfirmBlock(BlockedUserRule(uid, username, face)) }
             }
             .setNegativeButton(android.R.string.no, null)
             .show()

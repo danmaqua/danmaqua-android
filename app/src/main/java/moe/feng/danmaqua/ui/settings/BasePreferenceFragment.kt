@@ -2,21 +2,17 @@ package moe.feng.danmaqua.ui.settings
 
 import android.app.Activity
 import android.content.*
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.tencent.mmkv.MMKV
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.util.ext.eventsHelper
 
-abstract class BasePreferenceFragment :
-    PreferenceFragmentCompat(),
-    CoroutineScope by MainScope() {
+abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
 
     private var eventsHelper: EventsHelper? = null
     private val settingsChangedListener = object : SettingsChangedListener {
@@ -31,7 +27,6 @@ abstract class BasePreferenceFragment :
         super.onDestroy()
         eventsHelper?.unregisterListener(settingsChangedListener)
         eventsHelper = null
-        this.cancel()
     }
 
     override fun onAttach(context: Context) {
@@ -48,7 +43,7 @@ abstract class BasePreferenceFragment :
     fun setPreferenceClickListener(key: String,
                                    onClick: suspend CoroutineScope.() -> Unit) {
         findPreference<Preference>(key)!!.setOnPreferenceClickListener {
-            launch { onClick() }
+            lifecycleScope.launch { onClick() }
             true
         }
     }
@@ -76,5 +71,14 @@ abstract class BasePreferenceFragment :
     inline fun <reified T : Preference> preference(key: String): Lazy<T> {
         return lazy { findPreference<T>(key)!! }
     }
+
+    fun launchWhenCreated(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenCreated(block)
+
+    fun launchWhenStarted(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenStarted(block)
+
+    fun launchWhenResumed(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenResumed(block)
 
 }

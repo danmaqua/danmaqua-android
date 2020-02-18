@@ -2,6 +2,7 @@ package moe.feng.danmaqua.ui.settings
 
 import android.content.Context
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import kotlinx.coroutines.launch
@@ -57,7 +58,7 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
         updatePrefsValue()
     }
 
-    private fun updatePrefsValue() = launch {
+    private fun updatePrefsValue() = lifecycleScope.launch {
         twoLinePref.isChecked = Settings.floatingTwoLine
         touchToMovePref.isChecked = Settings.floatingTouchToMove
         backgroundAlphaPref.value = Settings.floatingBackgroundAlpha

@@ -1,15 +1,19 @@
 package moe.feng.danmaqua.ui.dialog
 
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.Job
 
-abstract class BaseDialogFragment : DialogFragment(), CoroutineScope by MainScope() {
+abstract class BaseDialogFragment : DialogFragment() {
 
-    override fun onDestroy() {
-        super.onDestroy()
-        this.cancel()
-    }
+    fun launchWhenCreated(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenCreated(block)
+
+    fun launchWhenStarted(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenStarted(block)
+
+    fun launchWhenResumed(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenResumed(block)
 
 }

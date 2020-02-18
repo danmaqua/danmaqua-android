@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import com.google.androidbrowserhelper.trusted.TwaLauncher
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.contact_author_dialog_layout.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.util.IntentUtils

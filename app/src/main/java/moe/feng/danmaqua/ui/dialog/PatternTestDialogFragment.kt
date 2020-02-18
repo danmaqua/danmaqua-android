@@ -10,14 +10,20 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.androidbrowserhelper.trusted.TwaLauncher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua.EXTRA_PREFIX
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.model.BiliChatMessage
+import moe.feng.danmaqua.util.DanmakuFilter
+import moe.feng.danmaqua.util.flattenToString
 import java.lang.Exception
-import java.util.regex.Pattern
 
 class PatternTestDialogFragment : BaseDialogFragment() {
 
@@ -108,20 +114,30 @@ class PatternTestDialogFragment : BaseDialogFragment() {
 
     private fun updateStatus() {
         updateStatusJob?.cancel()
-        updateStatusJob = launch {
-            try {
-                val matcher = Pattern.compile(pattern).matcher(sampleText)
-                if (matcher.matches() && matcher.groupCount() >= 1) {
-                    statusView.text = getString(R.string.test_pattern_dialog_status_matched,
-                        sampleText,
-                        matcher.group(1))
-                } else {
-                    statusView.setText(R.string.test_pattern_dialog_status_no_matches)
+        updateStatusJob = lifecycleScope.launch {
+            val textResult = withContext(Dispatchers.IO) {
+                try {
+                    val danmakuFilter = DanmakuFilter.fromSettings(true)
+                    val sampleDanmaku = BiliChatDanmaku(
+                        cmd = BiliChatMessage.CMD_DANMAKU,
+                        text = sampleText,
+                        senderUid = 1L,
+                        senderName = "",
+                        timestamp = System.currentTimeMillis() / 2
+                    )
+                    if (danmakuFilter(sampleDanmaku)) {
+                        getString(R.string.test_pattern_dialog_status_matched,
+                            sampleText,
+                            danmakuFilter.unescapeSubtitle(sampleDanmaku)?.flattenToString())
+                    } else {
+                        getString(R.string.test_pattern_dialog_status_no_matches)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    getString(R.string.test_pattern_dialog_status_invalid_pattern)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                statusView.setText(R.string.test_pattern_dialog_status_invalid_pattern)
             }
+            statusView.text = textResult
         }
     }
 

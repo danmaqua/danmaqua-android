@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
@@ -72,7 +73,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         updatePrefValues()
     }
 
-    private fun updatePrefValues() = launch {
+    private fun updatePrefValues() = lifecycleScope.launch {
         enabledPref.isChecked = Settings.filterEnabled
         patternPref.text = Settings.filterPattern
         blockedUsersPref.summary = getString(R.string.filter_settings_blocked_users_summary_format,

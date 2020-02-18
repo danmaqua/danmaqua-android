@@ -10,6 +10,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
@@ -74,7 +75,7 @@ class RoomInfoDialogFragment : BaseDialogFragment() {
         if (savedInstanceState == null) {
             loadingView.isVisible = true
             contentView.isGone = true
-            launch {
+            lifecycleScope.launch {
                 roomInfo = RoomApi.getRoomInfo(roomId)
                 bindViews()
             }
