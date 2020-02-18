@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.view_vtubers_catalog_activity.*
 import kotlinx.coroutines.launch
@@ -60,15 +61,13 @@ class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
 
         recyclerView.adapter = adapter
 
-        reloadButton.setOnClickListener {
-            launch {
-                vtuberGroup = null
-                loadGroup()
-            }
+        reloadButton.onClick {
+            vtuberGroup = null
+            loadGroup()
         }
 
         if (savedInstanceState == null) {
-            launch { loadGroup() }
+            lifecycleScope.launch { loadGroup() }
         } else {
             vtuberGroup = savedInstanceState.getParcelable(STATE_GROUP)
             setViewStates(false)
@@ -83,7 +82,7 @@ class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
     }
 
     override fun onCatalogSingleItem(item: VTuberSingleItem) {
-        launch {
+        launchWhenResumed {
             val subscription = database.subscriptions().findByUid(item.uid)
             if (subscription != null) {
                 val msg = getString(

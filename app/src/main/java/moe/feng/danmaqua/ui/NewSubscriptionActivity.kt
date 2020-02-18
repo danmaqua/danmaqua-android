@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.new_subscription_activity.*
 import kotlinx.coroutines.Dispatchers
@@ -62,7 +63,7 @@ class NewSubscriptionActivity : BaseActivity(),
 
         TooltipCompat.setTooltipText(searchButton, getString(R.string.action_search_room_id))
         searchButton.setOnClickListener {
-            launch {
+            lifecycleScope.launchWhenResumed {
                 val id = roomIdEdit.text.toString().trim().toLongOrNull() ?: 0L
                 if (id <= 0) {
                     Toast.makeText(
@@ -81,24 +82,18 @@ class NewSubscriptionActivity : BaseActivity(),
                         .setMessage(msg)
                         .setPositiveButton(android.R.string.ok, null)
                         .show()
-                    return@launch
+                    return@launchWhenResumed
                 }
                 try {
                     val subscription = getSubscription(id)
-                    if (isFinishing) {
-                        return@launch
-                    }
                     if (subscription != null) {
                         ConfirmSubscribeStreamerDialogFragment.show(
                             supportFragmentManager, subscription
                         )
-                        return@launch
+                        return@launchWhenResumed
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                }
-                if (isFinishing) {
-                    return@launch
                 }
                 AlertDialog.Builder(this@NewSubscriptionActivity)
                     .setTitle(R.string.search_room_id_no_result_dialog_title)
@@ -110,11 +105,9 @@ class NewSubscriptionActivity : BaseActivity(),
 
         recommendationList.adapter = adapter
 
-        reloadButton.setOnClickListener {
-            launch {
-                recommendation = null
-                loadRecommendation()
-            }
+        reloadButton.onClick {
+            recommendation = null
+            loadRecommendation()
         }
 
         viewCatalogButton.setOnClickListener {
@@ -124,7 +117,7 @@ class NewSubscriptionActivity : BaseActivity(),
         }
 
         if (savedInstanceState == null) {
-            launch { loadRecommendation() }
+            lifecycleScope.launch { loadRecommendation() }
         } else {
             recommendation = savedInstanceState.getParcelable(STATE_RECOMMENDATION)
             setRecommendationViews(false)
@@ -154,11 +147,8 @@ class NewSubscriptionActivity : BaseActivity(),
     }
 
     override fun onRecommendedStreamerItemClick(item: Recommendation.Item) {
-        launch {
+        launchWhenResumed {
             val subscription = database.subscriptions().findByUid(item.uid)
-            if (isFinishing) {
-                return@launch
-            }
             if (subscription != null) {
                 val msg = getString(
                     R.string.subscribe_existing_streamer_dialog_message,

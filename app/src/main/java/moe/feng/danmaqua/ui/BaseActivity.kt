@@ -6,14 +6,15 @@ import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.util.ResourcesUtils
 
-abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+abstract class BaseActivity : AppCompatActivity() {
 
     val defaultPreferences: SharedPreferences get() = MMKV.defaultMMKV()
 
@@ -60,17 +61,29 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        this.cancel()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun launchWhenCreated(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenCreated(block)
+
+    fun launchWhenStarted(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenStarted(block)
+
+    fun launchWhenResumed(block: suspend CoroutineScope.() -> Unit): Job =
+        lifecycleScope.launchWhenResumed(block)
+
+    fun View.onClick(block: suspend CoroutineScope.() -> Unit) {
+        setOnClickListener {
+            lifecycleScope.launch {
+                block()
+            }
+        }
     }
 
 }

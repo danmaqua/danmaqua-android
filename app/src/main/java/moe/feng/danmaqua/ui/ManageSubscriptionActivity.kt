@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
@@ -54,7 +55,7 @@ class ManageSubscriptionActivity : BaseActivity() {
             }
         })
 
-        launch {
+        lifecycleScope.launch {
             list.clear()
             list.addAll(database.subscriptions().getAll())
             adapter.notifyDataSetChanged()
@@ -82,7 +83,7 @@ class ManageSubscriptionActivity : BaseActivity() {
             Collections.swap(list, viewHolder.adapterPosition, target.adapterPosition)
             for ((index, item) in list.withIndex()) {
                 item.order = index
-                launch { database.subscriptions().update(item) }
+                lifecycleScope.launch { database.subscriptions().update(item) }
             }
             setResult(RESULT_OK)
             adapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)

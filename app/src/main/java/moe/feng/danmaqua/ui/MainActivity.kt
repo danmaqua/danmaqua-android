@@ -22,6 +22,7 @@ import androidx.core.content.getSystemService
 import androidx.core.view.*
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -101,7 +102,7 @@ class MainActivity : BaseActivity(),
 
     private val noConnectionsDialogListener = object : NoConnectionsDialogListener {
         override fun onIgnore() {
-            launch {
+            lifecycleScope.launchWhenResumed {
                 connectToCurrentSubscription()
             }
         }
@@ -281,7 +282,7 @@ class MainActivity : BaseActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_open_stream -> {
-                launch {
+                launchWhenStarted {
                     val current = database.subscriptions().getAll().firstOrNull { it.selected }
                     if (current != null) {
                         startActivity(IntentUtils.openBilibiliLive(
@@ -291,7 +292,7 @@ class MainActivity : BaseActivity(),
                 true
             }
             R.id.action_room_info -> {
-                launch {
+                launchWhenResumed {
                     val current = database.subscriptions().getAll().firstOrNull { it.selected }
                     if (current != null) {
                         RoomInfoDialogFragment.newInstance(current.roomId)
@@ -307,7 +308,7 @@ class MainActivity : BaseActivity(),
     override fun onSubscriptionChange(current: Subscription?) {
         drawerLayout.closeDrawer(GravityCompat.START)
         updateAvatarAndNameViews()
-        launch {
+        launchWhenStarted {
             if (current != null) {
                 val needReconnect = withContext(IO) {
                     service?.isConnected == true && service?.roomId != current.roomId
@@ -354,7 +355,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun onFabClick(view: View) {
-        launch {
+        launchWhenResumed {
             val activity = this@MainActivity
             if (withContext(IO) { service?.isConnected } != true) {
                 Toast.makeText(
@@ -362,7 +363,7 @@ class MainActivity : BaseActivity(),
                     R.string.toast_connect_room_before_opening_float,
                     Toast.LENGTH_SHORT
                 ).show()
-                return@launch
+                return@launchWhenResumed
             }
             if (!WindowUtils.canDrawOverlays(activity)) {
                 AlertDialog.Builder(activity)
@@ -374,28 +375,28 @@ class MainActivity : BaseActivity(),
                     }
                     .setNegativeButton(R.string.action_deny, null)
                     .show()
-                return@launch
+                return@launchWhenResumed
             }
             askShowFloatingWindow()
         }
     }
 
-    private fun askShowFloatingWindow() = launch {
+    private fun askShowFloatingWindow() = launchWhenResumed {
         if (withContext(IO) { service?.isFloatingShowing } == true) {
             Toast.makeText(this@MainActivity,
                 R.string.toast_floating_is_showing, Toast.LENGTH_SHORT).show()
             // TODO Highlight floating window animation
-            return@launch
+            return@launchWhenResumed
         }
         AlertDialog.Builder(this@MainActivity)
             .setTitle(R.string.ask_show_floating_title)
             .setMessage(R.string.ask_show_floating_message)
             .setPositiveButton(R.string.action_minimize) { _, _ ->
-                this@MainActivity.launch { showFloatingWindow() }
+                launchWhenResumed { showFloatingWindow() }
                 moveTaskToBack(true)
             }
             .setNegativeButton(R.string.action_stay_here) { _, _ ->
-                this@MainActivity.launch { showFloatingWindow() }
+                launchWhenResumed { showFloatingWindow() }
             }
             .setNeutralButton(android.R.string.cancel, null)
             .show()
@@ -416,7 +417,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun onConnectButtonClick(view: View) {
-        launch {
+        launchWhenResumed {
             if (withContext(IO) { service?.isConnected } == true) {
                 try {
                     service?.disconnect()
@@ -433,7 +434,7 @@ class MainActivity : BaseActivity(),
                 }
                 if (showConnectivityDialog) {
                     NoConnectionsDialogFragment.show(supportFragmentManager)
-                    return@launch
+                    return@launchWhenResumed
                 }
                 connectToCurrentSubscription()
             }
@@ -546,7 +547,7 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private fun updateAvatarAndNameViews() = launch {
+    private fun updateAvatarAndNameViews() = launchWhenResumed {
         val cur = database.subscriptions().findSelected()
         if (cur != null) {
             usernameView.text = cur.username
@@ -558,7 +559,7 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private fun updateStatusViews() = launch {
+    private fun updateStatusViews() = launchWhenResumed {
         if (withContext(IO) { service?.isConnected } == true) {
             connectButton.setText(R.string.action_disconnect)
             connectButton.compoundDrawableStartRes = R.drawable.ic_stop_24
@@ -588,11 +589,8 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onConfirmBlockUser(item: BiliChatDanmaku) {
-        launch {
+        launchWhenResumed {
             val info = UserApi.getSpaceInfo(item.senderUid)
-            if (!isResumed) {
-                return@launch
-            }
             if (info.code == 0) {
                 MainConfirmBlockUserDialogFragment.show(this@MainActivity, item, info)
             } else {
@@ -606,7 +604,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onBlockText(item: BiliChatDanmaku, blockRule: BlockedTextRule) {
-        launch {
+        lifecycleScope.launch {
             onHideDanmaku(item)
             val patterns = Settings.blockedTextPatterns.toMutableList()
             patterns.add(blockRule)
@@ -617,7 +615,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onBlockUser(item: BiliChatDanmaku, blockUser: BlockedUserRule) {
-        launch {
+        lifecycleScope.launch {
             messageAdapter.removeDanmakuByUid(blockUser.uid)
             database.blockedUsers().add(blockUser)
             Settings.notifyChanged(this@MainActivity)
@@ -641,7 +639,7 @@ class MainActivity : BaseActivity(),
         }
 
         override fun onReceiveDanmaku(msg: BiliChatDanmaku) {
-            launch {
+            lifecycleScope.launch {
                 if (withContext(IO) { danmakuFilter(msg) }) {
                     messageAdapter.addDanmaku(msg)
                 }

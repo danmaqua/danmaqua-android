@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.view_vtubers_catalog_activity.*
 import kotlinx.coroutines.launch
@@ -42,15 +43,13 @@ class VTubersCatalogActivity : BaseActivity(), OnCatalogGroupItemClickListener {
 
         recyclerView.adapter = adapter
 
-        reloadButton.setOnClickListener {
-            launch {
-                vtuberCatalog = null
-                loadCatalog()
-            }
+        reloadButton.onClick {
+            vtuberCatalog = null
+            loadCatalog()
         }
 
         if (savedInstanceState == null) {
-            launch { loadCatalog() }
+            lifecycleScope.launch { loadCatalog() }
         } else {
             vtuberCatalog = savedInstanceState.getParcelable(STATE_CATALOG)
             setViewStates(false)
