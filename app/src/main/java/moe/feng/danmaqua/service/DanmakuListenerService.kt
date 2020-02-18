@@ -1,33 +1,20 @@
 package moe.feng.danmaqua.service
 
-import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.content.getSystemService
+import androidx.core.text.HtmlCompat
 import kotlinx.coroutines.*
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
-import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
-import moe.feng.danmaqua.Danmaqua.NOTI_ID_LISTENER_STATUS
-import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_ENTER_MAIN
-import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_RECONNECT
-import moe.feng.danmaqua.Danmaqua.PENDING_INTENT_REQUEST_STOP
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.api.bili.DanmakuApi
 import moe.feng.danmaqua.api.bili.DanmakuListener
-import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
-import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ListenerServiceNotificationHelper
@@ -163,16 +150,13 @@ class DanmakuListenerService :
         }
     }
 
-    @SuppressLint("RestrictedApi")
-    private fun NotificationCompat.Builder.setNotificationActions(showReconnect: Boolean = false) {
-        val service = this@DanmakuListenerService
-
-
-    }
-
     override fun onConnect() {
         danmakuListener?.let {
             notiHelper.showConnectedNotification(it.roomId)
+
+            floatingHolder?.addSystemMessage(HtmlCompat.fromHtml(
+                getString(R.string.sys_msg_connected_to_room, it.roomId), 0
+            ).toString())
 
             for ((callback, _) in serviceCallbacks) {
                 callback.onConnect(it.roomId)
@@ -182,6 +166,8 @@ class DanmakuListenerService :
 
     override fun onDisconnect(userReason: Boolean) {
         notiHelper.showDisconnectedNotification(lastConnectedRoom)
+
+        floatingHolder?.addSystemMessage(getString(R.string.sys_msg_disconnected))
 
         for ((callback, _) in serviceCallbacks) {
             callback.onDisconnect()

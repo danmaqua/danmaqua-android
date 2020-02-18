@@ -24,6 +24,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.FWDanmakuItemViewDelegate
+import moe.feng.danmaqua.ui.list.FWSystemMessageItemViewDelegate
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.screenHeight
@@ -72,9 +73,10 @@ class FloatingWindowHolder(
                 normalContent.isVisible = true
             }
         }
-    val danmakuList: MutableList<BiliChatDanmaku> = mutableListOf()
+    val danmakuList: MutableList<Any> = mutableListOf()
     val danmakuAdapter: MultiTypeAdapter = MultiTypeAdapter(items = danmakuList).also {
         it.register(FWDanmakuItemViewDelegate(this))
+        it.register(FWSystemMessageItemViewDelegate(this))
     }
 
     var danmakuMaxCount: Int = 30
@@ -230,27 +232,58 @@ class FloatingWindowHolder(
                 }
             }
         }
+        updateDanmakuCaptionViews()
+    }
+
+    fun addSystemMessage(msg: String) {
+        synchronized(danmakuListLock) {
+            danmakuList.add(msg)
+            if (danmakuList.size > danmakuMaxCount) {
+                var removing = danmakuList.size - danmakuMaxCount
+                while (removing > 0) {
+                    danmakuList.removeAt(0)
+                    removing--
+                }
+            }
+        }
+        updateDanmakuCaptionViews()
+    }
+
+    private fun updateDanmakuCaptionViews() {
         danmakuAdapter.notifyDataSetChanged()
         if (autoScrollHelper.autoScrollEnabled) {
             listView.scrollToPosition(danmakuList.size - 1)
         }
         captionView.text = if (twoLine && danmakuList.size >= 2) {
             val reversed = danmakuList.asReversed()
-            val prevSubtitle = danmakuFilter.unescapeSubtitle(reversed[1])
-            val currSubtitle = danmakuFilter.unescapeSubtitle(reversed[0])
+            val prevSubtitle = when (val it = reversed[1]) {
+                is BiliChatDanmaku -> danmakuFilter.unescapeSubtitle(it)?.flattenToString()
+                is String -> it
+                else -> it.toString()
+            }
+            val currSubtitle = when (val it = reversed[0]) {
+                is BiliChatDanmaku -> danmakuFilter.unescapeSubtitle(it)?.flattenToString()
+                is String -> it
+                else -> it.toString()
+            }
             buildSpannedString {
                 prevSubtitle?.let {
-                    append(it.flattenToString())
+                    append(it)
                     append("\n")
                 }
                 currSubtitle?.let {
-                    bold { append(it.flattenToString()) }
+                    bold { append(it) }
                 }
             }
         } else {
             danmakuList.lastOrNull()
-                ?.let { danmakuFilter.unescapeSubtitle(it) }
-                ?.flattenToString() ?: ""
+                ?.let {
+                    when (it) {
+                        is BiliChatDanmaku -> danmakuFilter.unescapeSubtitle(it)?.flattenToString()
+                        is String -> it
+                        else -> it.toString()
+                    }
+                } ?: ""
         }
     }
 
