@@ -324,7 +324,7 @@
     this version?
     ]]></string>
     <string name="changelog_url" translatable="false"><![CDATA[
-    https://github.com/danmaqua/danmaqua-data/blob/master/CHANGELOG.md#101-2
+    https://github.com/danmaqua/danmaqua-data/blob/master/CHANGELOG.md#102-3
     ]]></string>
 
     <string name="manage_subscription_title">Manage Subscription</string>
