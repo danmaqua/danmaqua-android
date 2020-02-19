@@ -437,8 +437,10 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onStartDanmakuContextMenu(item: BiliChatDanmaku) {
-        DanmakuContextMenuDialogFragment.newInstance(item)
-            .show(supportFragmentManager, "danmaku_context_menu")
+        launchWhenResumed {
+            DanmakuContextMenuDialogFragment.newInstance(item)
+                .show(supportFragmentManager, "danmaku_context_menu")
+        }
     }
 
     override fun onConfirmBlockText(item: BiliChatDanmaku) {
