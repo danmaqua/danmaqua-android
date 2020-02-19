@@ -296,4 +296,6 @@
     如果你的哔哩哔哩客户端不能直接打开 b23.tv 链接，我们可以帮你转发启动 Intent。
     ]]></string>
 
+    <string name="more_settings_button">更多设置</string>
+
 </resources>

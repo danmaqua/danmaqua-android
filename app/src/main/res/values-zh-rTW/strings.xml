@@ -296,4 +296,6 @@
     如果你的嗶哩嗶哩客戶端不能直接打開 b23.tv 鏈接，我們可以幫你轉發啟動 Intent。
     ]]></string>
 
+    <string name="more_settings_button">更多設定</string>
+
 </resources>
