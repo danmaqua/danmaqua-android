@@ -98,6 +98,23 @@
             android:tintMode="src_in"
             app:layout_anchor="@id/bottomAppBar" />
 
+        <FrameLayout
+            style="?attr/bottomSheetStyle"
+            android:id="@+id/filterSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/colorBackgroundFloating"
+            android:elevation="16dp"
+            app:behavior_hideable="true"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            tools:layout_height="320dp">
+
+            <include layout="@layout/filter_bottom_sheet_fragment"/>
+
+        </FrameLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <FrameLayout

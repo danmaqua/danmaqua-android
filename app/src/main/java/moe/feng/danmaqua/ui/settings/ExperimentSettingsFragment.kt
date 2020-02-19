@@ -2,12 +2,14 @@ package moe.feng.danmaqua.ui.settings
 
 import android.content.*
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.google.firebase.iid.FirebaseInstanceId
+import moe.feng.danmaqua.BuildConfig
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
@@ -55,6 +57,7 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
             }
         }
 
+        fbIdPref.isVisible = BuildConfig.DEBUG
         fbIdPref.setSummary(R.string.firebase_instance_id_not_registered_yet)
         fbIdPref.onClick {
             val context = context ?: return@onClick

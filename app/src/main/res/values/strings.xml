@@ -344,4 +344,6 @@
     If your Bilibili app cannot handle b23.tv link directly, we can help you to forward intents.
     ]]></string>
 
+    <string name="more_settings_button">More settings</string>
+
 </resources>

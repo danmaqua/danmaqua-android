@@ -1,14 +1,10 @@
 package moe.feng.danmaqua.ui
 
-import android.app.Service
 import android.content.*
 import android.content.res.Configuration
 import android.graphics.Rect
-import android.net.ConnectivityManager
-import android.net.Network
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.os.Parcelable
 import android.view.*
 import android.widget.ImageView
@@ -17,10 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import androidx.core.view.*
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,10 +25,8 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.IDanmakuListenerCallback
-import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.bili.UserApi
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
@@ -46,21 +37,14 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.dialog.NoConnectionsDialogFragment
-import moe.feng.danmaqua.ui.main.DanmakuContextMenuDialogFragment
 import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
 import moe.feng.danmaqua.ui.dialog.SuccessfullyUpdatedDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
 import moe.feng.danmaqua.ui.list.MessageListAdapter
-import moe.feng.danmaqua.ui.main.DrawerViewFragment
-import moe.feng.danmaqua.ui.main.MainConfirmBlockTextDialogFragment
-import moe.feng.danmaqua.ui.main.MainConfirmBlockUserDialogFragment
-import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
+import moe.feng.danmaqua.ui.main.*
 import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : BaseActivity(),
     SettingsChangedListener, MainDanmakuContextMenuListener, MainDrawerCallback {
@@ -74,17 +58,12 @@ class MainActivity : BaseActivity(),
 
     }
 
-    private val danmakuListenerCallback: IDanmakuListenerCallback = DanmakuListenerCallbackImpl()
+    val danmakuListenerCallback: IDanmakuListenerCallback = DanmakuListenerCallbackImpl()
 
-    private val connectivityManager: ConnectivityManager? by lazy {
-        getSystemService<ConnectivityManager>()
-    }
-    private val connectivityCallback: ConnectivityCallback = ConnectivityCallback()
-    private var isConnectivityAvailable: Boolean = true
-
-    private var service: IDanmakuListenerService? = null
-    private var serviceConnection: ServiceConnection? = null
-
+    private val service: MainServiceController =
+        MainServiceController(this)
+    private val connectivityHelper: ConnectivityAvailabilityHelper =
+        ConnectivityAvailabilityHelper(this)
     private var online: Int = 0
     private var danmakuFilter: DanmakuFilter = DanmakuFilter.fromSettings()
 
@@ -95,6 +74,7 @@ class MainActivity : BaseActivity(),
         }
     })
 
+    val bottomSheetVH: MainBottomSheetViewHolder = MainBottomSheetViewHolder(this)
     private lateinit var toolbarView: View
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
     private val usernameView by lazy { toolbarView.findViewById<TextView>(R.id.usernameView) }
@@ -139,6 +119,7 @@ class MainActivity : BaseActivity(),
         coordinator.setOnApplyWindowInsetsListener { _, insets ->
             appBarLayout.updatePadding(top = insets.systemWindowInsetTop)
             bottomAppBarBackground.updateLayoutParams { height = insets.systemWindowInsetBottom }
+            bottomSheetVH.onApplyWindowInsets(insets)
             if (insets.systemWindowInsetBottom > 0) {
                 if (!hideNavigation) setWindowFlags(hideNavigation = true)
             } else {
@@ -171,11 +152,12 @@ class MainActivity : BaseActivity(),
         recyclerView.addOnScrollListener(ScrollToLatestButtonScrollListener())
 
         // Set up event listener
-        drawerLayout.addDrawerListener(MainDrawerListener())
+        drawerLayout.addDrawerListener(MainDrawerListener(this))
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
         connectButton.setOnClickListener(this::onConnectButtonClick)
-        setFilterButton.setOnClickListener {
-            PreferenceActivity.launch(this, FilterSettingsFragment.ACTION)
+        setFilterButton.onClick {
+            bottomSheetVH.show()
+            //PreferenceActivity.launch(this@MainActivity, FilterSettingsFragment.ACTION)
         }
         backToLatestButton.setOnClickListener {
             backToLatestButton.isGone = true
@@ -185,9 +167,7 @@ class MainActivity : BaseActivity(),
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(R.id.drawerView,
-                    DrawerViewFragment()
-                )
+                replace(R.id.drawerView, DrawerViewFragment())
             }
         } else {
             online = savedInstanceState.getInt(STATE_ONLINE)
@@ -197,10 +177,13 @@ class MainActivity : BaseActivity(),
             }
         }
 
+        bottomSheetVH.onCreate()
+
         setGestureExclusionEnabled(!drawerLayout.isDrawerOpen(GravityCompat.START))
         updateAvatarAndNameViews()
         updateStatusViews()
-        checkServiceStatus()
+
+        service.register()
 
         eventsHelper.registerListeners(this, noConnectionsDialogListener)
 
@@ -208,20 +191,6 @@ class MainActivity : BaseActivity(),
         if ((packageVersionCode ?: 0) > lastVersionCode) {
             SuccessfullyUpdatedDialogFragment().show(supportFragmentManager, "updated_tip")
             Settings.updateVersionCode(this)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            connectivityManager?.registerDefaultNetworkCallback(connectivityCallback)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            connectivityManager?.unregisterNetworkCallback(connectivityCallback)
         }
     }
 
@@ -238,27 +207,30 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
+        when {
+            drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            bottomSheetVH.isShowing() -> bottomSheetVH.hide()
+            else -> super.onBackPressed()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        service?.unregisterCallback(danmakuListenerCallback)
-        if (service?.isConnected != true) {
-            stopListenerService()
-        }
-        serviceConnection?.let {
-            try {
-                unbindService(it)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        bottomSheetVH.onDestroy()
+        service.unregister()
         eventsHelper.unregisterListeners(this, noConnectionsDialogListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        connectivityHelper.register()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        connectivityHelper.unregister()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -311,18 +283,14 @@ class MainActivity : BaseActivity(),
         launchWhenStarted {
             if (current != null) {
                 val needReconnect = withContext(IO) {
-                    service?.isConnected == true && service?.roomId != current.roomId
+                    service.isConnected && service.roomId != current.roomId
                 }
                 if (needReconnect) {
-                    connectRoom(current.roomId)
+                    service.connectRoom(current.roomId)
                 }
             } else {
-                if (withContext(IO) { service?.isConnected } == true) {
-                    try {
-                        service?.disconnect()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+                if (service.isConnected()) {
+                    service.disconnect()
                     updateStatusViews()
                 }
             }
@@ -339,7 +307,7 @@ class MainActivity : BaseActivity(),
         danmakuFilter = DanmakuFilter.fromSettings()
     }
 
-    private fun setGestureExclusionEnabled(enabled: Boolean) {
+    fun setGestureExclusionEnabled(enabled: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (enabled) {
                 val screenHeight = windowManager.defaultDisplay.screenHeight
@@ -357,7 +325,7 @@ class MainActivity : BaseActivity(),
     private fun onFabClick(view: View) {
         launchWhenResumed {
             val activity = this@MainActivity
-            if (withContext(IO) { service?.isConnected } != true) {
+            if (!service.isConnected()) {
                 Toast.makeText(
                     activity,
                     R.string.toast_connect_room_before_opening_float,
@@ -382,7 +350,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun askShowFloatingWindow() = launchWhenResumed {
-        if (withContext(IO) { service?.isFloatingShowing } == true) {
+        if (service.isFloatingShowing()) {
             Toast.makeText(this@MainActivity,
                 R.string.toast_floating_is_showing, Toast.LENGTH_SHORT).show()
             // TODO Highlight floating window animation
@@ -392,47 +360,27 @@ class MainActivity : BaseActivity(),
             .setTitle(R.string.ask_show_floating_title)
             .setMessage(R.string.ask_show_floating_message)
             .setPositiveButton(R.string.action_minimize) { _, _ ->
-                launchWhenResumed { showFloatingWindow() }
+                launchWhenResumed { service.showFloatingWindow() }
                 moveTaskToBack(true)
             }
             .setNegativeButton(R.string.action_stay_here) { _, _ ->
-                launchWhenResumed { showFloatingWindow() }
+                launchWhenResumed { service.showFloatingWindow() }
             }
             .setNeutralButton(android.R.string.cancel, null)
             .show()
     }
 
-    private suspend fun showFloatingWindow() = withContext(IO) {
-        if (service == null) {
-            startForegroundListenerService()
-            service = suspendCoroutine<IDanmakuListenerService> { c ->
-                bindListenerService { c.resume(it) }
-            }
-        }
-        try {
-            service?.showFloating()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     private fun onConnectButtonClick(view: View) {
         launchWhenResumed {
-            if (withContext(IO) { service?.isConnected } == true) {
+            if (service.isConnected()) {
                 try {
-                    service?.disconnect()
+                    service.disconnect()
                 } catch (e: Exception) {
                     e.printStackTrace()
                     updateStatusViews()
                 }
             } else {
-                val showConnectivityDialog: Boolean
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    showConnectivityDialog = !isConnectivityAvailable
-                } else {
-                    showConnectivityDialog = connectivityManager?.isDefaultNetworkActive != true
-                }
-                if (showConnectivityDialog) {
+                if (!connectivityHelper.isAvailable) {
                     NoConnectionsDialogFragment.show(supportFragmentManager)
                     return@launchWhenResumed
                 }
@@ -444,7 +392,7 @@ class MainActivity : BaseActivity(),
     private suspend fun connectToCurrentSubscription() = withContext(IO) {
         val current = database.subscriptions().getAll().firstOrNull { it.selected }
         if (current != null) {
-            connectRoom(current.roomId)
+            service.connectRoom(current.roomId)
         } else {
             withContext(Main) {
                 AlertDialog.Builder(this@MainActivity)
@@ -453,97 +401,6 @@ class MainActivity : BaseActivity(),
                     .setPositiveButton(android.R.string.ok, null)
                     .show()
             }
-        }
-    }
-
-    private suspend fun connectRoom(roomId: Long) = withContext(IO) {
-        if (service == null) {
-            startForegroundListenerService()
-            service = suspendCoroutine<IDanmakuListenerService> { c ->
-                bindListenerService { c.resume(it) }
-            }
-        }
-        try {
-            service?.connect(roomId)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun checkServiceStatus() {
-        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                if (binder == null) {
-                    return
-                }
-                val service = IDanmakuListenerService.Stub.asInterface(binder)
-                if (service?.isConnected == true) {
-                    bindListenerService()
-                }
-                unbindService(this)
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) {}
-        }
-        if (!bindService(serviceIntent, serviceConnection, Service.BIND_AUTO_CREATE)) {
-            unbindService(serviceConnection)
-        }
-    }
-
-    private fun startForegroundListenerService() {
-        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
-        serviceIntent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_START)
-        ContextCompat.startForegroundService(this, serviceIntent)
-    }
-
-    private fun stopListenerService() {
-        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
-        serviceIntent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_STOP)
-
-        try {
-            stopService(serviceIntent)
-            serviceConnection?.let {
-                unbindService(it)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        service = null
-        serviceConnection = null
-    }
-
-    private fun bindListenerService(onConnected: (IDanmakuListenerService) -> Unit = {}) {
-        val serviceIntent = Intent(this, DanmakuListenerService::class.java)
-
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                if (binder == null) {
-                    return
-                }
-                service = IDanmakuListenerService.Stub.asInterface(binder).also {
-                    it.requestHeartbeat()
-                    it.registerCallback(danmakuListenerCallback, false)
-                    if (it.isConnected) {
-                        updateStatusViews()
-                    }
-                    onConnected(it)
-                }
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) {
-                service = null
-                updateStatusViews()
-            }
-        }
-        this.serviceConnection = serviceConnection
-        try {
-            if (!bindService(serviceIntent, serviceConnection, 0)) {
-                startForegroundListenerService()
-            }
-        } catch (ignored: Exception) {
-
         }
     }
 
@@ -559,8 +416,8 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private fun updateStatusViews() = launchWhenResumed {
-        if (withContext(IO) { service?.isConnected } == true) {
+    fun updateStatusViews() = launchWhenResumed {
+        if (service.isConnected()) {
             connectButton.setText(R.string.action_disconnect)
             connectButton.compoundDrawableStartRes = R.drawable.ic_stop_24
 
@@ -683,48 +540,6 @@ class MainActivity : BaseActivity(),
             } else if (dy < 0) {
                 backToLatestButton.isGone = true
             }
-        }
-
-    }
-
-    private inner class MainDrawerListener : DrawerLayout.DrawerListener {
-
-        override fun onDrawerStateChanged(newState: Int) {}
-
-        override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            if (slideOffset > 0.5F) {
-                if (!lightNavBar) {
-                    setWindowFlags(lightNavBar = true)
-                }
-            } else {
-                if (lightNavBar) {
-                    setWindowFlags(lightNavBar = false)
-                }
-            }
-        }
-
-        override fun onDrawerClosed(drawerView: View) {
-            setGestureExclusionEnabled(true)
-        }
-
-        override fun onDrawerOpened(drawerView: View) {
-            setGestureExclusionEnabled(false)
-        }
-
-    }
-
-    private inner class ConnectivityCallback : ConnectivityManager.NetworkCallback() {
-
-        override fun onAvailable(network: Network) {
-            isConnectivityAvailable = true
-        }
-
-        override fun onUnavailable() {
-            isConnectivityAvailable = false
-        }
-
-        override fun onLost(network: Network) {
-            isConnectivityAvailable = false
         }
 
     }
