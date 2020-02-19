@@ -73,9 +73,9 @@ class PreferenceActivity : BaseActivity() {
                         SupportUsFragment()
                     )
                 }
-                DevelopmentFragment.ACTION -> {
+                ExperimentSettingsFragment.ACTION -> {
                     setFragment(
-                        DevelopmentFragment()
+                        ExperimentSettingsFragment()
                     )
                 }
                 else -> {

@@ -31,7 +31,7 @@ import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.list.SubscriptionAddButtonViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionManageButtonViewDelegate
-import moe.feng.danmaqua.ui.settings.DevelopmentFragment
+import moe.feng.danmaqua.ui.settings.ExperimentSettingsFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
 import moe.feng.danmaqua.util.ext.eventsHelper
@@ -94,7 +94,7 @@ class DrawerViewFragment : BaseFragment() {
             developmentTimes++
             if (developmentTimes >= 5) {
                 developmentTimes = 0
-                PreferenceActivity.launch(activity!!, DevelopmentFragment.ACTION)
+                PreferenceActivity.launch(activity!!, ExperimentSettingsFragment.ACTION)
             }
         }
 

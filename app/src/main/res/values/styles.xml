@@ -1,5 +1,11 @@
 <resources>
 
+    <style name="Theme.EmptyActivity" parent="@android:style/Theme.Translucent">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
+
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

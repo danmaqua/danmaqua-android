@@ -2,18 +2,27 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
-        android:key="firebase_instance_id"
-        android:title="@string/firebase_instance_id_title"
-        android:summary="@string/firebase_instance_id_not_registered_yet"/>
-
     <androidx.preference.CheckBoxPreference
-        android:key="enabled_analytics"
-        android:title="@string/enabled_analytics_settings_title"
-        android:summary="@string/enabled_analytics_settings_summary"/>
+        android:key="handle_b23_url"
+        android:title="@string/handle_b23_url_title"
+        android:summary="@string/handle_b23_url_summary"/>
 
     <Preference
         android:key="restart_to_intro"
         android:title="@string/restart_to_intro_title"/>
+
+    <androidx.preference.PreferenceCategory android:title="@string/firebase_title">
+
+        <Preference
+            android:key="firebase_instance_id"
+            android:title="@string/firebase_instance_id_title"
+            android:summary="@string/firebase_instance_id_not_registered_yet"/>
+
+        <androidx.preference.CheckBoxPreference
+            android:key="enabled_analytics"
+            android:title="@string/enabled_analytics_settings_title"
+            android:summary="@string/enabled_analytics_settings_summary"/>
+
+    </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

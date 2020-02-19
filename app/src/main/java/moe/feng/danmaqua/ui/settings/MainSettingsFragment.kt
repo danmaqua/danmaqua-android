@@ -31,6 +31,9 @@ class MainSettingsFragment : BasePreferenceFragment() {
         setPreferenceClickListener("floating_settings") {
             launchPreference(FloatingSettingsFragment.ACTION)
         }
+        setPreferenceClickListener("experiment_settings") {
+            launchPreference(ExperimentSettingsFragment.ACTION)
+        }
         setPreferenceClickListener("about_project_repo") {
             context?.let {
                 TwaLauncher(it)

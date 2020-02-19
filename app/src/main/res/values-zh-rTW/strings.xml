@@ -289,4 +289,11 @@
     ]]></string>
     <string name="listener_service_noti_reconnect">重連</string>
 
+    <string name="experiment_settings_title">實驗室</string>
+    <string name="firebase_title">Firebase</string>
+    <string name="handle_b23_url_title">處理 b23.tv 鏈接並打開嗶哩嗶哩</string>
+    <string name="handle_b23_url_summary"><![CDATA[
+    如果你的嗶哩嗶哩客戶端不能直接打開 b23.tv 鏈接，我們可以幫你轉發啟動 Intent。
+    ]]></string>
+
 </resources>

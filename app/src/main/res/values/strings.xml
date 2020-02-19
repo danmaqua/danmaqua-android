@@ -337,4 +337,11 @@
     ]]></string>
     <string name="listener_service_noti_reconnect">Reconnect</string>
 
+    <string name="experiment_settings_title">Experiment</string>
+    <string name="firebase_title">Firebase</string>
+    <string name="handle_b23_url_title">Handle b23.tv link and open bilibili</string>
+    <string name="handle_b23_url_summary"><![CDATA[
+    If your Bilibili app cannot handle b23.tv link directly, we can help you to forward intents.
+    ]]></string>
+
 </resources>

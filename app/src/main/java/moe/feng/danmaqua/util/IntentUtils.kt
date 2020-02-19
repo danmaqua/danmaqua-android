@@ -28,6 +28,12 @@ object IntentUtils {
             context.getString(R.string.chooser_title_choose_apps_to_watch_stream))
     }
 
+    fun openBilibiliVideo(context: Context, path: String): Intent {
+        val linkIntent = view("https://www.bilibili.com/video/$path")
+        return Intent.createChooser(linkIntent,
+            context.getString(R.string.chooser_title_choose_apps_to_watch_stream))
+    }
+
     fun sendMail(address: String): Intent {
         return Intent(Intent.ACTION_SENDTO, "mailto:$address".toUri())
     }

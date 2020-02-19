@@ -289,4 +289,11 @@
     ]]></string>
     <string name="listener_service_noti_reconnect">重连</string>
 
+    <string name="experiment_settings_title">实验室</string>
+    <string name="firebase_title">Firebase</string>
+    <string name="handle_b23_url_title">处理 b23.tv 链接并打开哔哩哔哩</string>
+    <string name="handle_b23_url_summary"><![CDATA[
+    如果你的哔哩哔哩客户端不能直接打开 b23.tv 链接，我们可以帮你转发启动 Intent。
+    ]]></string>
+
 </resources>
