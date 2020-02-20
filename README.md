@@ -50,7 +50,7 @@ QQ 交流群：[1026979836](https://jq.qq.com/?_wv=1027&k=5DCyJjR)
 
 （支付宝）
 
-<img width="240px" src="./docs/images/alipay_qr_code.png"></img>
+<img width="240px" src="./.github/alipay_qr.png"></img>
 
 ## License/协议
 
