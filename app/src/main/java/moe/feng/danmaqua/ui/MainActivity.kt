@@ -10,7 +10,6 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.*
@@ -22,7 +21,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.bottom_toolbar_layout.*
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.Danmaqua.Settings
@@ -60,7 +58,7 @@ class MainActivity : BaseActivity(),
 
     val danmakuListenerCallback: IDanmakuListenerCallback = DanmakuListenerCallbackImpl()
 
-    private val service: MainServiceController =
+    val service: MainServiceController =
         MainServiceController(this)
     private val connectivityHelper: ConnectivityAvailabilityHelper =
         ConnectivityAvailabilityHelper(this)
@@ -334,15 +332,7 @@ class MainActivity : BaseActivity(),
                 return@launchWhenResumed
             }
             if (!WindowUtils.canDrawOverlays(activity)) {
-                AlertDialog.Builder(activity)
-                    .setTitle(R.string.overlay_permission_request_title)
-                    .setMessage(R.string.overlay_permission_request_message)
-                    .setPositiveButton(R.string.action_allow) { _, _ ->
-                        WindowUtils.requestOverlayPermission(
-                            activity, REQUEST_CODE_OVERLAY_PERMISSION)
-                    }
-                    .setNegativeButton(R.string.action_deny, null)
-                    .show()
+                showOverlayPermissionDialog()
                 return@launchWhenResumed
             }
             askShowFloatingWindow()
@@ -356,18 +346,7 @@ class MainActivity : BaseActivity(),
             // TODO Highlight floating window animation
             return@launchWhenResumed
         }
-        AlertDialog.Builder(this@MainActivity)
-            .setTitle(R.string.ask_show_floating_title)
-            .setMessage(R.string.ask_show_floating_message)
-            .setPositiveButton(R.string.action_minimize) { _, _ ->
-                launchWhenResumed { service.showFloatingWindow() }
-                moveTaskToBack(true)
-            }
-            .setNegativeButton(R.string.action_stay_here) { _, _ ->
-                launchWhenResumed { service.showFloatingWindow() }
-            }
-            .setNeutralButton(android.R.string.cancel, null)
-            .show()
+        showConfirmShowFloatingDialog()
     }
 
     private fun onConnectButtonClick(view: View) {
@@ -394,13 +373,7 @@ class MainActivity : BaseActivity(),
         if (current != null) {
             service.connectRoom(current.roomId)
         } else {
-            withContext(Main) {
-                AlertDialog.Builder(this@MainActivity)
-                    .setTitle(R.string.no_streamer_selected_dialog_title)
-                    .setMessage(R.string.no_streamer_selected_dialog_message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
-            }
+            launchWhenResumed { showNoStreamerSelectedDialog() }
         }
     }
 
@@ -511,11 +484,7 @@ class MainActivity : BaseActivity(),
         }
 
         override fun onConnectFailed(reason: Int) {
-            AlertDialog.Builder(this@MainActivity)
-                .setTitle(R.string.failed_to_connect_dialog_title)
-                .setMessage(R.string.failed_to_connect_dialog_message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show()
+            showFailedConnectDialog()
         }
 
     }

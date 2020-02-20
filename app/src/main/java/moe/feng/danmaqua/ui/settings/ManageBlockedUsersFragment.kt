@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,7 @@ import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.ui.view.CircleImageView
-import moe.feng.danmaqua.util.ext.avatarUrl
+import moe.feng.danmaqua.util.ext.*
 
 class ManageBlockedUsersFragment : BaseFragment() {
 
@@ -60,14 +59,14 @@ class ManageBlockedUsersFragment : BaseFragment() {
     }
 
     private fun onAddButtonClick(view: View) {
-        val dialogView = LayoutInflater.from(activity!!)
-            .inflate(R.layout.manage_blocked_user_edit_dialog_layout, null)
-        val editText = dialogView.findViewById<TextInputEditText>(android.R.id.edit)
-        AlertDialog.Builder(activity!!)
-            .setTitle(R.string.add_blocked_user_title)
-            .setView(dialogView)
-            .setPositiveButton(R.string.action_search) { _, _ ->
-                val context = editText.context
+        showAlertDialog {
+            lateinit var editText: TextInputEditText
+
+            titleRes = R.string.add_blocked_user_title
+            inflateView(R.layout.manage_blocked_user_edit_dialog_layout) {
+                editText = it.findViewById(android.R.id.edit)
+            }
+            positiveButton(R.string.action_search) {
                 val uid = editText.text?.toString()?.toLongOrNull() ?: 0L
                 if (uid <= 0) {
                     Toast.makeText(
@@ -75,7 +74,7 @@ class ManageBlockedUsersFragment : BaseFragment() {
                         R.string.toast_empty_input,
                         Toast.LENGTH_SHORT
                     ).show()
-                    return@setPositiveButton
+                    return@positiveButton
                 }
                 lifecycleScope.launchWhenResumed {
                     val info = UserApi.getSpaceInfo(uid)
@@ -90,8 +89,8 @@ class ManageBlockedUsersFragment : BaseFragment() {
                     }
                 }
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+            cancelButton()
+        }
     }
 
     private fun onDeleteButtonClick(position: Int) {
@@ -103,18 +102,17 @@ class ManageBlockedUsersFragment : BaseFragment() {
     }
 
     private fun showConfirmDialog(info: SpaceInfo) {
-        val dialogView = LayoutInflater.from(activity!!)
-            .inflate(R.layout.manage_blocked_user_confirm_add_dialog_layout, null)
-        val avatarView = dialogView.findViewById<CircleImageView>(R.id.avatarView)
-        val usernameView = dialogView.findViewById<TextView>(R.id.usernameView)
-        val uidView = dialogView.findViewById<TextView>(R.id.uidView)
-        avatarView.avatarUrl = info.data.face
-        usernameView.text = info.data.name
-        uidView.text = getString(R.string.uid_text_format, info.data.uid)
-        AlertDialog.Builder(activity!!)
-            .setTitle(R.string.confirm_add_blocked_user_title)
-            .setView(dialogView)
-            .setPositiveButton(android.R.string.yes) { _, _ ->
+        showAlertDialog {
+            titleRes = R.string.confirm_add_blocked_user_title
+            inflateView(R.layout.manage_blocked_user_confirm_add_dialog_layout) {
+                val avatarView = it.findViewById<CircleImageView>(R.id.avatarView)
+                val usernameView = it.findViewById<TextView>(R.id.usernameView)
+                val uidView = it.findViewById<TextView>(R.id.uidView)
+                avatarView.avatarUrl = info.data.face
+                usernameView.text = info.data.name
+                uidView.text = getString(R.string.uid_text_format, info.data.uid)
+            }
+            yesButton {
                 lifecycleScope.launch {
                     database.blockedUsers().add(BlockedUserRule(
                         info.data.uid,
@@ -122,11 +120,11 @@ class ManageBlockedUsersFragment : BaseFragment() {
                         info.data.face
                     ))
                     setItems(database.blockedUsers().getAll())
-                    context?.let { Danmaqua.Settings.notifyChanged(it) }
+                    Danmaqua.Settings.notifyChanged(context)
                 }
             }
-            .setNegativeButton(android.R.string.no, null)
-            .show()
+            noButton()
+        }
     }
 
     private fun setItems(items: List<BlockedUserRule>) {

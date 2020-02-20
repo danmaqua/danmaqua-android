@@ -2,11 +2,11 @@ package moe.feng.danmaqua.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.intro_activity.*
-import moe.feng.danmaqua.Danmaqua
+import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.util.ext.*
 
 class IntroActivity : BaseActivity() {
 
@@ -37,11 +37,11 @@ class IntroActivity : BaseActivity() {
         }
         allowCollectData.setOnCheckedChangeListener { _, isChecked ->
             if (!isChecked && allowCollectDataValue) {
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.intro_collect_data_disabled_title)
-                    .setMessage(R.string.intro_collect_data_disabled_message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+                showAlertDialog {
+                    titleRes = R.string.intro_collect_data_disabled_title
+                    messageRes = R.string.intro_collect_data_disabled_message
+                    okButton()
+                }
             }
             allowCollectDataValue = isChecked
             updateStartButtonState()
@@ -50,9 +50,10 @@ class IntroActivity : BaseActivity() {
         updateStartButtonState()
 
         startButton.setOnClickListener {
-            Danmaqua.Settings.introduced = true
-            Danmaqua.Settings.enabledAnalytics = allowCollectData.isChecked
-            Danmaqua.Settings.notifyChanged(this)
+            Settings.commit {
+                introduced = true
+                enabledAnalytics = allowCollectData.isChecked
+            }
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

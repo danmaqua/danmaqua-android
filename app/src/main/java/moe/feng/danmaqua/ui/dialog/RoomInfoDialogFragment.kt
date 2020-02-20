@@ -2,11 +2,8 @@ package moe.feng.danmaqua.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -16,6 +13,7 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.model.RoomInfo
+import moe.feng.danmaqua.util.ext.*
 
 class RoomInfoDialogFragment : BaseDialogFragment() {
 
@@ -49,18 +47,16 @@ class RoomInfoDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = ContextThemeWrapper(
-            activity!!, R.style.ThemeOverlay_MaterialComponents_Dialog_Alert)
-        val view = LayoutInflater.from(context).inflate(R.layout.room_info_dialog_content, null)
-        onDialogViewCreated(view, savedInstanceState)
-        return AlertDialog.Builder(context)
-            .setTitle(R.string.room_info_title)
-            .setView(view)
-            .setPositiveButton(android.R.string.ok, null)
-            .setNeutralButton(R.string.room_info_copy_url) { _, _ ->
+        return buildAlertDialog {
+            titleRes = R.string.room_info_title
+            inflateView(R.layout.room_info_dialog_content) {
+                onDialogViewCreated(it, savedInstanceState)
+            }
+            okButton()
+            neutralButton(R.string.room_info_copy_url) {
                 // TODO Copy url
             }
-            .create()
+        }
     }
 
     private fun onDialogViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
@@ -18,6 +17,7 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.util.IntentUtils
+import moe.feng.danmaqua.util.ext.*
 import java.lang.Exception
 
 class SupportUsFragment : BaseFragment() {
@@ -60,20 +60,7 @@ class SupportUsFragment : BaseFragment() {
                 startActivity(IntentUtils.openAlipayTransfer())
                 showThanks = true
             } catch (e: Exception) {
-                AlertDialog.Builder(it.context)
-                    .setTitle(R.string.no_alipay_dialog_title)
-                    .setMessage(HtmlCompat.fromHtml(
-                        getString(R.string.no_alipay_dialog_message, alipayEmail), 0))
-                    .setPositiveButton(android.R.string.ok, null)
-                    .setNeutralButton(android.R.string.copy) { _, _ ->
-                        val cm = it.context.getSystemService<ClipboardManager>()
-                        cm?.setPrimaryClip(ClipData.newPlainText("email", alipayEmail))
-                        Toast.makeText(it.context,
-                            R.string.toast_copied_to_clipboard,
-                            Toast.LENGTH_LONG).show()
-                        showThanksDialog()
-                    }
-                    .show()
+                showNoAlipayDialog()
             }
         }
 
@@ -87,13 +74,28 @@ class SupportUsFragment : BaseFragment() {
         }
     }
 
+    private fun showNoAlipayDialog() {
+        showAlertDialog {
+            titleRes = R.string.no_alipay_dialog_title
+            message = HtmlCompat.fromHtml(
+                getString(R.string.no_alipay_dialog_message, alipayEmail), 0)
+            okButton()
+            neutralButton(android.R.string.copy) {
+                val cm = context.getSystemService<ClipboardManager>()
+                cm?.setPrimaryClip(ClipData.newPlainText("email", alipayEmail))
+                Toast.makeText(context,
+                    R.string.toast_copied_to_clipboard,
+                    Toast.LENGTH_LONG).show()
+                showThanksDialog()
+            }
+        }
+    }
+
     private fun showThanksDialog() {
-        context?.let {
-            AlertDialog.Builder(it)
-                .setTitle(R.string.thank_you_dialog_title)
-                .setMessage(R.string.thank_you_dialog_message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show()
+        showAlertDialog {
+            titleRes = R.string.thank_you_dialog_title
+            messageRes = R.string.thank_you_dialog_message
+            okButton()
         }
     }
 

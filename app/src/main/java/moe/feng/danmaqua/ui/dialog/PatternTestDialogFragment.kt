@@ -2,11 +2,8 @@ package moe.feng.danmaqua.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
@@ -22,6 +19,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.util.DanmakuFilter
+import moe.feng.danmaqua.util.ext.*
 import moe.feng.danmaqua.util.flattenToString
 import java.lang.Exception
 
@@ -70,20 +68,16 @@ class PatternTestDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val context = ContextThemeWrapper(activity!!,
-            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert)
-        val view = LayoutInflater.from(context).inflate(R.layout.pattern_test_dialog_content, null)
-        onDialogViewCreated(view, savedInstanceState)
-        return AlertDialog.Builder(activity!!)
-            .setTitle(R.string.filter_settings_test_pattern_title)
-            .setView(view)
-            .setPositiveButton(android.R.string.ok, null)
-            .setNeutralButton(R.string.action_go_to_regexr_com) { _, _ ->
-                activity?.let {
-                    TwaLauncher(it).launch("https://regexr.com".toUri())
-                }
+        return buildAlertDialog {
+            titleRes = R.string.filter_settings_test_pattern_title
+            inflateView(R.layout.pattern_test_dialog_content) {
+                onDialogViewCreated(it, savedInstanceState)
             }
-            .create()
+            okButton()
+            neutralButton(R.string.action_go_to_regexr_com) {
+                TwaLauncher(context).launch("https://regexr.com".toUri())
+            }
+        }
     }
 
     private fun onDialogViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -27,7 +27,7 @@ class MainConfirmBlockTextDialogFragment : ConfirmBlockTextDialogFragment() {
 
     }
 
-    override val titleRes: Int = R.string.action_add_rule
+    override val titleResourceId: Int = R.string.action_add_rule
 
     private lateinit var danmaku: BiliChatDanmaku
 

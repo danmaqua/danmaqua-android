@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,7 +18,7 @@ import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.list.BaseViewHolder
-import moe.feng.danmaqua.util.ext.avatarUrl
+import moe.feng.danmaqua.util.ext.*
 import java.util.*
 
 class ManageSubscriptionActivity : BaseActivity() {
@@ -130,10 +129,10 @@ class ManageSubscriptionActivity : BaseActivity() {
                 }
 
                 deleteButton.setOnClickListener {
-                    AlertDialog.Builder(this@ManageSubscriptionActivity)
-                        .setTitle(R.string.unsubscribe_dialog_title)
-                        .setMessage(getString(R.string.unsubscribe_dialog_message, data.username))
-                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                    showAlertDialog {
+                        titleRes = R.string.unsubscribe_dialog_title
+                        message = getString(R.string.unsubscribe_dialog_message, data.username)
+                        yesButton {
                             launch {
                                 val dao = database.subscriptions()
                                 val lastSelected = data.selected
@@ -151,8 +150,8 @@ class ManageSubscriptionActivity : BaseActivity() {
                                 adapter.notifyDataSetChanged()
                             }
                         }
-                        .setNegativeButton(android.R.string.no, null)
-                        .show()
+                        noButton()
+                    }
                 }
             }
 

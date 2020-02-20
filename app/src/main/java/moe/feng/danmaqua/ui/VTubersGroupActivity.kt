@@ -3,7 +3,6 @@ package moe.feng.danmaqua.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -16,15 +15,12 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.event.OnCatalogSingleItemClickListener
-import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.model.VTuberCatalog
-import moe.feng.danmaqua.model.VTuberGroup
-import moe.feng.danmaqua.model.VTuberSingleItem
+import moe.feng.danmaqua.model.*
 import moe.feng.danmaqua.ui.dialog.ConfirmSubscribeStreamerDialogFragment
 import moe.feng.danmaqua.ui.list.CannotFindVTuberCatalogItemViewDelegate
 import moe.feng.danmaqua.ui.list.VTuberSingleItemViewDelegate
-import moe.feng.danmaqua.util.ext.TAG
-import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.ui.subscription.showStreamerExistsDialog
+import moe.feng.danmaqua.util.ext.*
 
 class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
 
@@ -85,21 +81,9 @@ class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
         launchWhenResumed {
             val subscription = database.subscriptions().findByUid(item.uid)
             if (subscription != null) {
-                val msg = getString(
-                    R.string.subscribe_existing_streamer_dialog_message,
-                    item.name)
-                AlertDialog.Builder(this@VTubersGroupActivity)
-                    .setTitle(R.string.subscribe_existing_streamer_dialog_title)
-                    .setMessage(msg)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+                showStreamerExistsDialog(item.name)
             } else {
-                ConfirmDialog.show(supportFragmentManager, Subscription(
-                    uid = item.uid,
-                    roomId = item.room,
-                    username = item.name,
-                    avatar = item.face
-                ))
+                ConfirmDialog.show(supportFragmentManager, item.toSubscription())
             }
         }
     }

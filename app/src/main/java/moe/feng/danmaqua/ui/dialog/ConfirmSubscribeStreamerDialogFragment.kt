@@ -2,10 +2,8 @@ package moe.feng.danmaqua.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import moe.feng.common.eventshelper.of
@@ -13,8 +11,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.view.CircleImageView
-import moe.feng.danmaqua.util.ext.avatarUrl
-import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.util.ext.*
 
 open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
 
@@ -39,15 +36,16 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialogView = LayoutInflater.from(activity!!)
-            .inflate(R.layout.new_subscription_confirm_dialog_layout, null)
-        onDialogViewCreated(dialogView, savedInstanceState)
-        return AlertDialog.Builder(activity!!)
-            .setTitle(R.string.confirm_subscribe_streamer_dialog_title)
-            .setView(dialogView)
-            .setPositiveButton(R.string.action_subscribe) { _, _ -> onPositiveButtonClick() }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        return buildAlertDialog {
+            titleRes = R.string.confirm_subscribe_streamer_dialog_title
+            inflateView(R.layout.new_subscription_confirm_dialog_layout) {
+                onDialogViewCreated(it, savedInstanceState)
+            }
+            positiveButton(R.string.action_subscribe) {
+                onPositiveButtonClick()
+            }
+            cancelButton()
+        }
     }
 
     private fun onDialogViewCreated(view: View, savedInstanceState: Bundle?) {

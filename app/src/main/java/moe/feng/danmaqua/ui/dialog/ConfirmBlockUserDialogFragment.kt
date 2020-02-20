@@ -2,18 +2,15 @@ package moe.feng.danmaqua.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.ui.view.CircleImageView
-import moe.feng.danmaqua.util.ext.avatarUrl
+import moe.feng.danmaqua.util.ext.*
 
 abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {
 
@@ -48,17 +45,16 @@ abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialogView = LayoutInflater.from(activity!!)
-            .inflate(R.layout.manage_blocked_user_confirm_add_dialog_layout, null)
-        onDialogViewCreated(dialogView, savedInstanceState)
-        return AlertDialog.Builder(activity!!)
-            .setTitle(R.string.confirm_add_blocked_user_title)
-            .setView(dialogView)
-            .setPositiveButton(android.R.string.yes) { _, _ ->
+        return buildAlertDialog {
+            titleRes = R.string.confirm_add_blocked_user_title
+            inflateView(R.layout.manage_blocked_user_confirm_add_dialog_layout) {
+                onDialogViewCreated(it, savedInstanceState)
+            }
+            yesButton {
                 lifecycleScope.launch { onConfirmBlock(BlockedUserRule(uid, username, face)) }
             }
-            .setNegativeButton(android.R.string.no, null)
-            .show()
+            noButton()
+        }
     }
 
     private fun onDialogViewCreated(view: View, savedInstanceState: Bundle?) {

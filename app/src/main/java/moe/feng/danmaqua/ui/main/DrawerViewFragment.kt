@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
@@ -34,7 +33,7 @@ import moe.feng.danmaqua.ui.list.SubscriptionManageButtonViewDelegate
 import moe.feng.danmaqua.ui.settings.ExperimentSettingsFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
-import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.util.ext.*
 
 class DrawerViewFragment : BaseFragment() {
 
@@ -207,10 +206,10 @@ class DrawerViewFragment : BaseFragment() {
         }
 
         override fun onSubscriptionItemLongClick(item: Subscription) {
-            AlertDialog.Builder(activity!!)
-                .setTitle(R.string.unsubscribe_dialog_title)
-                .setMessage(getString(R.string.unsubscribe_dialog_message, item.username))
-                .setPositiveButton(android.R.string.yes) { _, _ ->
+            activity?.showAlertDialog {
+                titleRes = R.string.unsubscribe_dialog_title
+                message = getString(R.string.unsubscribe_dialog_message, item.username)
+                yesButton {
                     lifecycleScope.launch {
                         val dao = database.subscriptions()
                         val lastSelected = item.selected
@@ -227,14 +226,14 @@ class DrawerViewFragment : BaseFragment() {
                                 }
                                 dao.update(value)
                             }
-                            context?.eventsHelper?.of<MainDrawerCallback>()
-                                ?.onSubscriptionChange(selectedItem)
+                            context.eventsHelper.of<MainDrawerCallback>()
+                                .onSubscriptionChange(selectedItem)
                         }
                         updateAdapterData(items)
                     }
                 }
-                .setNegativeButton(android.R.string.no, null)
-                .show()
+                noButton()
+            }
         }
 
         override fun onSubscriptionAddClick() {

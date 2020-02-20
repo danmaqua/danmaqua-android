@@ -6,12 +6,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.NoConnectionsDialogListener
-import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.util.ext.*
 import java.lang.Exception
 
 class NoConnectionsDialogFragment : BaseDialogFragment() {
@@ -25,18 +24,17 @@ class NoConnectionsDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
-            .setTitle(R.string.no_connections_available_title)
-            .setMessage(R.string.no_connections_available_message)
-            .setPositiveButton(R.string.action_open_settings) { _, _ ->
-                context?.run(::onOpenSettings)
+        return buildAlertDialog {
+            titleRes = R.string.no_connections_available_title
+            messageRes = R.string.no_connections_available_message
+            positiveButton(R.string.action_open_settings) {
+                onOpenSettings(context)
             }
-            .setNegativeButton(R.string.action_ignore) { _, _ ->
-                context?.eventsHelper?.of<NoConnectionsDialogListener>()
-                    ?.onIgnore()
+            negativeButton(R.string.action_ignore) {
+                context.eventsHelper.of<NoConnectionsDialogListener>().onIgnore()
             }
-            .setNeutralButton(android.R.string.cancel, null)
-            .create()
+            neutralButton(android.R.string.cancel)
+        }
     }
 
     private fun onOpenSettings(context: Context) {

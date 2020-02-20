@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -24,9 +23,12 @@ import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.dialog.ConfirmSubscribeStreamerDialogFragment
+import moe.feng.danmaqua.model.toSubscription
 import moe.feng.danmaqua.ui.list.RecommendedStreamerItemViewDelegate
-import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.ui.subscription.showConfirmSubscribeStreamerDialog
+import moe.feng.danmaqua.ui.subscription.showSearchNoResultDialog
+import moe.feng.danmaqua.ui.subscription.showStreamerExistsDialog
+import moe.feng.danmaqua.util.ext.*
 
 class NewSubscriptionActivity : BaseActivity(),
     OnRecommendedStreamerItemClickListener, OnConfirmSubscribeStreamerListener {
@@ -74,32 +76,19 @@ class NewSubscriptionActivity : BaseActivity(),
                 }
                 val idResultInDB = database.subscriptions().findByUid(id)
                 if (idResultInDB != null) {
-                    val msg = getString(
-                        R.string.subscribe_existing_streamer_dialog_message,
-                        idResultInDB.username)
-                    AlertDialog.Builder(this@NewSubscriptionActivity)
-                        .setTitle(R.string.subscribe_existing_streamer_dialog_title)
-                        .setMessage(msg)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show()
+                    showStreamerExistsDialog(idResultInDB.username)
                     return@launchWhenResumed
                 }
                 try {
                     val subscription = getSubscription(id)
                     if (subscription != null) {
-                        ConfirmSubscribeStreamerDialogFragment.show(
-                            supportFragmentManager, subscription
-                        )
+                        showConfirmSubscribeStreamerDialog(subscription)
                         return@launchWhenResumed
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                AlertDialog.Builder(this@NewSubscriptionActivity)
-                    .setTitle(R.string.search_room_id_no_result_dialog_title)
-                    .setMessage(R.string.search_room_id_no_result_dialog_message)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+                showSearchNoResultDialog()
             }
         }
 
@@ -150,18 +139,9 @@ class NewSubscriptionActivity : BaseActivity(),
         launchWhenResumed {
             val subscription = database.subscriptions().findByUid(item.uid)
             if (subscription != null) {
-                val msg = getString(
-                    R.string.subscribe_existing_streamer_dialog_message,
-                    item.name)
-                AlertDialog.Builder(this@NewSubscriptionActivity)
-                    .setTitle(R.string.subscribe_existing_streamer_dialog_title)
-                    .setMessage(msg)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show()
+                showStreamerExistsDialog(item.name)
             } else {
-                ConfirmSubscribeStreamerDialogFragment.show(
-                    supportFragmentManager, Subscription(item.uid, item.room, item.name, item.face)
-                )
+                showConfirmSubscribeStreamerDialog(item.toSubscription())
             }
         }
     }

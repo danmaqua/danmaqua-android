@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +19,7 @@ import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.ui.BaseFragment
+import moe.feng.danmaqua.util.ext.*
 
 class ManageBlockedTextFragment : BaseFragment() {
 
@@ -93,31 +93,32 @@ class ManageBlockedTextFragment : BaseFragment() {
         }
     }
 
-    private fun showEditDialog(@StringRes titleRes: Int,
+    private fun showEditDialog(@StringRes titleResource: Int,
                                initialValue: BlockedTextRule = BlockedTextRule(""),
                                onOk: (newValue: BlockedTextRule) -> Unit) {
-        val dialogView = LayoutInflater.from(context)
-            .inflate(R.layout.manage_blocked_text_edit_dialog_layout, null)
-        val editText = dialogView.findViewById<EditText>(android.R.id.edit)
-        val checkboxRegexp = dialogView.findViewById<CheckBox>(R.id.checkboxRegexp)
+        showAlertDialog {
+            lateinit var editText: EditText
+            lateinit var checkboxRegexp: CheckBox
 
-        editText.setText(initialValue.text)
-        checkboxRegexp.isChecked = initialValue.isRegExp
+            titleRes = titleResource
+            inflateView(R.layout.manage_blocked_text_edit_dialog_layout) {
+                editText = it.findViewById(android.R.id.edit)
+                checkboxRegexp = it.findViewById(R.id.checkboxRegexp)
 
-        AlertDialog.Builder(activity!!)
-            .setTitle(titleRes)
-            .setView(dialogView)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
+                editText.setText(initialValue.text)
+                checkboxRegexp.isChecked = initialValue.isRegExp
+            }
+            okButton {
                 val text = editText.text?.toString()
                 if (text.isNullOrEmpty()) {
-                    Toast.makeText(context!!, R.string.toast_empty_input, Toast.LENGTH_SHORT)
+                    Toast.makeText(context, R.string.toast_empty_input, Toast.LENGTH_SHORT)
                         .show()
-                    return@setPositiveButton
+                    return@okButton
                 }
                 onOk(BlockedTextRule(text, checkboxRegexp.isChecked))
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+            cancelButton()
+        }
     }
 
     private inner class BlockedTextListAdapter

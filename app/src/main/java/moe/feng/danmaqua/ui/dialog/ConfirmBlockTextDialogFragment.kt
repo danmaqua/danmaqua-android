@@ -2,14 +2,13 @@ package moe.feng.danmaqua.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedTextRule
+import moe.feng.danmaqua.util.ext.*
 
 abstract class ConfirmBlockTextDialogFragment : BaseDialogFragment() {
 
@@ -39,39 +38,36 @@ abstract class ConfirmBlockTextDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialogView = LayoutInflater.from(context)
-            .inflate(R.layout.manage_blocked_text_edit_dialog_layout, null)
-        val editText = dialogView.findViewById<EditText>(android.R.id.edit)
-        val checkboxRegexp = dialogView.findViewById<CheckBox>(R.id.checkboxRegexp)
+        return buildAlertDialog {
+            titleRes = titleResourceId
+            inflateView(R.layout.manage_blocked_text_edit_dialog_layout) {
+                val editText = it.findViewById<EditText>(android.R.id.edit)
+                val checkboxRegexp = it.findViewById<CheckBox>(R.id.checkboxRegexp)
 
-        editText.setText(data.text)
-        checkboxRegexp.isChecked = data.isRegExp
+                editText.setText(data.text)
+                checkboxRegexp.isChecked = data.isRegExp
 
-        editText.addTextChangedListener {
-            it?.toString()?.let { str ->
-                data.text = str
+                editText.addTextChangedListener { editable ->
+                    editable?.toString()?.let { str ->
+                        data.text = str
+                    }
+                }
+                checkboxRegexp.setOnCheckedChangeListener { _, isChecked ->
+                    data.isRegExp = isChecked
+                }
             }
-        }
-        checkboxRegexp.setOnCheckedChangeListener { _, isChecked ->
-            data.isRegExp = isChecked
-        }
-
-        return AlertDialog.Builder(activity!!)
-            .setTitle(titleRes)
-            .setView(dialogView)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
+            okButton {
                 if (data.text.isEmpty()) {
-                    Toast.makeText(context!!, R.string.toast_empty_input, Toast.LENGTH_SHORT)
-                        .show()
-                    return@setPositiveButton
+                    Toast.makeText(context, R.string.toast_empty_input, Toast.LENGTH_SHORT).show()
+                    return@okButton
                 }
                 onBlockText(BlockedTextRule(data.text, data.isRegExp))
             }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+            cancelButton()
+        }
     }
 
-    abstract val titleRes: Int
+    abstract val titleResourceId: Int
 
     abstract fun onBlockText(rule: BlockedTextRule)
 

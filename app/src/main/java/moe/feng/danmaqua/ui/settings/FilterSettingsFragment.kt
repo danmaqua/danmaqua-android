@@ -3,7 +3,6 @@ package moe.feng.danmaqua.ui.settings
 import android.content.Context
 import android.os.Bundle
 import android.text.style.TypefaceSpan
-import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
@@ -20,8 +19,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.dialog.PatternTestDialogFragment
-import moe.feng.danmaqua.util.ext.onClick
-import moe.feng.danmaqua.util.ext.onValueChanged
+import moe.feng.danmaqua.util.ext.*
 import java.lang.Exception
 import java.util.regex.Pattern
 
@@ -99,21 +97,18 @@ class FilterSettingsFragment : BasePreferenceFragment() {
                 Pattern.compile(value)
             } catch (e: Exception) {
                 e.printStackTrace()
-                val msg = buildSpannedString {
-                    append(getString(R.string.filter_settings_invalid_pattern_message))
-                    append("\n\n")
-                    inSpans(TypefaceSpan("monospace")) { append(e.message) }
-                }
-                activity?.let {
-                    AlertDialog.Builder(it)
-                        .setTitle(R.string.filter_settings_invalid_pattern_title)
-                        .setMessage(msg)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .setNeutralButton(R.string.action_what_is_regexp) { _, _ ->
-                            TwaLauncher(it)
-                                .launch(it.getString(R.string.what_is_regexp_tutorial_url).toUri())
-                        }
-                        .show()
+                showAlertDialog {
+                    titleRes = R.string.filter_settings_invalid_pattern_title
+                    message = buildSpannedString {
+                        append(getString(R.string.filter_settings_invalid_pattern_message))
+                        append("\n\n")
+                        inSpans(TypefaceSpan("monospace")) { append(e.message) }
+                    }
+                    okButton()
+                    neutralButton(R.string.action_what_is_regexp) {
+                        TwaLauncher(context)
+                            .launch(getString(R.string.what_is_regexp_tutorial_url).toUri())
+                    }
                 }
                 return false
             }
