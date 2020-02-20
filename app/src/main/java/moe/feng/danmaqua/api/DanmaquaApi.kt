@@ -13,30 +13,49 @@ object DanmaquaApi {
     const val API_HOST_CN = "https://danmaqua-cn.api.feng.moe"
     const val API_HOST_INTERNATIONAL = "https://danmaqua-intl.api.feng.moe"
 
-    var apiHost: String = API_HOST_CN
-
     suspend fun getRecommendation(): Recommendation = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url("$apiHost/room/recommendation.json")
+        val cnRequest = Request.Builder()
+            .url("$API_HOST_CN/room/recommendation.json")
+            .build()
+        val intlRequest = Request.Builder()
+            .url("$API_HOST_INTERNATIONAL/room/recommendation.json")
             .build()
 
-        HttpUtils.requestAsJson<Recommendation>(request)
+        try {
+            HttpUtils.requestAsJson<Recommendation>(intlRequest)
+        } catch (e: Exception) {
+            HttpUtils.requestAsJson<Recommendation>(cnRequest)
+        }
     }
 
     suspend fun getVTuberCatalog(): VTuberCatalog = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url("$apiHost/room/vtubers_catalog.json")
+        val cnRequest = Request.Builder()
+            .url("$API_HOST_CN/room/vtubers_catalog.json")
+            .build()
+        val intlRequest = Request.Builder()
+            .url("$API_HOST_INTERNATIONAL/room/vtubers_catalog.json")
             .build()
 
-        HttpUtils.requestAsJson<VTuberCatalog>(request)
+        try {
+            HttpUtils.requestAsJson<VTuberCatalog>(intlRequest)
+        } catch (e: Exception) {
+            HttpUtils.requestAsJson<VTuberCatalog>(cnRequest)
+        }
     }
 
     suspend fun getVTuberGroup(name: String): VTuberGroup = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url("$apiHost/room/vtubers/$name.json")
+        val cnRequest = Request.Builder()
+            .url("$API_HOST_CN/room/vtubers/$name.json")
+            .build()
+        val intlRequest = Request.Builder()
+            .url("$API_HOST_INTERNATIONAL/room/vtubers/$name.json")
             .build()
 
-        HttpUtils.requestAsJson<VTuberGroup>(request)
+        try {
+            HttpUtils.requestAsJson<VTuberGroup>(intlRequest)
+        } catch (e: Exception) {
+            HttpUtils.requestAsJson<VTuberGroup>(cnRequest)
+        }
     }
 
 }
