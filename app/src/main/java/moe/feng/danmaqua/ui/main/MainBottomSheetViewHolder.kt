@@ -49,7 +49,9 @@ class MainBottomSheetViewHolder(private val mainActivity: MainActivity)
     }
 
     fun onDestroy() {
-        behavior.removeBottomSheetCallback(callback)
+        if (::behavior.isInitialized) {
+            behavior.removeBottomSheetCallback(callback)
+        }
         mainActivity.eventsHelper.unregisterListener(this)
     }
 
