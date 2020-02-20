@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="intro_konaqua" translatable="false">こんあくあーー</string>
+
+    <string name="about_project_repo_url" translatable="false"><![CDATA[
+    https://github.com/fython/danmaqua-android
+    ]]></string>
+    <string name="help_url" translatable="false"><![CDATA[
+    https://danmaqua.github.io/intro.html
+    ]]></string>
+    <string name="about_author_weibo_url" translatable="false"><![CDATA[
+    https://weibo.com/fython
+    ]]></string>
+    <string name="about_author_bilibili_url" translatable="false"><![CDATA[
+    https://space.bilibili.com/4432261
+    ]]></string>
+    <string name="about_author_email_summary" translatable="false"><![CDATA[
+    fythonx#g_m_a_i_l_._c_o_m
+    ]]></string>
+    <string name="about_discussion_group_qq_number" translatable="false">1026979836</string>
+    <string name="alipay_email" translatable="false"><![CDATA[
+    fythonx#g_m_a_i_l_._c_o_m
+    ]]></string>
+    <string name="paypal_link" translatable="false">https://paypal.me/fython</string>
+
+    <string name="about_road_map_url" translatable="false"><![CDATA[
+    https://github.com/fython/danmaqua-android/blob/master/ROADMAP.md
+    ]]></string>
+    <string name="cannot_find_vtuber_in_catalog_url" translatable="false"><![CDATA[
+    https://danmaqua.github.io/api/data_repo.html#%E5%A2%9E%E5%8A%A0%E3%80%81%E6%9B%B4%E6%96%B0%E8
+%99%9A%E6%8B%9F%E4%B8%BB%E6%92%AD%E7%9B%AE%E5%BD%95
+    ]]></string>
+    <string name="changelog_url" translatable="false"><![CDATA[
+    https://danmaqua.github.io/changelogs.html#_1-0-2-3
+    ]]></string>
+
+</resources>

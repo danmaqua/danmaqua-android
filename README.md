@@ -24,7 +24,7 @@ Currently English version documentation is unavailable.
 
 ## 使用方法
 
-阅读 [帮助文档](./docs/HELP.md)。
+阅读 [帮助文档](https://danmaqua.github.io/intro.html)。
 
 ## 开发计划
 
@@ -32,6 +32,7 @@ Currently English version documentation is unavailable.
 
 - [所有路线图：ROADMAP.md](./ROADMAP.md)
 - [没有咕的进度](https://github.com/fython/danmaqua-android/projects/1#column-7935078)
+- [协助翻译](https://fengmoe.oneskyapp.com/collaboration/project/355656)
 
 ## 联系作者
 
