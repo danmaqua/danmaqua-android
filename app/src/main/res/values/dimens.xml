@@ -6,6 +6,8 @@
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="raised_list_item_elevation">8dp</dimen>
 
+    <dimen name="main_list_bottom_padding_extra">24dp</dimen>
+
     <dimen name="subscription_list_default_padding_top">16dp</dimen>
     <dimen name="subscription_item_view_background_radius">16dp</dimen>
     <dimen name="subscription_list_raised_view_elevation">16dp</dimen>

@@ -105,6 +105,7 @@ class ListenerServiceNotificationHelper(private val service: DanmakuListenerServ
             val username = current?.username ?: roomId.toString()
 
             notificationBuilder.setLargeIcon(null)
+            notificationBuilder.setStyle(null)
             notificationBuilder.setContentText(getString(
                 R.string.listener_service_noti_text_connected,
                 username,

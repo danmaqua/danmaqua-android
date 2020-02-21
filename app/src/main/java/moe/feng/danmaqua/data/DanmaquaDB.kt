@@ -13,7 +13,7 @@ import moe.feng.danmaqua.model.Subscription
 @Database(entities = [
     Subscription::class,
     BlockedUserRule::class
-], version = 2)
+], version = 3)
 abstract class DanmaquaDB : RoomDatabase() {
 
     companion object {
@@ -25,15 +25,9 @@ abstract class DanmaquaDB : RoomDatabase() {
         fun init(context: Context) {
             val appContext = if (context is Application) context else context.applicationContext
             if (!::instance.isInitialized) {
-                instance = Room.databaseBuilder(
-                    appContext,
-                    DanmaquaDB::class.java,
-                    DATABASE_NAME
-                ).addMigrations(object : Migration(1, 2) {
-                    override fun migrate(database: SupportSQLiteDatabase) {
-                        database.execSQL("CREATE TABLE IF NOT EXISTS `blocked_user_rule` (`uid` INTEGER NOT NULL, `username` TEXT NOT NULL, `face` TEXT, PRIMARY KEY(`uid`))")
-                    }
-                }).build()
+                instance = Room.databaseBuilder(appContext, DanmaquaDB::class.java, DATABASE_NAME)
+                    .addMigrations(MigrationV1ToV2, MigrationV2ToV3)
+                    .build()
             }
         }
 
@@ -42,5 +36,21 @@ abstract class DanmaquaDB : RoomDatabase() {
     abstract fun subscriptions(): SubscriptionDao
 
     abstract fun blockedUsers(): BlockedUserRulesDao
+
+    object MigrationV1ToV2 : Migration(1, 2) {
+
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS `blocked_user_rule` (`uid` INTEGER NOT NULL, `username` TEXT NOT NULL, `face` TEXT, PRIMARY KEY(`uid`))")
+        }
+
+    }
+
+    object MigrationV2ToV3 : Migration(2, 3) {
+
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE `Subscription` ADD `favourite` INTEGER NOT NULL DEFAULT 0")
+        }
+
+    }
 
 }

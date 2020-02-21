@@ -302,4 +302,12 @@
 
     <string name="more_settings_button">更多设置</string>
 
+    <string name="action_favourite">喜爱</string>
+    <string name="toast_favourite_limit">最多只能标记三个最喜爱的主播。</string>
+    <string name="toast_shortcut_subscription_removed"><![CDATA[
+    请在使用快捷方式前先重新订阅主播。
+    ]]></string>
+    <string name="action_add_to_home">添加到主屏幕</string>
+    <string name="toast_failed_to_add_to_home">添加快捷方式到主屏幕失败</string>
+
 </resources>

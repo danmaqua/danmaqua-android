@@ -38,6 +38,19 @@
         tools:text="Siubeng Official"/>
 
     <ImageView
+        android:id="@+id/favButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_favorite_border_24"
+        android:tint="@color/favourite_icon_normal"
+        android:tintMode="src_in"/>
+
+    <ImageView
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

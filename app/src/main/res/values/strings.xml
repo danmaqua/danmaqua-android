@@ -320,4 +320,12 @@
 
     <string name="more_settings_button">More settings</string>
 
+    <string name="action_favourite">Favourite</string>
+    <string name="toast_favourite_limit">You can only mark up to 3 favourite streamers.</string>
+    <string name="toast_shortcut_subscription_removed"><![CDATA[
+    Please resubscribe streamer before using launch shortcut.
+    ]]></string>
+    <string name="action_add_to_home">Add to home screen</string>
+    <string name="toast_failed_to_add_to_home">Failed to add shortcut to home screen.</string>
+
 </resources>

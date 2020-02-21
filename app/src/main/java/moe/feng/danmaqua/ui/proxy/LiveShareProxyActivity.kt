@@ -48,7 +48,8 @@ class LiveShareProxyActivity : BaseActivity(), OnConfirmSubscribeStreamerListene
                         val roomId = matcher.group(2).toLong()
                         val sub = database.subscriptions().findByRoomId(roomId)
                         if (sub != null) {
-                            startServiceAndConnect(roomId)
+                            DanmakuListenerService.startServiceAndConnect(
+                                this@LiveShareProxyActivity, roomId)
                         } else {
                             val toSub = getSubscription(roomId)
                             if (toSub != null) {
@@ -85,13 +86,6 @@ class LiveShareProxyActivity : BaseActivity(), OnConfirmSubscribeStreamerListene
         }
     }
 
-    private fun startServiceAndConnect(roomId: Long) {
-        val intent = Intent(this, DanmakuListenerService::class.java)
-        intent.putExtra(EXTRA_ACTION, DanmakuListenerService.ACTION_START)
-        intent.putExtra(EXTRA_START_ROOM, roomId)
-        ContextCompat.startForegroundService(this, intent)
-    }
-
     override fun onConfirmSubscribeStreamer(subscription: Subscription) {
         lifecycleScope.launch {
             val dao = database.subscriptions()
@@ -105,7 +99,8 @@ class LiveShareProxyActivity : BaseActivity(), OnConfirmSubscribeStreamerListene
 
                 eventsHelper.of<MainDrawerCallback>().onSubscriptionChange(subscription)
             }
-            startServiceAndConnect(subscription.roomId)
+            DanmakuListenerService.startServiceAndConnect(
+                this@LiveShareProxyActivity, subscription.roomId)
             finish()
         }
     }

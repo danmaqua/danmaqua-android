@@ -14,7 +14,8 @@ data class Subscription(
     @ColumnInfo val username: String,
     @ColumnInfo val avatar: String,
     @ColumnInfo var order: Int = 0,
-    @ColumnInfo var selected: Boolean = false
+    @ColumnInfo var selected: Boolean = false,
+    @ColumnInfo var favourite: Boolean = false
 ) : Comparable<Subscription>, Parcelable {
 
     override fun compareTo(other: Subscription): Int {

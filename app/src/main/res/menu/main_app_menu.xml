@@ -14,4 +14,9 @@
         android:title="@string/action_room_info"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_add_to_home"
+        android:title="@string/action_add_to_home"
+        app:showAsAction="never"/>
+
 </menu>

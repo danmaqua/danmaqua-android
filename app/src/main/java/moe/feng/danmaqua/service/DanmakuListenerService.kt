@@ -1,14 +1,15 @@
 package moe.feng.danmaqua.service
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.IBinder
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import kotlinx.coroutines.*
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
-import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.Danmaqua.EXTRA_START_ROOM
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
@@ -33,6 +34,13 @@ class DanmakuListenerService :
         const val ACTION_START = "start"
         const val ACTION_STOP = "stop"
         const val ACTION_RECONNECT = "reconnect"
+
+        fun startServiceAndConnect(context: Context, roomId: Long) {
+            val intent = Intent(context, DanmakuListenerService::class.java)
+            intent.putExtra(EXTRA_ACTION, ACTION_START)
+            intent.putExtra(EXTRA_START_ROOM, roomId)
+            ContextCompat.startForegroundService(context, intent)
+        }
 
     }
 

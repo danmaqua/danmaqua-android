@@ -4,8 +4,10 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.list.BaseViewHolder
+import moe.feng.danmaqua.util.ShortcutsUtils
 import moe.feng.danmaqua.util.ext.*
 import java.util.*
 
@@ -115,9 +118,16 @@ class ManageSubscriptionActivity : BaseActivity() {
         @SuppressLint("ClickableViewAccessibility")
         inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
+            val favIconColor: Int get() = context.getColor(R.color.favourite_icon_checked)
+            val notFavIconColor: Int get() = context.getColor(R.color.favourite_icon_normal)
+            val shortAnimTime: Long get() = context.resources
+                .getInteger(android.R.integer.config_shortAnimTime).toLong()
+
             lateinit var data: Subscription
 
             var dragAnimator: Animator? = null
+
+            var favAnimator: Animator? = null
 
             init {
                 dragHandle.setOnTouchListener { _, event ->
@@ -126,6 +136,37 @@ class ManageSubscriptionActivity : BaseActivity() {
                         return@setOnTouchListener true
                     }
                     false
+                }
+
+                favButton.setOnClickListener {
+                    launch {
+                        val dao = database.subscriptions()
+                        if (!data.favourite) {
+                            val favCount = dao.getFavourites().size
+                            if (favCount == 3) {
+                                Toast.makeText(context, R.string.toast_favourite_limit,
+                                    Toast.LENGTH_SHORT).show()
+                                return@launch
+                            }
+                        }
+                        data.favourite = !data.favourite
+                        dao.update(data)
+                        favAnimator?.cancel()
+                        favAnimator = ObjectAnimator.ofArgb(
+                            if (data.favourite) notFavIconColor else favIconColor,
+                            if (data.favourite) favIconColor else notFavIconColor
+                        ).also { anim ->
+                            anim.duration = shortAnimTime
+                            anim.addUpdateListener {
+                                favButton.imageTintList =
+                                    ColorStateList.valueOf(it.animatedValue as Int)
+                            }
+                            anim.start()
+                        }
+                        favButton.setImageResource(if (data.favourite)
+                            R.drawable.ic_favorite_24 else R.drawable.ic_favorite_border_24)
+                        ShortcutsUtils.requestUpdateShortcuts(context)
+                    }
                 }
 
                 deleteButton.setOnClickListener {
@@ -161,8 +202,7 @@ class ManageSubscriptionActivity : BaseActivity() {
                     itemView, "elevation",
                     0F, itemView.resources.getDimension(R.dimen.raised_list_item_elevation)
                 )
-                dragAnimator?.duration = (itemView.resources
-                    .getInteger(android.R.integer.config_shortAnimTime) / 2).toLong()
+                dragAnimator?.duration = shortAnimTime / 2
                 dragAnimator?.start()
             }
 
@@ -172,8 +212,7 @@ class ManageSubscriptionActivity : BaseActivity() {
                     itemView, "elevation",
                     itemView.resources.getDimension(R.dimen.raised_list_item_elevation), 0F
                 )
-                dragAnimator?.duration = (itemView.resources
-                    .getInteger(android.R.integer.config_shortAnimTime) / 2).toLong()
+                dragAnimator?.duration = shortAnimTime / 2
                 dragAnimator?.start()
             }
 
@@ -189,7 +228,18 @@ class ManageSubscriptionActivity : BaseActivity() {
                 data = item
                 avatarView.avatarUrl = item.avatar
                 nameText.text = item.username
+                if (item.favourite) {
+                    favButton.imageTintList = ColorStateList.valueOf(favIconColor)
+                    favButton.setImageResource(R.drawable.ic_favorite_24)
+                } else {
+                    favButton.imageTintList = ColorStateList.valueOf(notFavIconColor)
+                    favButton.setImageResource(R.drawable.ic_favorite_border_24)
+                }
             }
+        }
+
+        override fun onViewRecycled(holder: ViewHolder) {
+            holder.favAnimator?.cancel()
         }
 
     }

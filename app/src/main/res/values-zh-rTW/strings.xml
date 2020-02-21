@@ -302,4 +302,12 @@
 
     <string name="more_settings_button">更多設定</string>
 
+    <string name="action_favourite">喜愛</string>
+    <string name="toast_favourite_limit">最多僅可標記三位最喜愛的主播。</string>
+    <string name="toast_shortcut_subscription_removed"><![CDATA[
+    請在使用捷徑前先重新訂閱主播。
+    ]]></string>
+    <string name="action_add_to_home">添加至主畫面</string>
+    <string name="toast_failed_to_add_to_home">添加捷徑至主畫面失敗</string>
+
 </resources>

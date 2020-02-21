@@ -21,6 +21,9 @@ interface SubscriptionDao {
     @Query("SELECT * FROM subscription ORDER BY `order`")
     suspend fun getAll(): List<Subscription>
 
+    @Query("SELECT * FROM subscription WHERE favourite = 1 ORDER BY `order`")
+    suspend fun getFavourites(): List<Subscription>
+
     @Query("SELECT * FROM subscription WHERE selected = 1 LIMIT 1")
     suspend fun findSelected(): Subscription?
 

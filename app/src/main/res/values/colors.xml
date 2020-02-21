@@ -25,4 +25,7 @@
     <color name="subscription_item_manage_icon_tint">@color/material_light_blue_700</color>
     <color name="subscription_item_manage_icon_background">@color/material_light_blue_50</color>
 
+    <color name="favourite_icon_checked">@color/material_pink_400</color>
+    <color name="favourite_icon_normal">@color/material_grey_600</color>
+
 </resources>

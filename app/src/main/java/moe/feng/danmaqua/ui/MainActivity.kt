@@ -135,7 +135,8 @@ class MainActivity : BaseActivity(),
             insets
         }
         bottomAppBar.addOnLayoutChangeListener { _, _, top, _, bottom, _, _, _, _ ->
-            recyclerView.updatePadding(bottom = bottom - top)
+            recyclerView.updatePadding(bottom = bottom - top
+                    + resources.getDimensionPixelSize(R.dimen.main_list_bottom_padding_extra))
             backToLatestButtonContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 bottomMargin = bottom - top
             }
@@ -224,11 +225,13 @@ class MainActivity : BaseActivity(),
     override fun onResume() {
         super.onResume()
         connectivityHelper.register()
+        ShortcutsUtils.requestUpdateShortcuts(this)
     }
 
     override fun onPause() {
         super.onPause()
         connectivityHelper.unregister()
+        ShortcutsUtils.requestUpdateShortcuts(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -253,7 +256,7 @@ class MainActivity : BaseActivity(),
         return when (item.itemId) {
             R.id.action_open_stream -> {
                 launchWhenStarted {
-                    val current = database.subscriptions().getAll().firstOrNull { it.selected }
+                    val current = database.subscriptions().findSelected()
                     if (current != null) {
                         startActivity(IntentUtils.openBilibiliLive(
                             this@MainActivity, current.roomId))
@@ -263,10 +266,22 @@ class MainActivity : BaseActivity(),
             }
             R.id.action_room_info -> {
                 launchWhenResumed {
-                    val current = database.subscriptions().getAll().firstOrNull { it.selected }
+                    val current = database.subscriptions().findSelected()
                     if (current != null) {
                         RoomInfoDialogFragment.newInstance(current.roomId)
                             .show(supportFragmentManager, "room_info")
+                    }
+                }
+                true
+            }
+            R.id.action_add_to_home -> {
+                launchWhenResumed {
+                    val current = database.subscriptions().findSelected()
+                    if (current != null) {
+                        if (!ShortcutsUtils.requestPinSubscription(this@MainActivity, current)) {
+                            Toast.makeText(this@MainActivity,
+                                R.string.toast_failed_to_add_to_home, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
                 true
