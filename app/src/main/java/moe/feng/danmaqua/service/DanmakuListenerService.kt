@@ -8,6 +8,8 @@ import android.util.Log
 import androidx.core.text.HtmlCompat
 import kotlinx.coroutines.*
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
+import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
+import moe.feng.danmaqua.Danmaqua.EXTRA_START_ROOM
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
@@ -83,6 +85,11 @@ class DanmakuListenerService :
         when (action) {
             ACTION_START -> {
                 notiHelper.startForegroundForService()
+                val roomId = intent.getLongExtra(EXTRA_START_ROOM, 0)
+                if (roomId > 0) {
+                    connect(roomId)
+                    createFloatingView()
+                }
             }
             ACTION_STOP -> {
                 stopSelf()

@@ -2,7 +2,6 @@ package moe.feng.danmaqua.ui.settings
 
 import android.content.*
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.getSystemService
@@ -13,8 +12,9 @@ import moe.feng.danmaqua.BuildConfig
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.B23ProxyActivity
+import moe.feng.danmaqua.ui.proxy.B23ProxyActivity
 import moe.feng.danmaqua.ui.MainActivity
+import moe.feng.danmaqua.ui.proxy.LiveShareProxyActivity
 import moe.feng.danmaqua.util.ext.onClick
 import moe.feng.danmaqua.util.ext.onValueChanged
 
@@ -30,7 +30,8 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
 
     private val fbIdPref by preference<Preference>("firebase_instance_id")
     private val enabledAnalyticsPref by preference<CheckBoxPreference>("enabled_analytics")
-    private val handleB23Url by preference<CheckBoxPreference>("handle_b23_url")
+    private val proxyB23Url by preference<CheckBoxPreference>("proxy_b23_url")
+    private val proxyLiveShareUrl by preference<CheckBoxPreference>("proxy_live_share_url")
 
     override fun getActivityTitle(context: Context): CharSequence? {
         return context.getString(R.string.experiment_settings_title)
@@ -39,17 +40,21 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preference_dev)
 
-        handleB23Url.isChecked = context?.packageManager?.getComponentEnabledSetting(
-            ComponentName(context!!, B23ProxyActivity::class.java)
-        ) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-        handleB23Url.onValueChanged { value ->
+        proxyB23Url.isChecked = isComponentEnabled(B23ProxyActivity::class.java)
+        proxyB23Url.onValueChanged { value ->
             try {
-                context!!.packageManager!!.setComponentEnabledSetting(
-                    ComponentName(context!!, B23ProxyActivity::class.java),
-                    if (value) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                    else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP
-                )
+                setComponentEnabled(B23ProxyActivity::class.java, value)
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+        }
+
+        proxyLiveShareUrl.isChecked = isComponentEnabled(LiveShareProxyActivity::class.java)
+        proxyLiveShareUrl.onValueChanged { value ->
+            try {
+                setComponentEnabled(LiveShareProxyActivity::class.java, value)
                 true
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -91,6 +96,20 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
             fbIdPref.summary = it.token
             token = it.token
         }
+    }
+
+    private fun <T> isComponentEnabled(clazz: Class<T>): Boolean {
+        return context?.packageManager?.getComponentEnabledSetting(
+            ComponentName(context!!, clazz)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+    }
+
+    private fun <T> setComponentEnabled(clazz: Class<T>, enabled: Boolean) {
+        context!!.packageManager!!.setComponentEnabledSetting(
+            ComponentName(context!!, clazz),
+            if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
 }

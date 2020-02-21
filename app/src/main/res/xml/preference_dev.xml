@@ -3,9 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.preference.CheckBoxPreference
-        android:key="handle_b23_url"
-        android:title="@string/handle_b23_url_title"
-        android:summary="@string/handle_b23_url_summary"/>
+        android:key="proxy_b23_url"
+        android:title="@string/proxy_b23_url_title"
+        android:summary="@string/proxy_b23_url_summary"/>
+
+    <androidx.preference.CheckBoxPreference
+        android:key="proxy_live_share_url"
+        android:title="@string/proxy_live_share_title"
+        android:summary="@string/proxy_live_share_summary"/>
 
     <Preference
         android:key="restart_to_intro"

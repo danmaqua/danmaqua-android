@@ -291,9 +291,13 @@
 
     <string name="experiment_settings_title">實驗室</string>
     <string name="firebase_title">Firebase</string>
-    <string name="handle_b23_url_title">處理 b23.tv 鏈接並打開嗶哩嗶哩</string>
-    <string name="handle_b23_url_summary"><![CDATA[
+    <string name="proxy_b23_url_title">處理 b23.tv 鏈接並打開嗶哩嗶哩</string>
+    <string name="proxy_b23_url_summary"><![CDATA[
     如果你的嗶哩嗶哩客戶端不能直接打開 b23.tv 鏈接，我們可以幫你轉發啟動 Intent。
+    ]]></string>
+    <string name="proxy_live_share_title">發送嗶哩嗶哩直播來打開字幕</string>
+    <string name="proxy_live_share_summary"><![CDATA[
+    你可以從嗶哩嗶哩客戶端發送直播鏈接到懸浮字幕來快速啟動。
     ]]></string>
 
     <string name="more_settings_button">更多設定</string>

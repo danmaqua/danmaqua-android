@@ -18,6 +18,7 @@ object Danmaqua {
     const val EXTRA_PREFIX = "${BuildConfig.APPLICATION_ID}.extra"
     const val EXTRA_DATA = "${EXTRA_PREFIX}.DATA"
     const val EXTRA_ACTION = "${EXTRA_PREFIX}.ACTION"
+    const val EXTRA_START_ROOM = "${EXTRA_PREFIX}.START_ROOM_ID"
 
     const val ACTION_PREFIX = "${BuildConfig.APPLICATION_ID}.action"
 

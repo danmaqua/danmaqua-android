@@ -153,6 +153,10 @@ class NewSubscriptionActivity : BaseActivity(),
         finish()
     }
 
+    override fun onCancelConfirmSubscribe() {
+
+    }
+
     private suspend fun loadRecommendation() {
         setRecommendationViews(true)
         try {

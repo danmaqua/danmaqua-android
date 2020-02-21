@@ -11,4 +11,7 @@ interface OnConfirmSubscribeStreamerListener {
     @EventsOnThread(MAIN_THREAD)
     fun onConfirmSubscribeStreamer(subscription: Subscription)
 
+    @EventsOnThread(MAIN_THREAD)
+    fun onCancelConfirmSubscribe()
+
 }

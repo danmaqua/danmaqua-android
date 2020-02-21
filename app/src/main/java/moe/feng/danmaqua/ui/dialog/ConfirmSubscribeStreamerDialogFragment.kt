@@ -1,6 +1,7 @@
 package moe.feng.danmaqua.ui.dialog
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -18,21 +19,29 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
     companion object {
 
         const val ARGS_DATA = "args:DATA"
+        const val ARGS_CALLBACK_TAG = "args:CALLBACK_TAG"
 
-        fun show(fragmentManager: FragmentManager, subscription: Subscription) {
+        fun show(fragmentManager: FragmentManager,
+                 subscription: Subscription,
+                 callbackTag: String? = null) {
             val fragment = ConfirmSubscribeStreamerDialogFragment()
-            fragment.arguments = bundleOf(ARGS_DATA to subscription)
+            fragment.arguments = bundleOf(
+                ARGS_DATA to subscription, ARGS_CALLBACK_TAG to callbackTag)
             fragment.show(fragmentManager, "confirm_subscribe_streamer")
         }
 
     }
 
     protected lateinit var subscription: Subscription
+    private var callbackTag: String? = null
+
+    private var onPosClicked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         subscription = arguments!!.getParcelable(ARGS_DATA)!!
+        callbackTag = arguments!!.getString(ARGS_CALLBACK_TAG)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -58,8 +67,17 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
         uidView.text = getString(R.string.room_id_text_format, subscription.roomId)
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        if (onPosClicked) {
+            return
+        }
+        context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>(callbackTag)
+            .onCancelConfirmSubscribe()
+    }
+
     open fun onPositiveButtonClick() {
-        context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>()
+        onPosClicked = true
+        context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>(callbackTag)
             .onConfirmSubscribeStreamer(subscription)
     }
 

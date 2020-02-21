@@ -62,9 +62,11 @@
             android:exported="true"/>
 
         <activity
-            android:name=".ui.B23ProxyActivity"
-            android:label="@string/handle_b23_url_title"
-            android:theme="@style/Theme.EmptyActivity"
+            android:name=".ui.proxy.B23ProxyActivity"
+            android:label="@string/proxy_b23_url_title"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -75,6 +77,23 @@
 
                 <data android:scheme="http" android:host="b23.tv" android:pathPattern="/av.*"/>
                 <data android:scheme="https" android:host="b23.tv" android:pathPattern="/av.*"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.proxy.LiveShareProxyActivity"
+            android:label="@string/proxy_live_share_title"
+            android:theme="@style/Theme.EmptyActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/*"/>
             </intent-filter>
         </activity>
 
