@@ -29,8 +29,8 @@ object Danmaqua {
     const val PENDING_INTENT_REQUEST_ENTER_MAIN = 11
     const val PENDING_INTENT_REQUEST_RECONNECT = 12
 
-    const val LEFT_PARENTHESIS = "〈｛『〖［《〔「【"
-    const val RIGHT_PARENTHESIS = "〉｝『〗］》〕」】"
+    const val LEFT_PARENTHESIS = "〈｛『〖［〔「【"
+    const val RIGHT_PARENTHESIS = "〉｝『〗］〕」】"
 
     const val DEFAULT_FILTER_PATTERN =
         "(?<who>[^$LEFT_PARENTHESIS]*)[$LEFT_PARENTHESIS](?<text>[^$RIGHT_PARENTHESIS]*)[$RIGHT_PARENTHESIS]?"

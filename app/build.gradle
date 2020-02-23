@@ -72,6 +72,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version"
 
+    implementation project(':library-ktx')
+
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.fragment:fragment-ktx:1.2.1'
     implementation 'androidx.preference:preference-ktx:1.1.0'
