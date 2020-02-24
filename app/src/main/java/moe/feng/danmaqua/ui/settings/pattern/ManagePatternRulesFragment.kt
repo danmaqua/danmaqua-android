@@ -88,7 +88,7 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
 
     private suspend fun loadList() {
         val dao = database.patternRules()
-        val localRules = dao.getAll().toMutableList()
+        var localRules = dao.getAll()
         var oldItem = adapter.items.toList()
         adapter.items = mutableListOf("add") + localRules
         DiffUtil.calculateDiff(DiffUtilCallback(oldItem, adapter.items))
@@ -98,6 +98,15 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
                 onlineRules = DanmaquaApi.getPatternRules().data
             }
             oldItem = adapter.items.toList()
+            localRules = localRules.filter {
+                if (!it.selected && !it.local && onlineRules!!.none { rule ->
+                        rule.id == it.id
+                    }) {
+                    dao.delete(it)
+                    return@filter false
+                }
+                return@filter true
+            }
             adapter.items = mutableListOf("add") + localRules + onlineRules!!.filter { onlineRule ->
                 localRules.find { it.id == onlineRule.id }?.let {
                     it.title = onlineRule.title
