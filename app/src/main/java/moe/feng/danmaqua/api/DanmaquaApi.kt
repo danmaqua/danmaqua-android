@@ -31,16 +31,22 @@ object DanmaquaApi {
         }
     }
 
-    suspend fun getRecommendation(): Recommendation
-            = apiRequest("/room/recommendation.json")
+    suspend fun getRecommendation(): Recommendation {
+        return apiRequest("/room/recommendation.json")
+    }
 
-    suspend fun getVTuberCatalog(): VTuberCatalog
-            = apiRequest("/room/vtubers_catalog.json")
+    suspend fun getVTuberCatalog(): VTuberCatalog {
+        return apiRequest("/room/vtubers_catalog.json")
+    }
 
-    suspend fun getVTuberGroup(name: String): VTuberGroup
-            = apiRequest("/room/vtubers/$name.json")
+    suspend fun getVTuberGroup(name: String): VTuberGroup {
+        return apiRequest("/room/vtubers/$name.json")
+    }
 
-    suspend fun getPatternRules(): OnlinePatternRules
-            = apiRequest("/rule/patterns.json")
+    suspend fun getPatternRules(): OnlinePatternRules {
+        return apiRequest<OnlinePatternRules>("/rule/patterns.json").apply {
+            data.forEach { it.local = false }
+        }
+    }
 
 }

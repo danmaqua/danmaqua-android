@@ -2,26 +2,18 @@ package moe.feng.danmaqua.ui.settings
 
 import android.content.Context
 import android.os.Bundle
-import android.text.style.TypefaceSpan
-import androidx.core.net.toUri
-import androidx.core.text.buildSpannedString
-import androidx.core.text.inSpans
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.coroutines.launch
-import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.dialog.PatternTestDialogFragment
+import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
 import moe.feng.danmaqua.util.ext.*
-import java.lang.Exception
-import java.util.regex.Pattern
 
 class FilterSettingsFragment : BasePreferenceFragment() {
 
@@ -32,7 +24,7 @@ class FilterSettingsFragment : BasePreferenceFragment() {
     }
 
     private val enabledPref by preference<SwitchPreference>("filter_enabled")
-    private val patternPref by preference<EditTextPreference>("filter_pattern")
+    private val patternPref by preference<Preference>("filter_pattern")
     private val testPatternPref by preference<Preference>("filter_test_pattern")
     private val blockedUsersPref by preference<Preference>("filter_blocked_users")
     private val blockedTextPref by preference<Preference>("filter_blocked_text")
@@ -47,11 +39,8 @@ class FilterSettingsFragment : BasePreferenceFragment() {
             true
         }
 
-        patternPref.onValueChanged { value ->
-            onPatternChanged(value)
-        }
-        patternPref.setSummaryProvider {
-            getString(R.string.filter_settings_pattern_summary_format, patternPref.text)
+        patternPref.onClick {
+            PreferenceActivity.launch(requireActivity(), ManagePatternRulesFragment.ACTION)
         }
 
         testPatternPref.onClick {
@@ -61,19 +50,25 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         }
 
         blockedUsersPref.onClick {
-            PreferenceActivity.launch(activity!!, ManageBlockedUsersFragment.ACTION)
+            PreferenceActivity.launch(requireActivity(), ManageBlockedUsersFragment.ACTION)
         }
 
         blockedTextPref.onClick {
-            PreferenceActivity.launch(activity!!, ManageBlockedTextFragment.ACTION)
+            PreferenceActivity.launch(requireActivity(), ManageBlockedTextFragment.ACTION)
         }
 
         updatePrefValues()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updatePrefValues()
+    }
+
     private fun updatePrefValues() = lifecycleScope.launch {
         enabledPref.isChecked = Settings.filterEnabled
-        patternPref.text = Settings.filterPattern
+        patternPref.summary = getString(R.string.filter_settings_pattern_summary_format,
+            DanmaquaDB.instance.patternRules().getSelected().pattern)
         blockedUsersPref.summary = getString(R.string.filter_settings_blocked_users_summary_format,
             DanmaquaDB.instance.blockedUsers().count())
         blockedTextPref.summary = getString(R.string.filter_settings_blocked_text_summary_format,
@@ -86,36 +81,6 @@ class FilterSettingsFragment : BasePreferenceFragment() {
 
     override fun getActivityTitle(context: Context): CharSequence? {
         return context.getString(R.string.filter_settings_title)
-    }
-
-    private fun onPatternChanged(value: String): Boolean {
-        if (value.isEmpty()) {
-            Settings.filterPattern = Danmaqua.DEFAULT_FILTER_PATTERN
-            patternPref.text = Danmaqua.DEFAULT_FILTER_PATTERN
-        } else {
-            try {
-                Pattern.compile(value)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                showAlertDialog {
-                    titleRes = R.string.filter_settings_invalid_pattern_title
-                    message = buildSpannedString {
-                        append(getString(R.string.filter_settings_invalid_pattern_message))
-                        append("\n\n")
-                        inSpans(TypefaceSpan("monospace")) { append(e.message) }
-                    }
-                    okButton()
-                    neutralButton(R.string.action_what_is_regexp) {
-                        TwaLauncher(context)
-                            .launch(getString(R.string.what_is_regexp_tutorial_url).toUri())
-                    }
-                }
-                return false
-            }
-            Settings.filterPattern = value
-        }
-        Settings.notifyChanged(context!!)
-        return true
     }
 
 }

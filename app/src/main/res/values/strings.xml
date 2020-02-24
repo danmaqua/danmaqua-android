@@ -328,4 +328,18 @@
     <string name="action_add_to_home">Add to home screen</string>
     <string name="toast_failed_to_add_to_home">Failed to add shortcut to home screen.</string>
 
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_info">Info</string>
+    <string name="manage_pattern_rules_title">Manage pattern rules</string>
+    <string name="manage_pattern_rules_help"><![CDATA[
+    You can choose and customize danmaku filter pattern here. Online pattern rules will be updated
+    to latest version regularly.
+    ]]></string>
+    <string name="commited_by_text_format">Committed by %s</string>
+    <string name="pattern_rule_title">Pattern title</string>
+    <string name="pattern_rule_description">Pattern description</string>
+    <string name="pattern_rule_regex">Regular expression</string>
+    <string name="pattern_rule_committer">Committer</string>
+
 </resources>

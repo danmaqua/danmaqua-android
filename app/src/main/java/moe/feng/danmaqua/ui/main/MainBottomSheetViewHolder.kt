@@ -14,6 +14,7 @@ import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
+import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class MainBottomSheetViewHolder(private val mainActivity: MainActivity)
@@ -37,6 +38,10 @@ class MainBottomSheetViewHolder(private val mainActivity: MainActivity)
             }
         }
 
+        patternButton.setOnClickListener {
+            PreferenceActivity.launch(mainActivity, ManagePatternRulesFragment.ACTION)
+            hide()
+        }
         moreSettingsButton.setOnClickListener {
             PreferenceActivity.launch(mainActivity, FilterSettingsFragment.ACTION)
             hide()

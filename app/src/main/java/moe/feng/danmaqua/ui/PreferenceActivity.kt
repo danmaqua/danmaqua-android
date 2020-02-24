@@ -9,6 +9,7 @@ import androidx.fragment.app.commit
 import kotlinx.android.synthetic.main.preference_activity.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.settings.*
+import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
 import moe.feng.danmaqua.util.ext.TAG
 
 class PreferenceActivity : BaseActivity() {
@@ -51,6 +52,11 @@ class PreferenceActivity : BaseActivity() {
                 FloatingSettingsFragment.ACTION -> {
                     setFragment(
                         FloatingSettingsFragment()
+                    )
+                }
+                ManagePatternRulesFragment.ACTION -> {
+                    setFragment(
+                        ManagePatternRulesFragment()
                     )
                 }
                 ManageBlockedTextFragment.ACTION -> {

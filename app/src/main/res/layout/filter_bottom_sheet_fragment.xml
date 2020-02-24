@@ -36,10 +36,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/patternButton"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top">
+        android:gravity="top"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:selectableItemBackground">
 
         <ImageView
             android:layout_width="wrap_content"

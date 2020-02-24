@@ -1,13 +1,19 @@
 package moe.feng.danmaqua.model
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+@Entity(tableName = "pattern_rules")
 data class PatternRulesItem (
-    val id: String,
-    val title: TextTranslation,
-    val desc: TextTranslation,
-    val committer: String,
-    val pattern: String
+    @PrimaryKey val id: String,
+    @ColumnInfo var title: TextTranslation,
+    @ColumnInfo var desc: TextTranslation,
+    @ColumnInfo var committer: String,
+    @ColumnInfo var pattern: String,
+    @ColumnInfo var local: Boolean = true,
+    @ColumnInfo var selected: Boolean = false
 ) : Parcelable

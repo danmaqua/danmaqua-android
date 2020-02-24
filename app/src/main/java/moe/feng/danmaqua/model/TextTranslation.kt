@@ -5,7 +5,7 @@ import androidx.core.os.forEach
 import java.util.*
 import kotlin.collections.HashMap
 
-open class TextTranslation : HashMap<String, String>() {
+open class TextTranslation : HashMap<String, String?>() {
 
     private fun getByKey(block: (key: String) -> Boolean): String? {
         return keys.find(block)?.let { get(it) }
@@ -33,6 +33,10 @@ open class TextTranslation : HashMap<String, String>() {
             })
         }
         return null
+    }
+
+    operator fun set(locale: Locale, text: String?) {
+        put(Locale(locale.language, locale.country).toString().replace('_', '-'), text)
     }
 
     operator fun get(locale: Locale): String? {
