@@ -44,9 +44,12 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         }
 
         testPatternPref.onClick {
-            PatternTestDialogFragment.newInstance(
-                pattern = Settings.filterPattern, sampleText = "【测试弹幕】"
-            ).show(childFragmentManager, "pattern_test_dialog")
+            launchWhenResumed {
+                PatternTestDialogFragment.newInstance(
+                    pattern = DanmaquaDB.instance.patternRules().getSelected().pattern,
+                    sampleText = "【测试弹幕】"
+                ).show(childFragmentManager, "pattern_test_dialog")
+            }
         }
 
         blockedUsersPref.onClick {

@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <TextView
@@ -57,7 +58,6 @@
         android:layout_height="wrap_content"
         android:importantForAccessibility="no"
         android:padding="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_more_vert_24"
         android:tint="?android:textColorTertiary"

@@ -341,5 +341,7 @@
     <string name="pattern_rule_description">Pattern description</string>
     <string name="pattern_rule_regex">Regular expression</string>
     <string name="pattern_rule_committer">Committer</string>
+    <string name="pattern_rule_add_dialog_title_add">Add pattern rule</string>
+    <string name="pattern_rule_add_dialog_title_edit">Edit pattern rule</string>
 
 </resources>

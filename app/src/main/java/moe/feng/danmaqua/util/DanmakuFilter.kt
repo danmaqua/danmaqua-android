@@ -18,18 +18,20 @@ interface DanmakuFilter {
         }
 
         fun fromSettings(patternOnly: Boolean = false): DanmakuFilter {
-            val pattern = if (Settings.filterEnabled) {
-                Pattern.compile(Settings.filterPattern)
-            } else {
-                null
+            return runBlocking {
+                val db = DanmaquaDB.instance
+                val pattern = if (Settings.filterEnabled) {
+                    Pattern.compile(db.patternRules().getSelected().pattern)
+                } else {
+                    null
+                }
+                DanmaquaFilter(
+                    pattern = pattern,
+                    blockedUids = if (patternOnly) emptyList() else
+                        db.blockedUsers().getAll().map { it.uid },
+                    blockedWords = if (patternOnly) emptyList() else Settings.blockedTextPatterns
+                )
             }
-            return DanmaquaFilter(
-                pattern = pattern,
-                blockedUids = if (patternOnly) emptyList() else runBlocking {
-                    DanmaquaDB.instance.blockedUsers().getAll().map { it.uid }
-                },
-                blockedWords = if (patternOnly) emptyList() else Settings.blockedTextPatterns
-            )
         }
 
         @Throws(Exception::class)

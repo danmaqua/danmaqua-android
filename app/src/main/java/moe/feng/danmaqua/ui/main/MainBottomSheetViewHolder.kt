@@ -61,8 +61,10 @@ class MainBottomSheetViewHolder(private val mainActivity: MainActivity)
     }
 
     private fun updateViewStates() {
-        filterEnabledSwitch.isChecked = Settings.filterEnabled
-        filterPatternText.text = Settings.filterPattern
+        mainActivity.launchWhenCreated {
+            filterEnabledSwitch.isChecked = Settings.filterEnabled
+            filterPatternText.text = mainActivity.database.patternRules().getSelected().pattern
+        }
     }
 
     fun onApplyWindowInsets(insets: WindowInsets) {

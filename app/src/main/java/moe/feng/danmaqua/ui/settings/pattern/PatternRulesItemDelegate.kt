@@ -19,7 +19,7 @@ class PatternRulesItemDelegate(var callback: Callback? = null)
 
     }
 
-    private var contextData: PatternRulesItem? = null
+    var contextData: PatternRulesItem? = null
 
     inner class ViewHolder(itemView: View) : BaseViewHolder(itemView),
         View.OnCreateContextMenuListener {
@@ -62,6 +62,7 @@ class PatternRulesItemDelegate(var callback: Callback? = null)
             data = item
             radioButton.isChecked = item.selected
             titleText.text = item.title()
+            descText.isGone = item.local
             descText.text = item.desc()
             onlineInfoText.isGone = item.local
             onlineInfoText.text = context.getString(

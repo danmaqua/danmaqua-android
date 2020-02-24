@@ -27,10 +27,14 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
 
     }
 
+    private val patternItemDelegate: PatternRulesItemDelegate = PatternRulesItemDelegate(this)
+
     private val adapter: MultiTypeAdapter = MultiTypeAdapter().also {
-        it.register(PatternRulesItemDelegate(this))
+        it.register(patternItemDelegate)
         it.register(AddButtonDelegate())
     }
+
+    private var onlineRules: List<PatternRulesItem>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,11 +57,16 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_edit -> {
-
+                patternItemDelegate.contextData?.let { contextData ->
+                    EditPatternRuleDialogFragment.showEditDialog(contextData)
+                        .show(childFragmentManager, "edit")
+                }
                 return true
             }
             R.id.action_delete -> {
-
+                patternItemDelegate.contextData?.let { contextData ->
+                    onConfirmRuleDelete(contextData)
+                }
                 return true
             }
             R.id.action_info -> {
@@ -85,7 +94,11 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
         DiffUtil.calculateDiff(DiffUtilCallback(oldItem, adapter.items))
             .dispatchUpdatesTo(adapter)
         try {
-            val onlineRules = DanmaquaApi.getPatternRules().data.filter { onlineRule ->
+            if (onlineRules == null) {
+                onlineRules = DanmaquaApi.getPatternRules().data
+            }
+            oldItem = adapter.items.toList()
+            adapter.items = mutableListOf("add") + localRules + onlineRules!!.filter { onlineRule ->
                 localRules.find { it.id == onlineRule.id }?.let {
                     it.title = onlineRule.title
                     it.desc = onlineRule.desc
@@ -97,8 +110,6 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
                 }
                 return@filter true
             }
-            oldItem = adapter.items.toList()
-            adapter.items = mutableListOf("add") + localRules + onlineRules
             DiffUtil.calculateDiff(DiffUtilCallback(oldItem, adapter.items))
                 .dispatchUpdatesTo(adapter)
         } catch (e: Exception) {
@@ -121,12 +132,49 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
                 }
             }
             Danmaqua.Settings.notifyChanged()
-            adapter.notifyItemRangeChanged(0, adapter.itemCount)
+            loadList()
         }
     }
 
     private fun onAddButtonClick() {
+        EditPatternRuleDialogFragment.showNewDialog().show(childFragmentManager, "add")
+    }
 
+    fun onConfirmRuleAdd(rule: PatternRulesItem) {
+        launchWhenCreated {
+            database.patternRules().add(rule)
+            Danmaqua.Settings.notifyChanged()
+            loadList()
+        }
+    }
+
+    fun onConfirmRuleEdit(rule: PatternRulesItem) {
+        launchWhenCreated {
+            database.patternRules().update(rule)
+            Danmaqua.Settings.notifyChanged()
+            loadList()
+        }
+    }
+    
+    fun onConfirmRuleDelete(rule: PatternRulesItem) {
+        launchWhenCreated {
+            val dao = database.patternRules()
+            dao.delete(rule)
+            if (dao.findSelected() == null) {
+                val all = dao.getAll()
+                if (all.isEmpty()) {
+                    // This branch shouldn't be called
+                    dao.addDefaultItem()
+                } else {
+                    all.first().let {
+                        it.selected = true
+                        dao.update(it)
+                    }
+                }
+            }
+            Danmaqua.Settings.notifyChanged()
+            loadList()
+        }
     }
 
     private inner class AddButtonDelegate
@@ -163,7 +211,13 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
 
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
             if (oldItem is PatternRulesItem && newItem is PatternRulesItem) {
-                return oldItem == newItem
+                return oldItem.id == newItem.id &&
+                        oldItem.title == newItem.title &&
+                        oldItem.desc == newItem.title &&
+                        oldItem.pattern == newItem.pattern &&
+                        oldItem.local == newItem.local &&
+                        oldItem.selected == newItem.selected &&
+                        oldItem.committer == newItem.committer
             }
             return super.areContentsTheSame(oldItem, newItem)
         }

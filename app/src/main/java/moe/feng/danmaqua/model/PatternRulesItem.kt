@@ -10,10 +10,10 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "pattern_rules")
 data class PatternRulesItem (
     @PrimaryKey val id: String,
-    @ColumnInfo var title: TextTranslation,
-    @ColumnInfo var desc: TextTranslation,
-    @ColumnInfo var committer: String,
-    @ColumnInfo var pattern: String,
+    @ColumnInfo var title: TextTranslation = TextTranslation(),
+    @ColumnInfo var desc: TextTranslation = TextTranslation(),
+    @ColumnInfo var committer: String = "",
+    @ColumnInfo var pattern: String = "",
     @ColumnInfo var local: Boolean = true,
     @ColumnInfo var selected: Boolean = false
 ) : Parcelable

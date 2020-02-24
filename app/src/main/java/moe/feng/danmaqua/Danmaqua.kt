@@ -73,10 +73,6 @@ object Danmaqua {
             key = "filter_enabled", defaultValue = false
         )
 
-        var filterPattern: String by mmkv.notnullStringProperty(
-            key = "filter_pattern_v2", defaultValue = DEFAULT_FILTER_PATTERN
-        )
-
         var blockedTextPatterns: List<BlockedTextRule> by mmkv.jsonArrayProperty(
             key = "filter_blocked_text_rules",
             arrayClass = Array<BlockedTextRule>::class.java
