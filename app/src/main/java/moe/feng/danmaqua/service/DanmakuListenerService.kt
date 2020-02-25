@@ -24,6 +24,9 @@ import moe.feng.danmaqua.util.ListenerServiceNotificationHelper
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.eventsHelper
 import java.io.EOFException
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 class DanmakuListenerService :
     Service(), CoroutineScope by MainScope(),
@@ -57,6 +60,8 @@ class DanmakuListenerService :
 
     private val notiHelper: ListenerServiceNotificationHelper =
         ListenerServiceNotificationHelper(this)
+
+    private val connectLock: Lock = ReentrantLock()
 
     override fun onBind(intent: Intent?): IBinder? {
         return binder
@@ -134,7 +139,7 @@ class DanmakuListenerService :
     }
 
     private fun connect(roomId: Long) {
-        launch {
+        connectLock.withLock {
             Log.d(TAG, "connect roomId=$roomId")
             try {
                 danmakuListener?.close()
@@ -144,7 +149,9 @@ class DanmakuListenerService :
             try {
                 lastConnectedRoom = roomId
                 danmakuListener = DanmakuListener(roomId, this@DanmakuListenerService)
-                danmakuListener?.connect()
+                launch {
+                    danmakuListener?.connect()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 for ((callback, _) in serviceCallbacks) {
@@ -186,6 +193,15 @@ class DanmakuListenerService :
 
         for ((callback, _) in serviceCallbacks) {
             callback.onDisconnect()
+        }
+
+        if (!userReason) {
+            launch {
+                delay(3000L)
+                lastConnectedRoom?.let {
+                    connect(it)
+                }
+            }
         }
     }
 
