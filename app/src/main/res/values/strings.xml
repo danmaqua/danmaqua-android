@@ -358,5 +358,17 @@
     <string name="danmaku_history_saved_files_title">Saved files</string>
     <string name="danmaku_history_item_title_format">%s(%d)\'s history</string>
     <string name="danmaku_history_unsubscribed_title">Unsubscribed</string>
+    <string name="action_export">Export</string>
+    <string name="action_preview">Preview</string>
+    <string name="danmaku_history_dialog_source_title">Danmaku source</string>
+    <string name="danmaku_history_dialog_last_modified_title">Last modified</string>
+    <string name="danmaku_history_dialog_file_path_title">File path</string>
+    <string name="danmaku_history_delete_confirm_title">Confirm</string>
+    <string name="danmaku_history_delete_confirm_message"><![CDATA[
+    Do you want to delete file %s? It cannot be recovered after operation is done.
+    ]]></string>
+    <string name="toast_danmaku_history_file_used"><![CDATA[
+    This history file is being used. Please stop service before deleting a active file.
+    ]]></string>
 
 </resources>

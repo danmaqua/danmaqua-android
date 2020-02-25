@@ -74,6 +74,13 @@ object HistoryManager {
         currentHistoryFile = null
     }
 
+    suspend fun deleteRecord(item: HistoryFile) = withContext(Dispatchers.IO) {
+        if (item == currentHistoryFile) {
+            return@withContext false
+        }
+        item.file.delete()
+    }
+
     suspend fun record(item: BiliChatDanmaku) = withContext(Dispatchers.IO) {
         if (!isRecording()) {
             return@withContext

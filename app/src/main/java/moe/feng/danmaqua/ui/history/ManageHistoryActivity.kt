@@ -1,6 +1,7 @@
 package moe.feng.danmaqua.ui.history
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.danmaku_history_activity.*
@@ -26,6 +27,10 @@ class ManageHistoryActivity : BaseActivity() {
         recyclerView.adapter = adapter
 
         setAdapterItems(emptyList())
+        loadAdapterItems()
+    }
+
+    private fun loadAdapterItems() {
         launchWhenCreated {
             val historyFiles = HistoryManager.listHistoryFiles(this@ManageHistoryActivity)
             val subscriptions = database.subscriptions().getAll()
@@ -33,7 +38,7 @@ class ManageHistoryActivity : BaseActivity() {
                 HistoryItemViewDelegate.Item(
                     it,
                     subscriptions.find { s -> s.roomId == it.roomId }?.username ?:
-                            getString(R.string.danmaku_history_unsubscribed_title)
+                    getString(R.string.danmaku_history_unsubscribed_title)
                 )
             })
         }
@@ -46,6 +51,20 @@ class ManageHistoryActivity : BaseActivity() {
                 items
         DiffUtil.calculateDiff(SimpleDiffItemCallback(oldItems, adapter.items))
             .dispatchUpdatesTo(adapter)
+    }
+
+    fun onConfirmDelete(item: HistoryFile) {
+        launchWhenResumed {
+            if (HistoryManager.deleteRecord(item)) {
+                loadAdapterItems()
+            } else {
+                Toast.makeText(
+                    this@ManageHistoryActivity,
+                    R.string.toast_danmaku_history_file_used,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     inner class HistoryAdapter :
@@ -65,8 +84,9 @@ class ManageHistoryActivity : BaseActivity() {
             adapter.notifyItemChanged(0, Any())
         }
 
-        override fun onHistoryItemClick(item: HistoryFile) {
-
+        override fun onHistoryItemClick(item: HistoryItemViewDelegate.Item) {
+            ViewHistoryItemInfoDialogFragment.newInstance(item)
+                .show(supportFragmentManager, "view_history_info")
         }
 
     }

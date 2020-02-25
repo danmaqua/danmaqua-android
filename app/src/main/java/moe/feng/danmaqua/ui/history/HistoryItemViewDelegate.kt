@@ -18,7 +18,7 @@ class HistoryItemViewDelegate(var callback: Callback? = null)
 
     interface Callback {
 
-        fun onHistoryItemClick(item: HistoryFile)
+        fun onHistoryItemClick(item: Item)
 
     }
 
@@ -33,7 +33,7 @@ class HistoryItemViewDelegate(var callback: Callback? = null)
         lateinit var data: Item
 
         override fun onItemClick() {
-            callback?.onHistoryItemClick(data.value)
+            callback?.onHistoryItemClick(data)
         }
 
     }

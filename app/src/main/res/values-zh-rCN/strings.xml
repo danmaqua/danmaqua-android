@@ -330,4 +330,25 @@
     <string name="pattern_rule_regex_error_invalid">表达式不符合规范。</string>
     <string name="pattern_rule_rule_from_old_ver_title">旧版本恢复的规则</string>
 
+    <string name="danmaku_history_title">弹幕历史</string>
+    <string name="danmaku_history_toggle_item_title">记录弹幕历史</string>
+    <string name="danmaku_history_toggle_item_summary"><![CDATA[
+    弹幕历史会被保存到应用数据中。然后你可以导出历史文件到外部存储或其它应用。
+    ]]></string>
+    <string name="danmaku_history_saved_files_title">已保存的文件</string>
+    <string name="danmaku_history_item_title_format">%s（%d）的历史</string>
+    <string name="danmaku_history_unsubscribed_title">未订阅</string>
+    <string name="action_export">导出</string>
+    <string name="action_preview">预览</string>
+    <string name="danmaku_history_dialog_source_title">弹幕来源</string>
+    <string name="danmaku_history_dialog_last_modified_title">修改时间</string>
+    <string name="danmaku_history_dialog_file_path_title">文件路径</string>
+    <string name="danmaku_history_delete_confirm_title">确定</string>
+    <string name="danmaku_history_delete_confirm_message"><![CDATA[
+    你要删除文件 %s 吗？操作确认后无法恢复。
+    ]]></string>
+    <string name="toast_danmaku_history_file_used"><![CDATA[
+    这个历史文件正在使用中，请在删除活动的文件前停止弹幕服务。
+    ]]></string>
+
 </resources>
