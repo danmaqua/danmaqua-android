@@ -5,6 +5,7 @@ buildscript {
 
         room_library_version = "2.2.4"
         events_helper_version = "1.0.2"
+        work_version = "2.3.2"
     }
     repositories {
         google()

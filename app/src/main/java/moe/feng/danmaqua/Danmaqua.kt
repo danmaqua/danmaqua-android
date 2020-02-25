@@ -37,6 +37,9 @@ object Danmaqua {
     const val LEFT_PARENTHESIS = "〈｛『〖［〔「【"
     const val RIGHT_PARENTHESIS = "〉｝『〗］〕」】"
 
+    const val WORK_MIN_PERIODIC_INTERVAL = 8L
+    const val WORK_NAME_UPDATE_PATTERN_RULES = "update_pattern_rules"
+
     const val DEFAULT_FILTER_PATTERN =
         "(?<who>[^$LEFT_PARENTHESIS]*)[$LEFT_PARENTHESIS](?<text>[^$RIGHT_PARENTHESIS]*)[$RIGHT_PARENTHESIS]?"
 

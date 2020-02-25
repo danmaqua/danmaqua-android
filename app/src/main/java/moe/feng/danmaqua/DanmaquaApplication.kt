@@ -21,6 +21,7 @@ import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.util.HttpUtils
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.work.UpdatePatternRulesWork
 import okhttp3.Cache
 import java.io.File
 
@@ -35,6 +36,7 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
         super.onCreate()
 
         initComponents()
+        UpdatePatternRulesWork.enqueue(this)
 
         updateSdkEnabled()
         AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.darkMode)
