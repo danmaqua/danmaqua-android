@@ -310,4 +310,24 @@
     <string name="action_add_to_home">添加至主畫面</string>
     <string name="toast_failed_to_add_to_home">添加捷徑至主畫面失敗</string>
 
+    <string name="action_edit">編輯</string>
+    <string name="action_delete">刪除</string>
+    <string name="action_info">資料</string>
+    <string name="manage_pattern_rules_title">管理匹配規則</string>
+    <string name="manage_pattern_rules_help"><![CDATA[
+    你可以在這裡選擇、自訂彈幕過濾匹配規則，線上匹配規則會定期地更新至最新版本。
+    ]]></string>
+    <string name="commited_by_text_format">由 %s 提交</string>
+    <string name="local_rule_text">本地規則</string>
+    <string name="pattern_rule_title">規則標題</string>
+    <string name="pattern_rule_description">規則描述</string>
+    <string name="pattern_rule_regex">正則表達式</string>
+    <string name="pattern_rule_committer">提交者</string>
+    <string name="pattern_rule_add_dialog_title_add">新增匹配規則</string>
+    <string name="pattern_rule_add_dialog_title_edit">編輯匹配規則</string>
+    <string name="pattern_rule_title_error_empty">標題不能為空。</string>
+    <string name="pattern_rule_regex_error_empty">表達式不能為空。</string>
+    <string name="pattern_rule_regex_error_invalid">表達式不符合規範。</string>
+    <string name="pattern_rule_rule_from_old_ver_title">舊版本恢復的規則</string>
+
 </resources>

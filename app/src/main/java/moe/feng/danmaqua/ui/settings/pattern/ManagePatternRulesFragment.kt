@@ -2,10 +2,7 @@ package moe.feng.danmaqua.ui.settings.pattern
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.ItemViewDelegate
 import com.drakeet.multitype.MultiTypeAdapter
@@ -18,6 +15,9 @@ import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.ui.list.BaseViewHolder
 import moe.feng.danmaqua.ui.list.SimpleDiffItemCallback
+import moe.feng.danmaqua.util.ext.messageRes
+import moe.feng.danmaqua.util.ext.okButton
+import moe.feng.danmaqua.util.ext.showAlertDialog
 
 class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Callback {
 
@@ -35,6 +35,12 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
     }
 
     private var onlineRules: List<PatternRulesItem>? = null
+
+    private lateinit var addItem: MenuItem
+
+    init {
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +76,10 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
                 return true
             }
             R.id.action_info -> {
-
+                patternItemDelegate.contextData?.let { contextData ->
+                    ViewPatternRuleDialogFragment.newInstance(contextData)
+                        .show(childFragmentManager, "view_info")
+                }
                 return true
             }
         }
@@ -84,6 +93,22 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
 
     override fun getActivityTitle(context: Context): String? {
         return context.getString(R.string.manage_pattern_rules_title)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        addItem = menu.add(R.string.action_help)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item == addItem) {
+            showAlertDialog {
+                messageRes = R.string.manage_pattern_rules_help
+                okButton()
+            }
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private suspend fun loadList() {

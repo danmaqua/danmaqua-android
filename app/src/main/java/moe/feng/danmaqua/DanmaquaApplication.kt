@@ -34,6 +34,19 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
     override fun onCreate() {
         super.onCreate()
 
+        initComponents()
+
+        updateSdkEnabled()
+        AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.darkMode)
+
+        eventsHelper.registerListener(this)
+    }
+
+    override fun onSettingsChanged() {
+        updateSdkEnabled()
+    }
+
+    private fun initComponents() {
         val okHttpCacheDir = File(cacheDir, "okhttp")
         var cacheSize = 5 * 1024 * 1024L
         try {
@@ -55,8 +68,6 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
             .downloader(OkHttp3Downloader(HttpUtils.client))
             .build())
 
-        updateSdkEnabled()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = getSystemService<NotificationManager>()!!
             val channel = NotificationChannel(
@@ -67,13 +78,7 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
             manager.createNotificationChannel(channel)
         }
 
-        AppCompatDelegate.setDefaultNightMode(Danmaqua.Settings.darkMode)
-
-        eventsHelper.registerListener(this)
-    }
-
-    override fun onSettingsChanged() {
-        updateSdkEnabled()
+        Danmaqua.Settings.transferPatternSettingsToNewDB(this)
     }
 
     private fun updateSdkEnabled() {

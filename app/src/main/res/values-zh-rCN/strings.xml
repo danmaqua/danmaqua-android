@@ -310,4 +310,24 @@
     <string name="action_add_to_home">添加到主屏幕</string>
     <string name="toast_failed_to_add_to_home">添加快捷方式到主屏幕失败</string>
 
+    <string name="action_edit">编辑</string>
+    <string name="action_delete">删除</string>
+    <string name="action_info">信息</string>
+    <string name="manage_pattern_rules_title">管理匹配规则</string>
+    <string name="manage_pattern_rules_help"><![CDATA[
+    你可以在这里选择、自定义弹幕过滤匹配规则，在线匹配规则会定期地更新到最新版本。
+    ]]></string>
+    <string name="commited_by_text_format">由 %s 提交</string>
+    <string name="local_rule_text">本地规则</string>
+    <string name="pattern_rule_title">规则标题</string>
+    <string name="pattern_rule_description">规则描述</string>
+    <string name="pattern_rule_regex">正则表达式</string>
+    <string name="pattern_rule_committer">提交者</string>
+    <string name="pattern_rule_add_dialog_title_add">新增匹配规则</string>
+    <string name="pattern_rule_add_dialog_title_edit">编辑匹配规则</string>
+    <string name="pattern_rule_title_error_empty">标题不能为空。</string>
+    <string name="pattern_rule_regex_error_empty">表达式不能为空。</string>
+    <string name="pattern_rule_regex_error_invalid">表达式不符合规范。</string>
+    <string name="pattern_rule_rule_from_old_ver_title">旧版本恢复的规则</string>
+
 </resources>

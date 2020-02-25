@@ -4,10 +4,15 @@ import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.tencent.mmkv.MMKV
+import kotlinx.coroutines.runBlocking
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.common.eventshelper.of
+import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BlockedTextRule
+import moe.feng.danmaqua.model.PatternRulesItem
+import moe.feng.danmaqua.model.buildTextTranslation
+import moe.feng.danmaqua.model.chinese
 import moe.feng.danmaqua.util.ext.*
 
 /**
@@ -50,6 +55,25 @@ object Danmaqua {
                 lastVersionCode = pi.versionCode
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to update current used version code to settings", e)
+            }
+        }
+
+        fun transferPatternSettingsToNewDB(context: Context) {
+            runBlocking {
+                if (mmkv.containsKey("filter_pattern_v2")) {
+                    val dao = DanmaquaDB.instance.patternRules()
+                    val title = context.getString(R.string.pattern_rule_rule_from_old_ver_title)
+                    dao.addDefaultItem()
+                    dao.add(PatternRulesItem(
+                        id = "old_rule",
+                        title = buildTextTranslation { chinese = title },
+                        pattern = mmkv.getString("filter_pattern_v2", null)
+                            ?: DEFAULT_FILTER_PATTERN,
+                        selected = false,
+                        local = true
+                    ))
+                    mmkv.remove("filter_pattern_v2")
+                }
             }
         }
 

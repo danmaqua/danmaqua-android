@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -110,3 +111,9 @@ fun AlertDialog.Builder.yesButton(onClick: (DialogInterface) -> Unit = {}) {
 fun AlertDialog.Builder.noButton(onClick: (DialogInterface) -> Unit = {}) {
     negativeButton(android.R.string.no, onClick)
 }
+
+val AlertDialog.positiveButton: Button get() = getButton(AlertDialog.BUTTON_POSITIVE)
+
+val AlertDialog.negativeButton: Button get() = getButton(AlertDialog.BUTTON_NEGATIVE)
+
+val AlertDialog.neutralButton: Button get() = getButton(AlertDialog.BUTTON_NEUTRAL)

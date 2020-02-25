@@ -2,11 +2,13 @@ package moe.feng.danmaqua.ui.settings.pattern
 
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.Toast
+import android.widget.Button
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.code.regexp.Pattern
+import kotlinx.coroutines.Job
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.model.buildTextTranslation
@@ -56,6 +58,11 @@ class EditPatternRuleDialogFragment : BaseDialogFragment() {
 
     private lateinit var titleEdit: TextInputEditText
     private lateinit var regexpEdit: TextInputEditText
+    private lateinit var titleInputLayout: TextInputLayout
+    private lateinit var regexpInputLayout: TextInputLayout
+
+    private var okButton: Button? = null
+    private var updateViewStateJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +94,8 @@ class EditPatternRuleDialogFragment : BaseDialogFragment() {
             inflateView(R.layout.manage_pattern_rules_add_dialog) {
                 titleEdit = it.findViewById(R.id.titleEdit)
                 regexpEdit = it.findViewById(R.id.regexpEdit)
+                titleInputLayout = it.findViewById(R.id.titleInputLayout)
+                regexpInputLayout = it.findViewById(R.id.regexpInputLayout)
 
                 titleEdit.setText(data.title())
                 regexpEdit.setText(data.pattern)
@@ -95,26 +104,14 @@ class EditPatternRuleDialogFragment : BaseDialogFragment() {
                     data.title = buildTextTranslation {
                         chinese = text.toString()
                     }
+                    updateViewState()
                 }
                 regexpEdit.addTextChangedListener { text ->
                     data.pattern = text.toString()
+                    updateViewState()
                 }
             }
             okButton {
-                if (titleEdit.text.isNullOrEmpty()) {
-                    // TODO Show toast
-                    return@okButton
-                }
-                try {
-                    Pattern.compile(regexpEdit.text.toString())
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.filter_settings_invalid_pattern_title,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
                 val parent = parentFragment
                 if (parent is ManagePatternRulesFragment) {
                     when (action) {
@@ -124,6 +121,36 @@ class EditPatternRuleDialogFragment : BaseDialogFragment() {
                 }
             }
             cancelButton()
+        }.also {
+            it.setOnShowListener { _ ->
+                okButton = it.positiveButton
+                updateViewState()
+            }
+        }
+    }
+
+    private fun updateViewState() {
+        updateViewStateJob?.cancel()
+        updateViewStateJob = launchWhenCreated {
+            val titleEmpty = titleEdit.text.isNullOrEmpty()
+            val regexpInvalid = try {
+                Pattern.compile(data.pattern)
+                false
+            } catch (e: Exception) {
+                true
+            }
+            val regexpEmpty = regexpEdit.text.isNullOrEmpty()
+
+            titleInputLayout.error = when {
+                titleEmpty -> getString(R.string.pattern_rule_title_error_empty)
+                else -> null
+            }
+            regexpInputLayout.error = when {
+                regexpInvalid -> getString(R.string.pattern_rule_regex_error_invalid)
+                regexpEmpty -> getString(R.string.pattern_rule_regex_error_empty)
+                else -> null
+            }
+            okButton?.isEnabled = !titleEmpty && !regexpInvalid && !regexpEmpty
         }
     }
 

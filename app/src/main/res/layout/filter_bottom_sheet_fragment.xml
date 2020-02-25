@@ -2,30 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/bottomSheetStyle"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_filter_list_24_text_color_primary"/>
+            android:src="@drawable/ic_filter_list_24_text_color_primary" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:text="@string/filter_settings_enabled_title"/>
+            android:layout_weight="1"
+            android:text="@string/filter_settings_enabled_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/filterEnabledSwitch"
@@ -37,44 +37,53 @@
 
     <LinearLayout
         android:id="@+id/patternButton"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top"
+        android:background="?android:selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:background="?android:selectableItemBackground">
+        android:gravity="top"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_find_in_page_24_text_color_primary"/>
+            android:src="@drawable/ic_find_in_page_24_text_color_primary" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp">
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:text="@string/filter_settings_pattern_title"/>
+                android:text="@string/filter_settings_pattern_title"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
             <TextView
                 android:id="@+id/filterPatternText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="4dp"
-                tools:text="【(.*)】"/>
+                android:layout_marginBottom="16dp"
+                tools:text="【(.*)】" />
 
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/ic_chevron_right_24"
+            android:tint="?android:textColorTertiary"
+            android:tintMode="src_in"/>
 
     </LinearLayout>
 
@@ -87,28 +96,28 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
             android:id="@+id/moreSettingsButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:textColor="?android:attr/colorAccent"
-            android:text="@string/more_settings_button"/>
+            android:text="@string/more_settings_button"
+            android:textColor="?android:attr/colorAccent" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
             android:id="@+id/doneFilterButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:textColor="?android:attr/colorAccent"
-            android:text="@android:string/ok"/>
+            android:text="@android:string/ok"
+            android:textColor="?android:attr/colorAccent" />
 
     </LinearLayout>
 

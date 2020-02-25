@@ -64,9 +64,12 @@ class PatternRulesItemDelegate(var callback: Callback? = null)
             titleText.text = item.title()
             descText.isGone = item.local
             descText.text = item.desc()
-            onlineInfoText.isGone = item.local
-            onlineInfoText.text = context.getString(
-                R.string.commited_by_text_format, item.committer)
+            if (item.local) {
+                onlineInfoText.setText(R.string.local_rule_text)
+            } else {
+                onlineInfoText.text = context.getString(
+                    R.string.commited_by_text_format, item.committer)
+            }
         }
     }
 

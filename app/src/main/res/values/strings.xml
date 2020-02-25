@@ -337,11 +337,16 @@
     to latest version regularly.
     ]]></string>
     <string name="commited_by_text_format">Committed by %s</string>
+    <string name="local_rule_text">Local rule</string>
     <string name="pattern_rule_title">Pattern title</string>
     <string name="pattern_rule_description">Pattern description</string>
     <string name="pattern_rule_regex">Regular expression</string>
     <string name="pattern_rule_committer">Committer</string>
     <string name="pattern_rule_add_dialog_title_add">Add pattern rule</string>
     <string name="pattern_rule_add_dialog_title_edit">Edit pattern rule</string>
+    <string name="pattern_rule_title_error_empty">Title cannot be empty.</string>
+    <string name="pattern_rule_regex_error_empty">Expression cannot be empty.</string>
+    <string name="pattern_rule_regex_error_invalid">Expression is invalid.</string>
+    <string name="pattern_rule_rule_from_old_ver_title">Rule from old version</string>
 
 </resources>
