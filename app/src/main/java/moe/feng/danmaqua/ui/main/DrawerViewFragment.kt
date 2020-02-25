@@ -26,6 +26,7 @@ import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.ui.ManageSubscriptionActivity
 import moe.feng.danmaqua.ui.NewSubscriptionActivity
 import moe.feng.danmaqua.ui.PreferenceActivity
+import moe.feng.danmaqua.ui.history.ManageHistoryActivity
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.list.SubscriptionAddButtonViewDelegate
 import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
@@ -93,10 +94,15 @@ class DrawerViewFragment : BaseFragment() {
             developmentTimes++
             if (developmentTimes >= 5) {
                 developmentTimes = 0
-                PreferenceActivity.launch(activity!!, ExperimentSettingsFragment.ACTION)
+                PreferenceActivity.launch(requireActivity(), ExperimentSettingsFragment.ACTION)
             }
         }
 
+        historyButton.setOnClickListener {
+            val intent = Intent(requireContext(), ManageHistoryActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
         settingsButton.setOnClickListener {
             PreferenceActivity
                 .launch(requireActivity(), MainSettingsFragment.ACTION)

@@ -9,12 +9,14 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import kotlinx.coroutines.*
+import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
 import moe.feng.danmaqua.Danmaqua.EXTRA_START_ROOM
 import moe.feng.danmaqua.IDanmakuListenerCallback
 import moe.feng.danmaqua.IDanmakuListenerService
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.bili.DanmakuListener
+import moe.feng.danmaqua.data.HistoryManager
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
@@ -121,6 +123,17 @@ class DanmakuListenerService :
     override fun onSettingsChanged() {
         danmakuFilter = DanmakuFilter.fromSettings()
         floatingHolder?.loadSettings()
+
+        if (danmakuListener?.isConnected == true) {
+            launch {
+                if (Danmaqua.Settings.saveHistory && !HistoryManager.isRecording()) {
+                    HistoryManager.startRecord(
+                        this@DanmakuListenerService, danmakuListener?.roomId!!)
+                } else if (!Danmaqua.Settings.saveHistory && HistoryManager.isRecording()) {
+                    HistoryManager.stopRecord()
+                }
+            }
+        }
     }
 
     private fun createFloatingView() = launch {
@@ -159,8 +172,6 @@ class DanmakuListenerService :
                 }
             }
         }
-
-        // TODO Save local history
     }
 
     private fun disconnect() {
@@ -176,6 +187,10 @@ class DanmakuListenerService :
         danmakuListener?.let {
             notiHelper.showConnectedNotification(it.roomId)
 
+            if (Danmaqua.Settings.saveHistory) {
+                launch { HistoryManager.startRecord(this@DanmakuListenerService, it.roomId) }
+            }
+
             floatingHolder?.addSystemMessage(HtmlCompat.fromHtml(
                 getString(R.string.sys_msg_connected_to_room, it.roomId), 0
             ).toString())
@@ -188,6 +203,8 @@ class DanmakuListenerService :
 
     override fun onDisconnect(userReason: Boolean) {
         notiHelper.showDisconnectedNotification(lastConnectedRoom)
+
+        launch { HistoryManager.stopRecord() }
 
         floatingHolder?.addSystemMessage(getString(R.string.sys_msg_disconnected))
 
@@ -219,11 +236,11 @@ class DanmakuListenerService :
         launch {
             if (withContext(Dispatchers.IO) { danmakuFilter(msg) }) {
                 for ((callback, _) in serviceCallbacks) {
-                    // TODO Implement filter
                     callback.onReceiveDanmaku(msg)
                 }
                 floatingHolder?.addDanmaku(msg)
             }
+            HistoryManager.record(msg)
         }
     }
 

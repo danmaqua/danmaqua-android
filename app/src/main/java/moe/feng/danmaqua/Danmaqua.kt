@@ -121,6 +121,10 @@ object Danmaqua {
             key = "floating_touch_to_move", defaultValue = true
         )
 
+        var saveHistory: Boolean by mmkv.booleanProperty(
+            key = "save_history", defaultValue = false
+        )
+
         fun notifyChanged(context: Context? = null) {
             EventsHelper.getInstance(context)
                 .of<SettingsChangedListener>()

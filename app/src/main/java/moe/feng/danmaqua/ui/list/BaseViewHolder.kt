@@ -8,15 +8,23 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 
-abstract class BaseViewHolder(itemView: View)
+open class BaseViewHolder(itemView: View)
     : RecyclerView.ViewHolder(itemView), CoroutineScope by MainScope(), LayoutContainer {
 
     override val containerView: View = itemView
 
     val context: Context get() = itemView.context
 
+    init {
+        itemView.setOnClickListener {
+            onItemClick()
+        }
+    }
+
     fun <T : View> bindView(@IdRes id: Int): Lazy<T> {
         return lazy { itemView.findViewById<T>(id) }
     }
+
+    open fun onItemClick() {}
 
 }

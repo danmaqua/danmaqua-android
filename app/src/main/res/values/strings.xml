@@ -349,4 +349,14 @@
     <string name="pattern_rule_regex_error_invalid">Expression is invalid.</string>
     <string name="pattern_rule_rule_from_old_ver_title">Rule from old version</string>
 
+    <string name="danmaku_history_title">Danmaku History</string>
+    <string name="danmaku_history_toggle_item_title">Record history</string>
+    <string name="danmaku_history_toggle_item_summary"><![CDATA[
+    Danmaku history will be saved to app data. Then you can export history file to external storage
+    or other apps.
+    ]]></string>
+    <string name="danmaku_history_saved_files_title">Saved files</string>
+    <string name="danmaku_history_item_title_format">%s(%d)\'s history</string>
+    <string name="danmaku_history_unsubscribed_title">Unsubscribed</string>
+
 </resources>

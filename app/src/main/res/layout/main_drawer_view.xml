@@ -45,6 +45,15 @@
         tools:ignore="RtlHardcoded">
 
         <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+            android:id="@+id/historyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="8dp"
+            android:icon="@drawable/ic_archive_24"
+            android:text="@string/danmaku_history_title"/>
+
+        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

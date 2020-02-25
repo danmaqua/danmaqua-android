@@ -2,7 +2,7 @@ package moe.feng.danmaqua.ui.list
 
 import androidx.recyclerview.widget.DiffUtil
 
-abstract class SimpleDiffItemCallback<T : Any>(
+open class SimpleDiffItemCallback<T : Any>(
     val oldItems: List<T>,
     val newItems: List<T>
 ) : DiffUtil.Callback() {
@@ -19,8 +19,9 @@ abstract class SimpleDiffItemCallback<T : Any>(
         return areItemsTheSame(oldItems[oldItemPosition], newItems[newItemPosition])
     }
 
-    abstract fun areItemsTheSame(oldItem: T, newItem: T): Boolean
-
+    open fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+        return oldItem == newItem
+    }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return areContentsTheSame(oldItems[oldItemPosition], newItems[newItemPosition])
