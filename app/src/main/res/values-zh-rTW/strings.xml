@@ -360,4 +360,12 @@
     <string name="export_success_dialog_message">你已經成功地將 %s 匯出到 %s。</string>
     <string name="export_failed_dialog_title">匯出失敗</string>
 
+    <string name="main_welcome_message"><![CDATA[
+    歡迎使用懸浮字幕。點按左上按鈕選擇要觀看的直播，然後點按連接按鈕開始觀看彈幕。要了解更多使用方法，
+    你可以從左側抽屜菜單閱讀幫助。
+    ]]></string>
+    <string name="main_thanks_message"><![CDATA[
+    特別感謝那些幫助我們翻譯 VTubers 發言的大佬們！沒有他們的付出，這個應用程式也將派不上用場。
+    ]]></string>
+
 </resources>

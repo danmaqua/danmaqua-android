@@ -380,4 +380,14 @@
     <string name="export_success_dialog_message">You have exported %s to %s successfully.</string>
     <string name="export_failed_dialog_title">Failed to export</string>
 
+    <string name="main_welcome_message"><![CDATA[
+    Welcome to FloatingCaption. Click left-top button to choose streamer to watch and click connect
+    button to start watching danmaku. To learn more about how to use, you can open help from left
+    drawer menu.
+    ]]></string>
+    <string name="main_thanks_message"><![CDATA[
+    Special thanks to people who helped us translate VTubers\' words! Without them, this app
+    would be useless.
+    ]]></string>
+
 </resources>

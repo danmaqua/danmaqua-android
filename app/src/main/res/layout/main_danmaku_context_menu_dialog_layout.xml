@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:textIsSelectable="true"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             tools:text="Test danmaku. Bala Bala Bala"/>
 

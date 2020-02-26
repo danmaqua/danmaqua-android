@@ -169,6 +169,8 @@ class MainActivity : BaseActivity(),
             supportFragmentManager.commit {
                 replace(R.id.drawerView, DrawerViewFragment())
             }
+            messageAdapter.addSystemMessage(getString(R.string.main_welcome_message))
+            messageAdapter.addSystemMessage(getString(R.string.main_thanks_message))
         } else {
             online = savedInstanceState.getInt(STATE_ONLINE)
             savedInstanceState.getParcelableArrayList<Parcelable>(STATE_LIST_DATA)?.let {
