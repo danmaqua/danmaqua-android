@@ -17,10 +17,11 @@ interface DanmakuFilter {
             return AcceptAllFilter
         }
 
-        fun fromSettings(patternOnly: Boolean = false): DanmakuFilter {
+        fun fromSettings(patternOnly: Boolean = false,
+                         forceEnabledFiltered: Boolean = false): DanmakuFilter {
             return runBlocking {
                 val db = DanmaquaDB.instance
-                val pattern = if (Settings.filterEnabled) {
+                val pattern = if (forceEnabledFiltered || Settings.filterEnabled) {
                     Pattern.compile(db.patternRules().getSelected().pattern)
                 } else {
                     null

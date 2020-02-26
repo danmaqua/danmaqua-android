@@ -2,6 +2,7 @@ package moe.feng.danmaqua.ui.history
 
 import android.content.Context
 import android.os.Parcelable
+import android.text.format.Formatter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,7 @@ class HistoryItemViewDelegate(var callback: Callback? = null)
             titleText.text = context.getString(
                 R.string.danmaku_history_item_title_format, item.title, item.value.roomId)
             descText.text = DateFormat.getDateInstance().format(item.value.getDate().time)
+            sizeText.text = Formatter.formatShortFileSize(context, item.value.file.length())
         }
     }
 

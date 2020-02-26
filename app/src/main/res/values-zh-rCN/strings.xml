@@ -343,6 +343,7 @@
     <string name="danmaku_history_dialog_source_title">弹幕来源</string>
     <string name="danmaku_history_dialog_last_modified_title">修改时间</string>
     <string name="danmaku_history_dialog_file_path_title">文件路径</string>
+    <string name="danmaku_history_dialog_file_size_title">文件大小</string>
     <string name="danmaku_history_delete_confirm_title">确定</string>
     <string name="danmaku_history_delete_confirm_message"><![CDATA[
     你要删除文件 %s 吗？操作确认后无法恢复。
@@ -350,5 +351,13 @@
     <string name="toast_danmaku_history_file_used"><![CDATA[
     这个历史文件正在使用中，请在删除活动的文件前停止弹幕服务。
     ]]></string>
+    <string name="options_export_all_to_csv">导出所有弹幕到 CSV 文件</string>
+    <string name="options_export_filtered_to_csv">导出过滤后的弹幕到 CSV 文件</string>
+    <string name="action_send_to">发送…</string>
+    <string name="action_save">保存</string>
+    <string name="export_progress_dialog_message">导出中…请稍候。</string>
+    <string name="export_success_dialog_title">导出完毕</string>
+    <string name="export_success_dialog_message">你已经成功地将 %s 导出到 %s。</string>
+    <string name="export_failed_dialog_title">导出失败</string>
 
 </resources>

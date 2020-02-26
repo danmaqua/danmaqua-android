@@ -363,6 +363,7 @@
     <string name="danmaku_history_dialog_source_title">Danmaku source</string>
     <string name="danmaku_history_dialog_last_modified_title">Last modified</string>
     <string name="danmaku_history_dialog_file_path_title">File path</string>
+    <string name="danmaku_history_dialog_file_size_title">File size</string>
     <string name="danmaku_history_delete_confirm_title">Confirm</string>
     <string name="danmaku_history_delete_confirm_message"><![CDATA[
     Do you want to delete file %s? It cannot be recovered after operation is done.
@@ -370,5 +371,13 @@
     <string name="toast_danmaku_history_file_used"><![CDATA[
     This history file is being used. Please stop service before deleting a active file.
     ]]></string>
+    <string name="options_export_all_to_csv">Export all danmaku to CSV file</string>
+    <string name="options_export_filtered_to_csv">Export filtered result to CSV file</string>
+    <string name="action_send_to">Send to…</string>
+    <string name="action_save">Save</string>
+    <string name="export_progress_dialog_message">Exporting… Please wait.</string>
+    <string name="export_success_dialog_title">Exported</string>
+    <string name="export_success_dialog_message">You have exported %s to %s successfully.</string>
+    <string name="export_failed_dialog_title">Failed to export</string>
 
 </resources>

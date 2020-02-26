@@ -5,7 +5,9 @@ import com.google.code.regexp.Pattern
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.model.BiliChatDanmaku
+import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.model.HistoryFile
+import moe.feng.danmaqua.util.DanmakuFilter
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
@@ -115,12 +117,52 @@ object HistoryManager {
         historyFileFrom(context, roomId, date).takeIf { it.file.isFile }
     }
 
+    suspend fun getFilteredFile(
+        context: Context, historyFile: HistoryFile
+    ): File = withContext(Dispatchers.IO) {
+        val filter = DanmakuFilter.fromSettings(forceEnabledFiltered = true)
+        val file = File(getCachePath(context),
+            historyFile.file.nameWithoutExtension + ".filtered.csv")
+        if (file.exists()) {
+            file.delete()
+        }
+        ensureCachePath(context)
+        file.createNewFile()
+        file.bufferedWriter().use { writer ->
+            historyFile.file.forEachLine { line ->
+                if (line == TABLE_HEADERS) {
+                    writer.appendln(line)
+                } else {
+                    val entries = line.split(",")
+                    if (entries.size == 4) {
+                        try {
+                            val (timestamp, uid, user, text) = entries
+                            val danmaku = BiliChatDanmaku(
+                                BiliChatMessage.CMD_DANMAKU,
+                                text, user, uid.toLong(), timestamp.toLong())
+                            if (filter(danmaku)) {
+                                writer.appendln(line)
+                            }
+                        } catch (ignored: Exception) {
+
+                        }
+                    }
+                }
+            }
+        }
+        file
+    }
+
     private fun danmakuToLine(item: BiliChatDanmaku): String {
         return with(item) { "$timestamp,$senderUid,$senderName,$text" }
     }
 
     private fun getSavePath(context: Context): File {
         return File(context.filesDir, "history")
+    }
+
+    private fun getCachePath(context: Context): File {
+        return File(context.cacheDir, "history")
     }
 
     private suspend fun ensureSavePath(context: Context) = withContext(Dispatchers.IO) {
@@ -130,6 +172,16 @@ object HistoryManager {
         }
         if (!savePath.exists()) {
             savePath.mkdirs()
+        }
+    }
+
+    private suspend fun ensureCachePath(context: Context) = withContext(Dispatchers.IO) {
+        val cachePath = getCachePath(context)
+        if (cachePath.isFile) {
+            cachePath.delete()
+        }
+        if (!cachePath.exists()) {
+            cachePath.mkdirs()
         }
     }
 

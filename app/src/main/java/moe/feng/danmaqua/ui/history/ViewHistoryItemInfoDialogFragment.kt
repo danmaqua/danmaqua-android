@@ -2,6 +2,7 @@ package moe.feng.danmaqua.ui.history
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.format.Formatter
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import moe.feng.danmaqua.R
@@ -40,11 +41,13 @@ class ViewHistoryItemInfoDialogFragment : BaseDialogFragment() {
                 it.findViewById<TextView>(R.id.lastModifiedText).text =
                     DateFormat.getDateTimeInstance()
                         .format(Date().apply { time = data.value.file.lastModified() })
+                it.findViewById<TextView>(R.id.fileSizeText).text =
+                    Formatter.formatFileSize(it.context, data.value.file.length())
                 it.findViewById<TextView>(R.id.filePathText).text =
                     data.value.file.absolutePath
             }
             positiveButton(R.string.action_export) {
-                // TODO Export
+                (activity as? ManageHistoryActivity)?.showExportDialog(data.value)
             }
             cancelButton()
             neutralButton(R.string.action_delete) {

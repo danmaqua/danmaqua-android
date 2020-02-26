@@ -11,5 +11,9 @@
         <item>2</item>
         <item>1</item>
     </string-array>
+    <string-array name="export_history_options">
+        <item>@string/options_export_all_to_csv</item>
+        <item>@string/options_export_filtered_to_csv</item>
+    </string-array>
 
 </resources>
