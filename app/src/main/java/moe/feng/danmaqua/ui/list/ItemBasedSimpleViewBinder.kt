@@ -1,6 +1,6 @@
 package moe.feng.danmaqua.ui.list
 
-abstract class ItemBasedSimpleViewBinder<T : Any, VH: ItemBasedViewHolder<T>>()
+abstract class ItemBasedSimpleViewBinder<T : Any, VH: ItemBasedViewHolder<T>>
     : SimpleViewBinder<T, VH>() {
 
     override fun onBindViewHolder(holder: VH, item: T) {

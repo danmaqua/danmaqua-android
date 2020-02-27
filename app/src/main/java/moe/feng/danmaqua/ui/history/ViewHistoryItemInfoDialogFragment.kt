@@ -38,7 +38,7 @@ class ViewHistoryItemInfoDialogFragment : BaseDialogFragment() {
         return buildAlertDialog {
             inflateView(R.layout.history_item_info_dialog) {
                 it.findViewById<TextView>(R.id.sourceText).text =
-                    "${data.title}(${data.value.roomId})"
+                    getString(R.string.streamer_name_with_id_format, data.title, data.value.roomId)
                 it.findViewById<TextView>(R.id.lastModifiedText).text =
                     DateFormat.getDateTimeInstance()
                         .format(Date().apply { time = data.value.file.lastModified() })

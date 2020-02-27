@@ -41,10 +41,10 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        subscription = arguments!!.getParcelable(
+        subscription = requireArguments().getParcelable(
             ARGS_DATA
         )!!
-        callbackTag = arguments!!.getString(
+        callbackTag = requireArguments().getString(
             ARGS_CALLBACK_TAG
         )
     }
@@ -76,13 +76,13 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
         if (onPosClicked) {
             return
         }
-        context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>(callbackTag)
+        requireContext().eventsHelper.of<OnConfirmSubscribeStreamerListener>(callbackTag)
             .onCancelConfirmSubscribe()
     }
 
     open fun onPositiveButtonClick() {
         onPosClicked = true
-        context!!.eventsHelper.of<OnConfirmSubscribeStreamerListener>(callbackTag)
+        requireContext().eventsHelper.of<OnConfirmSubscribeStreamerListener>(callbackTag)
             .onConfirmSubscribeStreamer(subscription)
     }
 

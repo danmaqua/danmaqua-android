@@ -37,7 +37,7 @@ abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments!!.let {
+        requireArguments().let {
             uid = it.getLong(ARGS_UID)
             username = it.getString(ARGS_USERNAME)!!
             face = it.getString(ARGS_FACE)

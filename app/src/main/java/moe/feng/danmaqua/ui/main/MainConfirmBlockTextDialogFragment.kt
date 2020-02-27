@@ -34,7 +34,7 @@ class MainConfirmBlockTextDialogFragment : ConfirmBlockTextDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        danmaku = arguments!!.getParcelable(ARGS_DANMAKU)!!
+        danmaku = requireArguments().getParcelable(ARGS_DANMAKU)!!
     }
 
     override fun onBlockText(rule: BlockedTextRule) {

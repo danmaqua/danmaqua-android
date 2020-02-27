@@ -31,7 +31,7 @@ class DanmakuContextMenuDialogFragment : BaseBottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        danmaku = arguments!!.getParcelable(EXTRA_DATA)!!
+        danmaku = requireArguments().getParcelable(EXTRA_DATA)!!
     }
 
     override fun onCreateView(

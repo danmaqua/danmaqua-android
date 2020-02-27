@@ -99,7 +99,8 @@ class RoomInfoDialogFragment : BaseDialogFragment() {
             roomTitle.text = it.data.title
             userName.text = it.data.uid.toString()
             roomIdView.text = it.data.roomId.toString()
-            roomArea.text = it.data.parentAreaName + "-" + it.data.areaName
+            roomArea.text = getString(R.string.room_area_text_format,
+                it.data.parentAreaName, it.data.areaName)
             liveStatus.setText(if (it.data.liveStatus == 1) {
                 R.string.live_status_active
             } else {

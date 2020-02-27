@@ -23,7 +23,7 @@ class MainConfirmBlockUserDialogFragment : ConfirmBlockUserDialogFragment() {
                 spaceInfo.data.name,
                 spaceInfo.data.face
             )
-            fragment.arguments!!.putParcelable(ARGS_DANMAKU, item)
+            fragment.requireArguments().putParcelable(ARGS_DANMAKU, item)
             fragment.show(mainActivity.supportFragmentManager, "main_confirm_block_user")
         }
 
@@ -34,7 +34,7 @@ class MainConfirmBlockUserDialogFragment : ConfirmBlockUserDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        danmaku = arguments!!.getParcelable(ARGS_DANMAKU)!!
+        danmaku = requireArguments().getParcelable(ARGS_DANMAKU)!!
     }
 
     override suspend fun onConfirmBlock(blockRule: BlockedUserRule) {

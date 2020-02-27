@@ -2,6 +2,8 @@ package moe.feng.danmaqua.ui.settings
 
 import android.content.*
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.getSystemService
@@ -84,7 +86,8 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
 
         setPreferenceClickListener("restart_to_intro") {
             Settings.introduced = false
-            val intent = Intent.makeRestartActivityTask(ComponentName(context!!, MainActivity::class.java))
+            val intent = Intent.makeRestartActivityTask(
+                ComponentName(requireContext(), MainActivity::class.java))
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             activity?.finish()
@@ -99,15 +102,15 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
     }
 
     private fun <T> isComponentEnabled(clazz: Class<T>): Boolean {
-        return context?.packageManager?.getComponentEnabledSetting(
-            ComponentName(context!!, clazz)) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        val pm = context?.packageManager
+        val component = ComponentName(requireContext(), clazz)
+        return pm?.getComponentEnabledSetting(component) == COMPONENT_ENABLED_STATE_ENABLED
     }
 
     private fun <T> setComponentEnabled(clazz: Class<T>, enabled: Boolean) {
-        context!!.packageManager!!.setComponentEnabledSetting(
-            ComponentName(context!!, clazz),
-            if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-            else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+        requireContext().packageManager?.setComponentEnabledSetting(
+            ComponentName(requireContext(), clazz),
+            if (enabled) COMPONENT_ENABLED_STATE_ENABLED else COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP
         )
     }

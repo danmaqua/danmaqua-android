@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PrivateResource">
+<resources xmlns:tools="http://schemas.android.com/tools"
+	tools:ignore="PrivateResource,UnusedResources">
 
 	<!-- Red -->
 	<color name="material_red_50">#fde0dc</color>
