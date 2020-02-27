@@ -10,8 +10,7 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
-import moe.feng.danmaqua.ui.PreferenceActivity
-import moe.feng.danmaqua.ui.dialog.PatternTestDialogFragment
+import moe.feng.danmaqua.ui.settings.dialog.PatternTestDialogFragment
 import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
 import moe.feng.danmaqua.util.ext.*
 
@@ -40,7 +39,8 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         }
 
         patternPref.onClick {
-            PreferenceActivity.launch(requireActivity(), ManagePatternRulesFragment.ACTION)
+            PreferenceActivity
+                .launch(requireActivity(), ManagePatternRulesFragment.ACTION)
         }
 
         testPatternPref.onClick {
@@ -53,11 +53,13 @@ class FilterSettingsFragment : BasePreferenceFragment() {
         }
 
         blockedUsersPref.onClick {
-            PreferenceActivity.launch(requireActivity(), ManageBlockedUsersFragment.ACTION)
+            PreferenceActivity
+                .launch(requireActivity(), ManageBlockedUsersFragment.ACTION)
         }
 
         blockedTextPref.onClick {
-            PreferenceActivity.launch(requireActivity(), ManageBlockedTextFragment.ACTION)
+            PreferenceActivity
+                .launch(requireActivity(), ManageBlockedTextFragment.ACTION)
         }
 
         updatePrefValues()

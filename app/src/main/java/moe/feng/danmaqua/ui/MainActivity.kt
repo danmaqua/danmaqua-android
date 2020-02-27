@@ -36,12 +36,10 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.dialog.NoConnectionsDialogFragment
-import moe.feng.danmaqua.ui.dialog.RoomInfoDialogFragment
-import moe.feng.danmaqua.ui.dialog.SuccessfullyUpdatedDialogFragment
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
-import moe.feng.danmaqua.ui.list.MessageListAdapter
+import moe.feng.danmaqua.ui.main.list.MessageListAdapter
 import moe.feng.danmaqua.ui.main.*
+import moe.feng.danmaqua.ui.main.dialog.*
 import moe.feng.danmaqua.util.*
 import moe.feng.danmaqua.util.ext.*
 
@@ -67,11 +65,12 @@ class MainActivity : BaseActivity(),
     private var danmakuFilter: DanmakuFilter = DanmakuFilter.fromSettings()
 
     private lateinit var autoScrollHelper: AutoScrollHelper
-    private val messageAdapter: MessageListAdapter = MessageListAdapter(onItemAdded = {
-        if (!isFinishing && autoScrollHelper.autoScrollEnabled) {
-            recyclerView.smoothScrollToPosition(it.itemCount)
-        }
-    })
+    private val messageAdapter: MessageListAdapter =
+        MessageListAdapter(onItemAdded = {
+            if (!isFinishing && autoScrollHelper.autoScrollEnabled) {
+                recyclerView.smoothScrollToPosition(it.itemCount)
+            }
+        })
 
     val bottomSheetVH: MainBottomSheetViewHolder = MainBottomSheetViewHolder(this)
     private lateinit var toolbarView: View
@@ -191,7 +190,8 @@ class MainActivity : BaseActivity(),
 
         val lastVersionCode = Settings.lastVersionCode
         if ((packageVersionCode ?: 0) > lastVersionCode) {
-            SuccessfullyUpdatedDialogFragment().show(supportFragmentManager, "updated_tip")
+            SuccessfullyUpdatedDialogFragment()
+                .show(supportFragmentManager, "updated_tip")
             Settings.updateVersionCode(this)
         }
     }

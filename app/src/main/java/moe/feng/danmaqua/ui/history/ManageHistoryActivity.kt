@@ -13,6 +13,8 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.HistoryManager
 import moe.feng.danmaqua.model.HistoryFile
 import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.history.list.HistoryItemViewDelegate
+import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate
 import moe.feng.danmaqua.ui.list.HeaderItemViewDelegate
 import moe.feng.danmaqua.ui.list.SimpleDiffItemCallback
 import moe.feng.danmaqua.util.FileUtils
@@ -92,7 +94,8 @@ class ManageHistoryActivity : BaseActivity() {
 
     private fun setAdapterItems(items: List<HistoryItemViewDelegate.Item>) {
         val oldItems = adapter.items.toList()
-        adapter.items = mutableListOf(ToggleViewDelegate.Item(Danmaqua.Settings.saveHistory)) +
+        adapter.items = mutableListOf(
+            ToggleViewDelegate.Item(Danmaqua.Settings.saveHistory)) +
                 getString(R.string.danmaku_history_saved_files_title) +
                 items
         DiffUtil.calculateDiff(SimpleDiffItemCallback(oldItems, adapter.items))
@@ -179,7 +182,9 @@ class ManageHistoryActivity : BaseActivity() {
         init {
             register(ToggleViewDelegate(this))
             register(HeaderItemViewDelegate())
-            register(HistoryItemViewDelegate(this))
+            register(
+                HistoryItemViewDelegate(this)
+            )
         }
 
         override fun onToggle() {

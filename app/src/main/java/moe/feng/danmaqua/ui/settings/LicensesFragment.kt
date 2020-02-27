@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.licenses_fragment_layout.*
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.BaseFragment
-import moe.feng.danmaqua.ui.list.LicenseItemViewDelegate
+import moe.feng.danmaqua.ui.settings.list.LicenseItemViewDelegate
 import moe.feng.danmaqua.util.ext.apache2
 import moe.feng.danmaqua.util.ext.bsd3clause
 import moe.feng.danmaqua.util.ext.licenses

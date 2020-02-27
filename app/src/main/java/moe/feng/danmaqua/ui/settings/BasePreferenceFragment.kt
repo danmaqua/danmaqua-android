@@ -9,7 +9,6 @@ import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.*
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.danmaqua.event.SettingsChangedListener
-import moe.feng.danmaqua.ui.PreferenceActivity
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
@@ -57,7 +56,8 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
     }
 
     fun launchPreference(action: String) {
-        activity?.let { PreferenceActivity.launch(it, action) }
+        activity?.let { PreferenceActivity
+            .launch(it, action) }
     }
 
     open fun getActivityTitle(context: Context): CharSequence? {

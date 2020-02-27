@@ -9,7 +9,7 @@ import androidx.core.net.toUri
 import com.google.androidbrowserhelper.trusted.TwaLauncher
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.dialog.ContactAuthorDialogFragment
+import moe.feng.danmaqua.ui.settings.dialog.ContactAuthorDialogFragment
 
 class MainSettingsFragment : BasePreferenceFragment() {
 
@@ -41,7 +41,8 @@ class MainSettingsFragment : BasePreferenceFragment() {
             }
         }
         setPreferenceClickListener("about_contact_author") {
-            ContactAuthorDialogFragment().show(parentFragmentManager, "contact_author")
+            ContactAuthorDialogFragment()
+                .show(parentFragmentManager, "contact_author")
         }
         setPreferenceClickListener("about_discussion_group_qq") {
             context?.let {

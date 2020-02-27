@@ -23,14 +23,14 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.BaseFragment
-import moe.feng.danmaqua.ui.ManageSubscriptionActivity
-import moe.feng.danmaqua.ui.NewSubscriptionActivity
-import moe.feng.danmaqua.ui.PreferenceActivity
+import moe.feng.danmaqua.ui.subscription.ManageSubscriptionActivity
+import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity
+import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.history.ManageHistoryActivity
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
-import moe.feng.danmaqua.ui.list.SubscriptionAddButtonViewDelegate
-import moe.feng.danmaqua.ui.list.SubscriptionItemViewDelegate
-import moe.feng.danmaqua.ui.list.SubscriptionManageButtonViewDelegate
+import moe.feng.danmaqua.ui.main.list.SubscriptionAddButtonViewDelegate
+import moe.feng.danmaqua.ui.main.list.SubscriptionItemViewDelegate
+import moe.feng.danmaqua.ui.main.list.SubscriptionManageButtonViewDelegate
 import moe.feng.danmaqua.ui.settings.ExperimentSettingsFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
@@ -94,7 +94,8 @@ class DrawerViewFragment : BaseFragment() {
             developmentTimes++
             if (developmentTimes >= 5) {
                 developmentTimes = 0
-                PreferenceActivity.launch(requireActivity(), ExperimentSettingsFragment.ACTION)
+                PreferenceActivity
+                    .launch(requireActivity(), ExperimentSettingsFragment.ACTION)
             }
         }
 
@@ -187,7 +188,8 @@ class DrawerViewFragment : BaseFragment() {
         SubscriptionAddButtonViewDelegate.Callback,
         SubscriptionManageButtonViewDelegate.Callback {
 
-        val subscriptionItemDelegate = SubscriptionItemViewDelegate(this)
+        val subscriptionItemDelegate =
+            SubscriptionItemViewDelegate(this)
         val subscriptionAddDelegate = SubscriptionAddButtonViewDelegate(this)
         val subscriptionManageDelegate = SubscriptionManageButtonViewDelegate(this)
 

@@ -15,6 +15,7 @@ import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.ui.list.BaseViewHolder
 import moe.feng.danmaqua.ui.list.SimpleDiffItemCallback
+import moe.feng.danmaqua.ui.settings.list.PatternRulesItemDelegate
 import moe.feng.danmaqua.util.ext.messageRes
 import moe.feng.danmaqua.util.ext.okButton
 import moe.feng.danmaqua.util.ext.showAlertDialog
@@ -27,7 +28,8 @@ class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Call
 
     }
 
-    private val patternItemDelegate: PatternRulesItemDelegate = PatternRulesItemDelegate(this)
+    private val patternItemDelegate: PatternRulesItemDelegate =
+        PatternRulesItemDelegate(this)
 
     private val adapter: MultiTypeAdapter = MultiTypeAdapter().also {
         it.register(patternItemDelegate)

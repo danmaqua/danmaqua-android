@@ -2,15 +2,12 @@ package moe.feng.danmaqua.ui.proxy
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.code.regexp.Pattern
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.common.eventshelper.of
-import moe.feng.danmaqua.Danmaqua.EXTRA_ACTION
-import moe.feng.danmaqua.Danmaqua.EXTRA_START_ROOM
 import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.api.bili.UserApi
 import moe.feng.danmaqua.event.MainDrawerCallback
@@ -18,7 +15,7 @@ import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.BaseActivity
-import moe.feng.danmaqua.ui.dialog.ConfirmSubscribeStreamerDialogFragment
+import moe.feng.danmaqua.ui.subscription.dialog.ConfirmSubscribeStreamerDialogFragment
 import moe.feng.danmaqua.util.ext.eventsHelper
 import java.lang.Exception
 

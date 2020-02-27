@@ -38,31 +38,31 @@
             android:exported="false"/>
 
         <activity
-            android:name=".ui.NewSubscriptionActivity"
+            android:name=".ui.subscription.NewSubscriptionActivity"
             android:label="@string/new_subscription_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="false"/>
 
         <activity
-            android:name=".ui.VTubersCatalogActivity"
+            android:name=".ui.subscription.VTubersCatalogActivity"
             android:label="@string/view_vtubers_catalog_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="false"/>
 
         <activity
-            android:name=".ui.VTubersGroupActivity"
+            android:name=".ui.subscription.VTubersGroupActivity"
             android:label="@string/view_vtubers_group_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="false"/>
 
         <activity
-            android:name=".ui.ManageSubscriptionActivity"
+            android:name=".ui.subscription.ManageSubscriptionActivity"
             android:label="@string/manage_subscription_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="false"/>
 
         <activity
-            android:name=".ui.PreferenceActivity"
+            android:name=".ui.settings.PreferenceActivity"
             android:label="@string/settings_title"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="true"/>
