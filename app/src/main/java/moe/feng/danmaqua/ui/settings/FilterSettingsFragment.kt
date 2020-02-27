@@ -12,7 +12,8 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.ui.settings.dialog.PatternTestDialogFragment
 import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
-import moe.feng.danmaqua.util.ext.*
+import moe.feng.danmaqua.util.ext.onClick
+import moe.feng.danmaqua.util.ext.onValueChanged
 
 class FilterSettingsFragment : BasePreferenceFragment() {
 

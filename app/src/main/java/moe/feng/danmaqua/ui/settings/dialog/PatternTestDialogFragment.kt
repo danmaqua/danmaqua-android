@@ -22,7 +22,6 @@ import moe.feng.danmaqua.ui.dialog.BaseDialogFragment
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.*
 import moe.feng.danmaqua.util.flattenToString
-import java.lang.Exception
 
 class PatternTestDialogFragment : BaseDialogFragment() {
 

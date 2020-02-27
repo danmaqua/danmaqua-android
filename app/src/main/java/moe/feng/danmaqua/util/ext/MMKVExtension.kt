@@ -3,7 +3,6 @@ package moe.feng.danmaqua.util.ext
 import android.util.Log
 import com.tencent.mmkv.MMKV
 import moe.feng.danmaqua.util.JsonUtils
-import java.lang.Exception
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

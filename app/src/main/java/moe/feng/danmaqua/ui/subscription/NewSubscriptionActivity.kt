@@ -29,7 +29,7 @@ import moe.feng.danmaqua.ui.subscription.dialog.showConfirmSubscribeStreamerDial
 import moe.feng.danmaqua.ui.subscription.dialog.showSearchNoResultDialog
 import moe.feng.danmaqua.ui.subscription.dialog.showStreamerExistsDialog
 import moe.feng.danmaqua.ui.subscription.list.RecommendedStreamerItemViewDelegate
-import moe.feng.danmaqua.util.ext.*
+import moe.feng.danmaqua.util.ext.eventsHelper
 
 class NewSubscriptionActivity : BaseActivity(),
     OnRecommendedStreamerItemClickListener, OnConfirmSubscribeStreamerListener {

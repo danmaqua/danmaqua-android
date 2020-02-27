@@ -1,12 +1,15 @@
 package moe.feng.danmaqua.ui.settings
 
 import android.app.Activity
-import android.content.*
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.tencent.mmkv.MMKV
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.util.ext.eventsHelper

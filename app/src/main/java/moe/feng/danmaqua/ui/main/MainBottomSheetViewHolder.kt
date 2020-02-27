@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.main_activity.*
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.ui.MainActivity
-import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
+import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
 import moe.feng.danmaqua.util.ext.eventsHelper
 

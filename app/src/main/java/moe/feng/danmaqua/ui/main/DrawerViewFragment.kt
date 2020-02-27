@@ -23,9 +23,6 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.BaseFragment
-import moe.feng.danmaqua.ui.subscription.ManageSubscriptionActivity
-import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity
-import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.history.ManageHistoryActivity
 import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.main.list.SubscriptionAddButtonViewDelegate
@@ -33,7 +30,10 @@ import moe.feng.danmaqua.ui.main.list.SubscriptionItemViewDelegate
 import moe.feng.danmaqua.ui.main.list.SubscriptionManageButtonViewDelegate
 import moe.feng.danmaqua.ui.settings.ExperimentSettingsFragment
 import moe.feng.danmaqua.ui.settings.MainSettingsFragment
+import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
+import moe.feng.danmaqua.ui.subscription.ManageSubscriptionActivity
+import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity
 import moe.feng.danmaqua.util.ext.*
 
 class DrawerViewFragment : BaseFragment() {

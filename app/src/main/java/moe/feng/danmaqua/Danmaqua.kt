@@ -13,7 +13,10 @@ import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.model.buildTextTranslation
 import moe.feng.danmaqua.model.chinese
-import moe.feng.danmaqua.util.ext.*
+import moe.feng.danmaqua.util.ext.TAG
+import moe.feng.danmaqua.util.ext.booleanProperty
+import moe.feng.danmaqua.util.ext.intProperty
+import moe.feng.danmaqua.util.ext.jsonArrayProperty
 
 /**
  * Danmaqua constants and settings

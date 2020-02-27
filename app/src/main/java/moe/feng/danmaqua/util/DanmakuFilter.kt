@@ -7,7 +7,6 @@ import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
-import kotlin.Exception
 
 interface DanmakuFilter {
 

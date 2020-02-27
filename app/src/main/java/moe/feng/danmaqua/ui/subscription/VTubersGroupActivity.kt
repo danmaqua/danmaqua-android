@@ -21,7 +21,8 @@ import moe.feng.danmaqua.ui.subscription.dialog.ConfirmSubscribeStreamerDialogFr
 import moe.feng.danmaqua.ui.subscription.dialog.showStreamerExistsDialog
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate
 import moe.feng.danmaqua.ui.subscription.list.VTuberSingleItemViewDelegate
-import moe.feng.danmaqua.util.ext.*
+import moe.feng.danmaqua.util.ext.TAG
+import moe.feng.danmaqua.util.ext.eventsHelper
 
 class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
 

@@ -6,7 +6,10 @@ import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.intro_activity.*
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.util.ext.*
+import moe.feng.danmaqua.util.ext.messageRes
+import moe.feng.danmaqua.util.ext.okButton
+import moe.feng.danmaqua.util.ext.showAlertDialog
+import moe.feng.danmaqua.util.ext.titleRes
 
 class IntroActivity : BaseActivity() {
 

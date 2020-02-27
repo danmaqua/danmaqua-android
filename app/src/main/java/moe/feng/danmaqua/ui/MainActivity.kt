@@ -1,12 +1,15 @@
 package moe.feng.danmaqua.ui
 
-import android.content.*
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -37,11 +40,14 @@ import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.list.AutoScrollHelper
-import moe.feng.danmaqua.ui.main.list.MessageListAdapter
 import moe.feng.danmaqua.ui.main.*
 import moe.feng.danmaqua.ui.main.dialog.*
+import moe.feng.danmaqua.ui.main.list.MessageListAdapter
 import moe.feng.danmaqua.util.*
-import moe.feng.danmaqua.util.ext.*
+import moe.feng.danmaqua.util.ext.avatarUrl
+import moe.feng.danmaqua.util.ext.eventsHelper
+import moe.feng.danmaqua.util.ext.packageVersionCode
+import moe.feng.danmaqua.util.ext.screenHeight
 
 class MainActivity : BaseActivity(),
     SettingsChangedListener, MainDanmakuContextMenuListener, MainDrawerCallback {

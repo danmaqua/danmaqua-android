@@ -18,7 +18,6 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.BaseFragment
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.*
-import java.lang.Exception
 
 class SupportUsFragment : BaseFragment() {
 

@@ -3,7 +3,6 @@ package moe.feng.danmaqua.model
 import androidx.core.os.LocaleListCompat
 import androidx.core.os.forEach
 import java.util.*
-import kotlin.collections.HashMap
 
 open class TextTranslation : HashMap<String, String?>() {
 

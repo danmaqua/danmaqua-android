@@ -1,6 +1,8 @@
 package moe.feng.danmaqua.ui.settings.list
 
-import android.view.*
+import android.view.ContextMenu
+import android.view.MenuInflater
+import android.view.View
 import androidx.core.view.isGone
 import kotlinx.android.synthetic.main.manage_pattern_rules_item.*
 import moe.feng.danmaqua.R

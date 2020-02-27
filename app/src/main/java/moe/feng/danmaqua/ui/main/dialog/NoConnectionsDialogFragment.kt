@@ -12,7 +12,6 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.NoConnectionsDialogListener
 import moe.feng.danmaqua.ui.dialog.BaseDialogFragment
 import moe.feng.danmaqua.util.ext.*
-import java.lang.Exception
 
 class NoConnectionsDialogFragment : BaseDialogFragment() {
 

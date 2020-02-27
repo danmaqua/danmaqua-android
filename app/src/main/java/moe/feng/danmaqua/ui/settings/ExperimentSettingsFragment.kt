@@ -12,8 +12,8 @@ import moe.feng.danmaqua.BuildConfig
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.proxy.B23ProxyActivity
 import moe.feng.danmaqua.ui.MainActivity
+import moe.feng.danmaqua.ui.proxy.B23ProxyActivity
 import moe.feng.danmaqua.ui.proxy.LiveShareProxyActivity
 import moe.feng.danmaqua.util.ext.onClick
 import moe.feng.danmaqua.util.ext.onValueChanged

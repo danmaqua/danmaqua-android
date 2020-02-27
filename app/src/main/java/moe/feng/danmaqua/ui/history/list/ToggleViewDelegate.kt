@@ -3,7 +3,8 @@ package moe.feng.danmaqua.ui.history.list
 import android.view.View
 import kotlinx.android.synthetic.main.danmaku_history_toggle_item.*
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate.*
+import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate.Item
+import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate.ViewHolder
 import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
 import moe.feng.danmaqua.ui.list.viewHolderCreatorOf

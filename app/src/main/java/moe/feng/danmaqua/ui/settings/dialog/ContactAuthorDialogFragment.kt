@@ -15,7 +15,6 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.dialog.BaseBottomSheetDialogFragment
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.avatarUrl
-import java.lang.Exception
 
 class ContactAuthorDialogFragment : BaseBottomSheetDialogFragment() {
 

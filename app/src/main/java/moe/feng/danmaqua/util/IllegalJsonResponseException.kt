@@ -1,7 +1,6 @@
 package moe.feng.danmaqua.util
 
 import okhttp3.Response
-import java.lang.RuntimeException
 
 class IllegalJsonResponseException : RuntimeException {
 

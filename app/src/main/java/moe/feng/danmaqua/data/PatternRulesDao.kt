@@ -2,7 +2,10 @@ package moe.feng.danmaqua.data
 
 import androidx.room.*
 import moe.feng.danmaqua.Danmaqua
-import moe.feng.danmaqua.model.*
+import moe.feng.danmaqua.model.PatternRulesItem
+import moe.feng.danmaqua.model.buildTextTranslation
+import moe.feng.danmaqua.model.chinese
+import moe.feng.danmaqua.model.english
 
 @Dao
 abstract class PatternRulesDao {

@@ -9,7 +9,8 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
 import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
-import moe.feng.danmaqua.ui.main.list.SystemMessageItemViewDelegate.*
+import moe.feng.danmaqua.ui.main.list.SystemMessageItemViewDelegate.Item
+import moe.feng.danmaqua.ui.main.list.SystemMessageItemViewDelegate.ViewHolder
 
 class SystemMessageItemViewDelegate : ItemBasedSimpleViewBinder<Item, ViewHolder>() {
 
