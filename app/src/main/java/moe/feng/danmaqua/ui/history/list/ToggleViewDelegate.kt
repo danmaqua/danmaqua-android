@@ -7,13 +7,13 @@ import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate.Item
 import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate.ViewHolder
 import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.list.innerViewHolderCreatorOf
 
 class ToggleViewDelegate(var callback: Callback? = null)
     : ItemBasedSimpleViewBinder<Item, ViewHolder>() {
 
     override val viewHolderCreator: ViewHolderCreator<ViewHolder>
-        = viewHolderCreatorOf(R.layout.danmaku_history_toggle_item)
+        = innerViewHolderCreatorOf(R.layout.danmaku_history_toggle_item)
 
     interface Callback {
 

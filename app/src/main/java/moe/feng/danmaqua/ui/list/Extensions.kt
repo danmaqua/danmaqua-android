@@ -18,6 +18,19 @@ inline fun <reified VH : RecyclerView.ViewHolder> viewHolderCreatorOf(@LayoutRes
     }
 }
 
+inline fun <reified VH : RecyclerView.ViewHolder> Any.innerViewHolderCreatorOf(
+    @LayoutRes layoutId: Int
+): SimpleViewBinder.ViewHolderCreator<VH> {
+    val thisRef = this
+    return object : SimpleViewBinder.ViewHolderCreator<VH> {
+        override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): VH {
+            val view = inflater.inflate(layoutId, parent, false)
+            return VH::class.java.getDeclaredConstructor(thisRef::class.java, View::class.java)
+                .newInstance(thisRef, view)
+        }
+    }
+}
+
 inline fun <reified DB : ViewDataBinding, reified VH : DataBindingViewHolder<*, DB>>
 dataBindingViewHolderCreatorOf(
     @LayoutRes layoutId: Int

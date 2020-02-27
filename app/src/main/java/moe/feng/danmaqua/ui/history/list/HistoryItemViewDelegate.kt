@@ -9,14 +9,14 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.HistoryFile
 import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.list.innerViewHolderCreatorOf
 import java.text.DateFormat
 
 class HistoryItemViewDelegate(var callback: Callback? = null)
     : ItemBasedSimpleViewBinder<HistoryItemViewDelegate.Item, HistoryItemViewDelegate.ViewHolder>() {
 
     override val viewHolderCreator: ViewHolderCreator<ViewHolder>
-        = viewHolderCreatorOf(R.layout.danmaku_history_file_item)
+        = innerViewHolderCreatorOf(R.layout.danmaku_history_file_item)
 
     interface Callback {
 
