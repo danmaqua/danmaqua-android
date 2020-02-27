@@ -90,6 +90,11 @@ class LicensesFragment : BaseFragment() {
                 author = "Google"
                 githubUrl("google/material-design-icons")
             }
+            apache2 {
+                name = "Named-regexp"
+                author = "Anthony Trinh"
+                githubUrl("tony19/named-regexp")
+            }
             sortByName()
         }
 

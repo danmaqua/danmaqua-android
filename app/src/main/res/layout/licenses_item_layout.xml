@@ -1,65 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="moe.feng.danmaqua.model.LicenseItem"/>
+        <import type="moe.feng.danmaqua.ui.settings.list.LicenseItemViewDelegate.ViewHolder"/>
+        <variable name="data" type="LicenseItem" />
+        <variable name="holder" type="ViewHolder" />
+    </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        android:stateListAnimator="@animator/license_item_card_list_animator"
-        android:focusable="true"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:stateListAnimator="@animator/license_item_card_list_animator"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{holder::onCardClick}">
 
-            <TextView
-                android:id="@+id/nameText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                tools:text="Android Open Source Project"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/licenseText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:drawableStart="@drawable/ic_card_account_details_outline_24"
-                android:drawableTint="?android:attr/textColorSecondary"
-                android:drawableTintMode="src_in"
-                android:drawablePadding="8dp"
-                tools:text="Apache 2.0"/>
+                <TextView
+                    android:id="@+id/nameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:text="@{data.productName}"
+                    tools:text="Android Open Source Project"/>
 
-            <TextView
-                android:id="@+id/authorText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:drawableStart="@drawable/ic_account_circle_24"
-                android:drawableTint="?android:attr/textColorSecondary"
-                android:drawableTintMode="src_in"
-                android:drawablePadding="8dp"
-                tools:text="Google"/>
+                <TextView
+                    android:id="@+id/licenseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:drawableStart="@drawable/ic_card_account_details_outline_24"
+                    android:drawableTint="?android:attr/textColorSecondary"
+                    android:drawableTintMode="src_in"
+                    android:drawablePadding="8dp"
+                    android:text="@{data.licenseType}"
+                    tools:text="Apache 2.0"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/authorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:drawableStart="@drawable/ic_account_circle_24"
+                    android:drawableTint="?android:attr/textColorSecondary"
+                    android:drawableTintMode="src_in"
+                    android:drawablePadding="8dp"
+                    android:text="@{data.author}"
+                    tools:text="Google"/>
 
-    </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-</FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
+
+</layout>

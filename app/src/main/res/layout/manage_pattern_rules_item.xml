@@ -1,67 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:minHeight="?android:listPreferredItemHeightLarge"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="?android:selectableItemBackground">
-
-    <com.google.android.material.radiobutton.MaterialRadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="false"
-        android:focusable="false" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="moe.feng.danmaqua.model.PatternRulesItem"/>
+        <import type="moe.feng.danmaqua.ui.settings.list.PatternRulesItemDelegate.ViewHolder"/>
+        <import type="android.view.View"/>
+        <variable name="data" type="PatternRulesItem" />
+        <variable name="holder" type="ViewHolder" />
+    </data>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:minHeight="?android:listPreferredItemHeightLarge"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:selectableItemBackground">
 
-        <TextView
-            android:id="@+id/titleText"
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:checked="@{data.selected}"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:text="@{data.title}"
+                tools:text="Title"/>
+
+            <TextView
+                android:id="@+id/descText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="@{data.local ? View.GONE : View.VISIBLE}"
+                android:text="@{data.desc}"
+                tools:text="Description"/>
+
+            <TextView
+                android:id="@+id/onlineInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:text="@{data.local ? @string/local_rule_text : @string/commited_by_text_format(data.committer)}"
+                tools:text="Committed by fython"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/menuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            tools:text="Title"/>
-
-        <TextView
-            android:id="@+id/descText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            tools:text="Description"/>
-
-        <TextView
-            android:id="@+id/onlineInfoText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textSize="12sp"
-            tools:text="Committed by fython"/>
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_more_vert_24"
+            android:tint="?android:textColorTertiary"
+            android:tintMode="src_in"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/menuButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:importantForAccessibility="no"
-        android:padding="8dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_more_vert_24"
-        android:tint="?android:textColorTertiary"
-        android:tintMode="src_in"
-        android:visibility="gone"/>
-
-</LinearLayout>
+</layout>

@@ -1,77 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="moe.feng.danmaqua.model.Recommendation.Item"/>
+        <import type="moe.feng.danmaqua.ui.subscription.list.RecommendedStreamerItemViewDelegate.ViewHolder"/>
+        <variable name="data" type="Item" />
+        <variable name="holder" type="ViewHolder" />
+    </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:stateListAnimator="@animator/recommended_item_card_list_animator"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:stateListAnimator="@animator/recommended_item_card_list_animator"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{holder::onCardClick}">
 
-            <View
-                android:id="@+id/cardBackgroundView"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <moe.feng.danmaqua.ui.view.CircleImageView
-                    android:id="@+id/avatarView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="16dp"
-                    tools:srcCompat="@tools:sample/avatars"/>
+                <View
+                    android:id="@+id/cardBackgroundView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/nameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                        tools:text="VTuberOfficial"/>
+                    <moe.feng.danmaqua.ui.view.CircleImageView
+                        android:id="@+id/avatarView"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:avatarUrl="@{data.face}"
+                        tools:srcCompat="@tools:sample/avatars"/>
 
-                    <TextView
-                        android:id="@+id/reasonText"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                        tools:text="Hello, world!"/>
+                        android:layout_weight="1"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            android:text="@{data.name}"
+                            tools:text="VTuberOfficial"/>
+
+                        <TextView
+                            android:id="@+id/reasonText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            android:text="@{data.reason}"
+                            tools:text="Hello, world!"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </FrameLayout>
 
-        </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
-</FrameLayout>
+</layout>
