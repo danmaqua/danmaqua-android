@@ -5,7 +5,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.databinding.ViewVtubersGroupItemBinding
 import moe.feng.danmaqua.event.OnCatalogGroupItemClickListener
 import moe.feng.danmaqua.model.VTuberCatalog
-import moe.feng.danmaqua.ui.list.*
+import moe.feng.danmaqua.ui.common.list.*
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class VTuberCatalogItemViewDelegate :

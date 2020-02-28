@@ -24,7 +24,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.floating.list.FWDanmakuItemViewDelegate
 import moe.feng.danmaqua.ui.floating.list.FWSystemMessageItemViewDelegate
-import moe.feng.danmaqua.ui.list.AutoScrollHelper
+import moe.feng.danmaqua.ui.common.list.AutoScrollHelper
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.TAG
 import moe.feng.danmaqua.util.ext.screenHeight

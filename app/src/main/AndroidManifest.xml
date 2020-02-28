@@ -33,7 +33,7 @@
         </activity>
 
         <activity
-            android:name=".ui.IntroActivity"
+            android:name=".ui.intro.IntroActivity"
             android:theme="@style/Theme.Danmaqua.NoActionBar"
             android:exported="false"/>
 

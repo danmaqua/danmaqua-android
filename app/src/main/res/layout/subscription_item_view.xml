@@ -23,7 +23,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp">
 
-        <moe.feng.danmaqua.ui.view.CircleImageView
+        <moe.feng.danmaqua.ui.common.view.CircleImageView
             android:id="@+id/avatarView"
             android:layout_width="48dp"
             android:layout_height="48dp"

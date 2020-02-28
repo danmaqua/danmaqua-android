@@ -7,7 +7,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.PatternRulesDao
 import moe.feng.danmaqua.databinding.ManagePatternRulesItemBinding
 import moe.feng.danmaqua.model.PatternRulesItem
-import moe.feng.danmaqua.ui.list.*
+import moe.feng.danmaqua.ui.common.list.*
 import moe.feng.danmaqua.ui.settings.list.PatternRulesItemDelegate.ViewHolder
 
 class PatternRulesItemDelegate(var callback: Callback? = null)

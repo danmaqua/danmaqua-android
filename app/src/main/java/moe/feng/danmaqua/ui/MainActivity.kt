@@ -39,7 +39,9 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.list.AutoScrollHelper
+import moe.feng.danmaqua.ui.common.BaseActivity
+import moe.feng.danmaqua.ui.common.list.AutoScrollHelper
+import moe.feng.danmaqua.ui.intro.IntroActivity
 import moe.feng.danmaqua.ui.main.*
 import moe.feng.danmaqua.ui.main.dialog.*
 import moe.feng.danmaqua.ui.main.list.MessageListAdapter

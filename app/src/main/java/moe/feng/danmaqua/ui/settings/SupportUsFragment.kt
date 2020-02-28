@@ -15,7 +15,7 @@ import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.support_us_fragment_layout.*
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.BaseFragment
+import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.*
 

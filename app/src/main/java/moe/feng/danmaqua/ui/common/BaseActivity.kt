@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.common
 
 import android.content.SharedPreferences
 import android.graphics.Color

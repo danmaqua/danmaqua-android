@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.dialog
+package moe.feng.danmaqua.ui.common.dialog
 
 import android.app.Dialog
 import android.os.Bundle

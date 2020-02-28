@@ -12,9 +12,9 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.model.PatternRulesItem
-import moe.feng.danmaqua.ui.BaseFragment
-import moe.feng.danmaqua.ui.list.BaseViewHolder
-import moe.feng.danmaqua.ui.list.SimpleDiffItemCallback
+import moe.feng.danmaqua.ui.common.BaseFragment
+import moe.feng.danmaqua.ui.common.list.BaseViewHolder
+import moe.feng.danmaqua.ui.common.list.SimpleDiffItemCallback
 import moe.feng.danmaqua.ui.settings.list.PatternRulesItemDelegate
 import moe.feng.danmaqua.util.ext.messageRes
 import moe.feng.danmaqua.util.ext.okButton

@@ -13,7 +13,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.model.buildTextTranslation
 import moe.feng.danmaqua.model.chinese
-import moe.feng.danmaqua.ui.dialog.BaseDialogFragment
+import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.util.ext.*
 import java.util.*
 

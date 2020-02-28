@@ -7,7 +7,7 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
 import moe.feng.danmaqua.ui.MainActivity
-import moe.feng.danmaqua.ui.dialog.ConfirmBlockUserDialogFragment
+import moe.feng.danmaqua.ui.common.dialog.ConfirmBlockUserDialogFragment
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class MainConfirmBlockUserDialogFragment : ConfirmBlockUserDialogFragment() {

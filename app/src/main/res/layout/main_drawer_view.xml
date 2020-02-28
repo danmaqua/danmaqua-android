@@ -44,7 +44,7 @@
         android:background="?attr/colorBackgroundFloating"
         tools:ignore="RtlHardcoded">
 
-        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+        <moe.feng.danmaqua.ui.common.view.DrawerBottomItemButton
             android:id="@+id/historyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             android:icon="@drawable/ic_archive_24"
             android:text="@string/danmaku_history_title"/>
 
-        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+        <moe.feng.danmaqua.ui.common.view.DrawerBottomItemButton
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:icon="@drawable/ic_settings_applications_24"
             android:text="@string/action_settings"/>
 
-        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+        <moe.feng.danmaqua.ui.common.view.DrawerBottomItemButton
             android:id="@+id/helpButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             android:icon="@drawable/ic_help_24"
             android:text="@string/action_help"/>
 
-        <moe.feng.danmaqua.ui.view.DrawerBottomItemButton
+        <moe.feng.danmaqua.ui.common.view.DrawerBottomItemButton
             android:id="@+id/donateButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

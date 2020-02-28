@@ -19,8 +19,8 @@ import kotlinx.android.synthetic.main.manage_subscription_item_view.*
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.BaseActivity
-import moe.feng.danmaqua.ui.list.BaseViewHolder
+import moe.feng.danmaqua.ui.common.BaseActivity
+import moe.feng.danmaqua.ui.common.list.BaseViewHolder
 import moe.feng.danmaqua.util.ShortcutsUtils
 import moe.feng.danmaqua.util.ext.*
 import java.util.*

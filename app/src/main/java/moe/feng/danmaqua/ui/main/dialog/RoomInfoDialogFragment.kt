@@ -13,7 +13,7 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.model.RoomInfo
-import moe.feng.danmaqua.ui.dialog.BaseDialogFragment
+import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.util.ext.*
 
 class RoomInfoDialogFragment : BaseDialogFragment() {

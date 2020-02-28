@@ -2,9 +2,9 @@ package moe.feng.danmaqua.ui.main.list
 
 import android.view.View
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.list.BaseViewHolder
-import moe.feng.danmaqua.ui.list.SimpleViewBinder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.BaseViewHolder
+import moe.feng.danmaqua.ui.common.list.SimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
 import moe.feng.danmaqua.ui.main.list.SubscriptionAddButtonViewDelegate.Item
 import moe.feng.danmaqua.ui.main.list.SubscriptionAddButtonViewDelegate.ViewHolder
 

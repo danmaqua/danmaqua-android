@@ -14,7 +14,7 @@ import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.event.OnCatalogGroupItemClickListener
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.model.VTuberCatalog
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity.Companion.REQUEST_CODE_CHOOSE_SUBSCRIPTION
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate
 import moe.feng.danmaqua.ui.subscription.list.VTuberCatalogItemViewDelegate

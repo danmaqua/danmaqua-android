@@ -18,7 +18,7 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
-import moe.feng.danmaqua.ui.dialog.BaseDialogFragment
+import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ext.*
 import moe.feng.danmaqua.util.flattenToString

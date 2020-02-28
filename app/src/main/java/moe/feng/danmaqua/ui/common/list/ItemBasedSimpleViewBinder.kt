@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.list
+package moe.feng.danmaqua.ui.common.list
 
 abstract class ItemBasedSimpleViewBinder<T : Any, VH: ItemBasedViewHolder<T>>
     : SimpleViewBinder<T, VH>() {

@@ -2,7 +2,7 @@ package moe.feng.danmaqua.ui.subscription.dialog
 
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity
 import moe.feng.danmaqua.util.ext.*
 

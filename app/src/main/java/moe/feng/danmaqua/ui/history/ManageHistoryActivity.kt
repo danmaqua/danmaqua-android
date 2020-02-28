@@ -12,11 +12,11 @@ import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.HistoryManager
 import moe.feng.danmaqua.model.HistoryFile
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.history.list.HistoryItemViewDelegate
 import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate
-import moe.feng.danmaqua.ui.list.HeaderItemViewDelegate
-import moe.feng.danmaqua.ui.list.SimpleDiffItemCallback
+import moe.feng.danmaqua.ui.common.list.HeaderItemViewDelegate
+import moe.feng.danmaqua.ui.common.list.SimpleDiffItemCallback
 import moe.feng.danmaqua.util.FileUtils
 import moe.feng.danmaqua.util.ext.*
 import java.io.File

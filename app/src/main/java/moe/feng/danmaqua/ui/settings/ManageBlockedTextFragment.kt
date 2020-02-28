@@ -18,7 +18,7 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedTextRule
-import moe.feng.danmaqua.ui.BaseFragment
+import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.util.ext.*
 
 class ManageBlockedTextFragment : BaseFragment() {

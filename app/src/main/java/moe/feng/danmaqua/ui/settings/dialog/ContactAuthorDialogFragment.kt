@@ -12,7 +12,7 @@ import androidx.core.net.toUri
 import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.contact_author_dialog_layout.*
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.dialog.BaseBottomSheetDialogFragment
+import moe.feng.danmaqua.ui.common.dialog.BaseBottomSheetDialogFragment
 import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.avatarUrl
 

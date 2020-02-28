@@ -4,9 +4,9 @@ import android.view.View
 import androidx.core.net.toUri
 import com.google.androidbrowserhelper.trusted.TwaLauncher
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.list.BaseViewHolder
-import moe.feng.danmaqua.ui.list.SimpleViewBinder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.BaseViewHolder
+import moe.feng.danmaqua.ui.common.list.SimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate.Item
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate.ViewHolder
 

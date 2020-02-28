@@ -6,9 +6,9 @@ import androidx.core.text.buildSpannedString
 import kotlinx.android.synthetic.main.danmaku_fw_item_view.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
-import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
-import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
+import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
 
 class FWSystemMessageItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     ItemBasedSimpleViewBinder<String, FWSystemMessageItemViewDelegate.ViewHolder>(){

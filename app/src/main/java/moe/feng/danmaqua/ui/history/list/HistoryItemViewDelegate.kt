@@ -7,9 +7,9 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.danmaku_history_file_item.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.HistoryFile
-import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
-import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.innerViewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
+import moe.feng.danmaqua.ui.common.list.innerViewHolderCreatorOf
 import java.text.DateFormat
 
 class HistoryItemViewDelegate(var callback: Callback? = null)

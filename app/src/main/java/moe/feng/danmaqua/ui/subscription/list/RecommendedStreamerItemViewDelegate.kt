@@ -6,7 +6,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.databinding.RecommendedStreamerListItemBinding
 import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation.Item
-import moe.feng.danmaqua.ui.list.*
+import moe.feng.danmaqua.ui.common.list.*
 import moe.feng.danmaqua.ui.subscription.list.RecommendedStreamerItemViewDelegate.ViewHolder
 import moe.feng.danmaqua.util.ext.eventsHelper
 

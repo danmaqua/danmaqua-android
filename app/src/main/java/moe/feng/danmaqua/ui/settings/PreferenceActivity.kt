@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import kotlinx.android.synthetic.main.preference_activity.*
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
 import moe.feng.danmaqua.util.ext.TAG
 

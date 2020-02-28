@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.intro
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.intro_activity.*
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.MainActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.util.ext.messageRes
 import moe.feng.danmaqua.util.ext.okButton
 import moe.feng.danmaqua.util.ext.showAlertDialog

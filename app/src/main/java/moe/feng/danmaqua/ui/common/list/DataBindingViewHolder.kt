@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.list
+package moe.feng.danmaqua.ui.common.list
 
 import androidx.annotation.CallSuper
 import androidx.databinding.ViewDataBinding

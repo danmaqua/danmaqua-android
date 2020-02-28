@@ -6,9 +6,9 @@ import android.view.View
 import androidx.core.text.HtmlCompat
 import kotlinx.android.synthetic.main.danmaku_simple_item_view.*
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
-import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
+import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
 import moe.feng.danmaqua.ui.main.list.SystemMessageItemViewDelegate.Item
 import moe.feng.danmaqua.ui.main.list.SystemMessageItemViewDelegate.ViewHolder
 

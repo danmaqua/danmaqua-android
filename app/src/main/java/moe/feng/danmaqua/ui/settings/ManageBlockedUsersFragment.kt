@@ -19,8 +19,8 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.bili.UserApi
 import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
-import moe.feng.danmaqua.ui.BaseFragment
-import moe.feng.danmaqua.ui.view.CircleImageView
+import moe.feng.danmaqua.ui.common.BaseFragment
+import moe.feng.danmaqua.ui.common.view.CircleImageView
 import moe.feng.danmaqua.util.ext.*
 
 class ManageBlockedUsersFragment : BaseFragment() {

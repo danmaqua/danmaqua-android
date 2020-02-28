@@ -16,7 +16,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.event.OnCatalogSingleItemClickListener
 import moe.feng.danmaqua.model.*
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.dialog.ConfirmSubscribeStreamerDialogFragment
 import moe.feng.danmaqua.ui.subscription.dialog.showStreamerExistsDialog
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate

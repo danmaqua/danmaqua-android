@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.list
+package moe.feng.danmaqua.ui.common.list
 
 import android.animation.Animator
 import android.animation.ObjectAnimator

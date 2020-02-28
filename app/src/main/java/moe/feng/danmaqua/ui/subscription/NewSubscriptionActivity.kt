@@ -24,7 +24,7 @@ import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.model.toSubscription
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.dialog.showConfirmSubscribeStreamerDialog
 import moe.feng.danmaqua.ui.subscription.dialog.showSearchNoResultDialog
 import moe.feng.danmaqua.ui.subscription.dialog.showStreamerExistsDialog

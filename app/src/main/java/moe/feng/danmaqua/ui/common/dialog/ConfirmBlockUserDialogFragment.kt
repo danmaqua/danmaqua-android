@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.dialog
+package moe.feng.danmaqua.ui.common.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedUserRule
-import moe.feng.danmaqua.ui.view.CircleImageView
+import moe.feng.danmaqua.ui.common.view.CircleImageView
 import moe.feng.danmaqua.util.ext.*
 
 abstract class ConfirmBlockUserDialogFragment : BaseDialogFragment() {

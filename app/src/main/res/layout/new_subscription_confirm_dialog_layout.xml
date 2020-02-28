@@ -11,7 +11,7 @@
     android:paddingTop="16dp"
     android:paddingBottom="16dp">
 
-    <moe.feng.danmaqua.ui.view.CircleImageView
+    <moe.feng.danmaqua.ui.common.view.CircleImageView
         android:id="@+id/avatarView"
         android:layout_width="48dp"
         android:layout_height="48dp"

@@ -5,9 +5,9 @@ import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.subscription_item_view.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
-import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
+import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
 import moe.feng.danmaqua.util.ext.avatarUrl
 
 class SubscriptionItemViewDelegate(var callback: Callback? = null)

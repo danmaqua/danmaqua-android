@@ -1,7 +1,7 @@
 package moe.feng.danmaqua.ui.proxy
 
 import android.os.Bundle
-import moe.feng.danmaqua.ui.BaseActivity
+import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.util.IntentUtils
 
 class B23ProxyActivity : BaseActivity() {

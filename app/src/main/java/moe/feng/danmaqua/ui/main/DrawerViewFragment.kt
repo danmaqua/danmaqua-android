@@ -22,9 +22,9 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.BaseFragment
+import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.ui.history.ManageHistoryActivity
-import moe.feng.danmaqua.ui.list.RaisedViewScrollListener
+import moe.feng.danmaqua.ui.common.list.RaisedViewScrollListener
 import moe.feng.danmaqua.ui.main.list.SubscriptionAddButtonViewDelegate
 import moe.feng.danmaqua.ui.main.list.SubscriptionItemViewDelegate
 import moe.feng.danmaqua.ui.main.list.SubscriptionManageButtonViewDelegate

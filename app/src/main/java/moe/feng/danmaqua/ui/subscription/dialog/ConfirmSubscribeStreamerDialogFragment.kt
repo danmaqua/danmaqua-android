@@ -11,8 +11,8 @@ import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.model.Subscription
-import moe.feng.danmaqua.ui.dialog.BaseDialogFragment
-import moe.feng.danmaqua.ui.view.CircleImageView
+import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
+import moe.feng.danmaqua.ui.common.view.CircleImageView
 import moe.feng.danmaqua.util.ext.*
 
 open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {

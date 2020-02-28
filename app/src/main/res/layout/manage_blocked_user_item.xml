@@ -13,7 +13,7 @@
     android:paddingEnd="8dp"
     android:minHeight="?android:attr/listPreferredItemHeight">
 
-    <moe.feng.danmaqua.ui.view.CircleImageView
+    <moe.feng.danmaqua.ui.common.view.CircleImageView
         android:id="@+id/avatarView"
         android:layout_width="32dp"
         android:layout_height="32dp"

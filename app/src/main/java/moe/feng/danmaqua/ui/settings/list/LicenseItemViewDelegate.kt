@@ -6,7 +6,7 @@ import com.google.androidbrowserhelper.trusted.TwaLauncher
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.databinding.LicensesItemLayoutBinding
 import moe.feng.danmaqua.model.LicenseItem
-import moe.feng.danmaqua.ui.list.*
+import moe.feng.danmaqua.ui.common.list.*
 
 class LicenseItemViewDelegate
     : ItemBasedSimpleViewBinder<LicenseItem, LicenseItemViewDelegate.ViewHolder>() {

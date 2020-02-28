@@ -7,9 +7,9 @@ import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
-import moe.feng.danmaqua.ui.list.ItemBasedSimpleViewBinder
-import moe.feng.danmaqua.ui.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
+import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
+import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
 import moe.feng.danmaqua.util.ext.eventsHelper
 
 class MainDanmakuItemViewDelegate :

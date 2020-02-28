@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui.view
+package moe.feng.danmaqua.ui.common.view
 
 import android.content.Context
 import android.graphics.Outline

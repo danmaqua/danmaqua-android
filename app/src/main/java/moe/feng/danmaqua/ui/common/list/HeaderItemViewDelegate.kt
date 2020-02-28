@@ -1,9 +1,9 @@
-package moe.feng.danmaqua.ui.list
+package moe.feng.danmaqua.ui.common.list
 
 import android.view.View
 import kotlinx.android.synthetic.main.list_header_item.*
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.ui.list.HeaderItemViewDelegate.ViewHolder
+import moe.feng.danmaqua.ui.common.list.HeaderItemViewDelegate.ViewHolder
 
 class HeaderItemViewDelegate : ItemBasedSimpleViewBinder<String, ViewHolder>() {
 

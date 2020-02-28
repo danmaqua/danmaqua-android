@@ -1,11 +1,11 @@
-package moe.feng.danmaqua.ui.dialog
+package moe.feng.danmaqua.ui.common.dialog
 
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 
-abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
+abstract class BaseDialogFragment : DialogFragment() {
 
     fun launchWhenCreated(block: suspend CoroutineScope.() -> Unit): Job =
         lifecycleScope.launchWhenCreated(block)

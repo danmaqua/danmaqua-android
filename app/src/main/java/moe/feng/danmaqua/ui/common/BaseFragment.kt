@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.ui
+package moe.feng.danmaqua.ui.common
 
 import android.app.Activity
 import android.content.Context
