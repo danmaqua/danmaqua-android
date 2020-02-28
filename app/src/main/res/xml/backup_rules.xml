@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content xmlns:android="http://schemas.android.com/apk/res/android">
+    <include domain="file" path="mmkv"/>
+    <include domain="file" path="history"/>
+    <include domain="database" path="danmaqua"/>
+    <include domain="database" path="danmaqua-shm"/>
+    <include domain="database" path="danmaqua-wal"/>
+</full-backup-content>
