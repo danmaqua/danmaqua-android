@@ -26,16 +26,15 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation deps.kotlin.stdlib
 
-    compileOnly 'androidx.core:core-ktx:1.2.0'
-    compileOnly 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly deps.androidx.ktx.core
+    compileOnly deps.androidx.appcompat
 
-    compileOnly 'com.squareup.picasso:picasso:2.71828'
-    compileOnly 'com.tencent:mmkv-static:1.0.24'
+    compileOnly deps.picasso
+    compileOnly deps.mmkv
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
+    testImplementation deps.junit
+    androidTestImplementation deps.androidx.test.junit
+    androidTestImplementation deps.androidx.test.espresso
 }
