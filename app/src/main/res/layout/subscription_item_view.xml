@@ -1,52 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="0dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:paddingLeft="@dimen/subscription_item_view_background_radius"
-    android:paddingRight="@dimen/subscription_item_view_background_radius"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:focusable="true"
-    android:clickable="true"
-    android:background="@drawable/subscription_item_background_selected"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="RtlHardcoded">
+    <data>
+        <import type="moe.feng.danmaqua.model.Subscription"/>
+        <variable name="data" type="Subscription" />
+    </data>
 
-    <FrameLayout
-        android:layout_width="56dp"
-        android:layout_height="56dp">
-
-        <moe.feng.danmaqua.ui.common.view.CircleImageView
-            android:id="@+id/avatarView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <ImageView
-            android:id="@+id/avatarRing"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:importantForAccessibility="no"
-            android:src="@drawable/subscription_item_avatar_ring_background"
-            android:layout_gravity="center"/>
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/usernameView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textColor="?android:attr/textColorPrimary"
-        tools:text="Siubeng Official"/>
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:paddingLeft="@dimen/subscription_item_view_background_radius"
+        android:paddingRight="@dimen/subscription_item_view_background_radius"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@{data.selected ? @drawable/subscription_item_background_selected : @drawable/subscription_item_background_normal}">
 
-</LinearLayout>
+        <FrameLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp">
+
+            <moe.feng.danmaqua.ui.common.view.CircleImageView
+                android:id="@+id/avatarView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                app:avatarUrl="@{data.avatar}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/avatarRing"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/subscription_item_avatar_ring_background"
+                android:layout_gravity="center"
+                app:isVisible="@{data.selected}"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/usernameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            app:text="@{data.username}"
+            tools:text="Siubeng Official"/>
+
+    </LinearLayout>
+
+</layout>

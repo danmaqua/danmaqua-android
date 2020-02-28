@@ -8,6 +8,8 @@ import android.widget.Button
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 fun Context.buildAlertDialog(block: AlertDialog.Builder.() -> Unit): AlertDialog {
@@ -64,6 +66,17 @@ inline fun AlertDialog.Builder.inflateView(
     val view = LayoutInflater.from(themedContext ?: context).inflate(layoutRes, null)
     onViewCreate(view)
     setView(view)
+}
+
+inline fun <DB : ViewDataBinding> AlertDialog.Builder.inflateDataBindingView(
+    @LayoutRes layoutRes: Int,
+    themedContext: Context? = null,
+    onViewCreate: (binding: DB) -> Unit
+) {
+    val inflater = LayoutInflater.from(themedContext ?: context)
+    val binding = DataBindingUtil.inflate<DB>(inflater, layoutRes, null, false)
+    onViewCreate(binding)
+    setView(binding.root)
 }
 
 fun AlertDialog.Builder.positiveButton(title: CharSequence,

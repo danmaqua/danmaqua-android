@@ -3,6 +3,9 @@
 
     <string name="intro_konaqua" translatable="false">こんあくあーー</string>
 
+    <string name="main_danmaku_text_format" translatable="false"><![CDATA[
+    <b>%s</b> %s
+    ]]></string>
     <string name="room_area_text_format" translatable="false">%s - %s</string>
     <string name="streamer_name_with_id_format" translatable="false">%s (%d)</string>
 
