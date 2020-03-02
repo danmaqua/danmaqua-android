@@ -11,14 +11,14 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.innerViewHolderCreatorOf
 import moe.feng.danmaqua.util.flattenToString
 
 class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     ItemBasedSimpleViewBinder<BiliChatDanmaku, FWDanmakuItemViewDelegate.ViewHolder>(){
 
     override val viewHolderCreator: ViewHolderCreator<ViewHolder> =
-        viewHolderCreatorOf(R.layout.danmaku_fw_item_view)
+        innerViewHolderCreatorOf(R.layout.danmaku_fw_item_view)
 
     inner class ViewHolder(itemView: View) : ItemBasedViewHolder<BiliChatDanmaku>(itemView) {
 
