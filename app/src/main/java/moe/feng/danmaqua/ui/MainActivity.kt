@@ -206,8 +206,11 @@ class MainActivity : BaseActivity(),
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        setGestureExclusionEnabled(!drawerLayout.isDrawerOpen(GravityCompat.START))
-        setWindowFlags()
+        try {
+            setGestureExclusionEnabled(!drawerLayout.isDrawerOpen(GravityCompat.START))
+            setWindowFlags()
+        } catch (ignored: Exception) {
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
