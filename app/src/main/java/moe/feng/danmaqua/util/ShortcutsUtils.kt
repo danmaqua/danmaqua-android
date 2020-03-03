@@ -7,6 +7,7 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -23,12 +24,17 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.proxy.QuickStartShortcutActivity
+import moe.feng.danmaqua.util.ext.TAG
 
 object ShortcutsUtils {
 
     fun requestUpdateShortcuts(context: Context) {
         MainScope().launch {
-            updateShortcuts(context)
+            try {
+                updateShortcuts(context)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to update shortcuts", e)
+            }
         }
     }
 
@@ -78,20 +84,21 @@ object ShortcutsUtils {
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             .putExtra(EXTRA_DATA, item.roomId)
         val icon = withContext(Dispatchers.IO) {
-            Picasso.get().load(item.avatar)
-                .placeholder(R.drawable.avatar_placeholder_empty)
-                .get()
-                ?.let { bitmap ->
-                    if (bitmap.height > manager.iconMaxHeight ||
-                        bitmap.width > manager.iconMaxWidth) {
-                        bitmap.scale(manager.iconMaxWidth, manager.iconMaxHeight)
-                    } else {
-                        bitmap
+            try {
+                Picasso.get().load(item.avatar)
+                    .placeholder(R.drawable.avatar_placeholder_empty)
+                    .get()
+                    ?.let { bitmap ->
+                        if (bitmap.height > manager.iconMaxHeight ||
+                            bitmap.width > manager.iconMaxWidth) {
+                            bitmap.scale(manager.iconMaxWidth, manager.iconMaxHeight)
+                        } else {
+                            bitmap
+                        }
                     }
-                }
-                ?.let { bitmap ->
-                    Icon.createWithBitmap(BitmapUtils.circular(bitmap))
-                }
+            } catch (e: Exception) {
+                Picasso.get().load(R.drawable.avatar_placeholder_empty).get()
+            }?.let { bitmap -> Icon.createWithBitmap(BitmapUtils.circular(bitmap)) }
         }
         return ShortcutInfo.Builder(context, "room_${item.roomId}")
             .setIntent(intent)
