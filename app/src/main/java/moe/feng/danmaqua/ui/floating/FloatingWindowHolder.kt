@@ -88,6 +88,7 @@ class FloatingWindowHolder(
     var backgroundAlpha: Int = 255
     var touchToMoveEnabled: Boolean = true
     val danmakuFilter: DanmakuFilter get() = onGetDanmakuFilter()
+    var textGravity: Int = Gravity.START
 
     val backgroundView: View = rootView.findViewById(R.id.floatingBackground)
     val contentView: View = rootView.findViewById(R.id.floatingContent)
@@ -130,7 +131,11 @@ class FloatingWindowHolder(
                 backgroundView.requestLayout()
             }
         }
-        contentView.setOnTouchListener(WindowOnTouchListener())
+        val windowTouchListener = WindowOnTouchListener()
+        contentView.setOnTouchListener(windowTouchListener)
+        expandButton.setOnTouchListener(windowTouchListener)
+        collapseButton.setOnTouchListener(windowTouchListener)
+        closeButton.setOnTouchListener(windowTouchListener)
 
         expandButton.setOnClickListener {
             isExpanded = true
@@ -154,11 +159,12 @@ class FloatingWindowHolder(
         twoLine = Settings.floatingTwoLine
         backgroundAlpha = Settings.floatingBackgroundAlpha
         touchToMoveEnabled = Settings.floatingTouchToMove
+        textGravity = Settings.floatingTextGravity
 
         captionView.textSize = textSize.toFloat()
         backgroundView.alpha = backgroundAlpha.toFloat() / 255F
 
-        danmakuAdapter.notifyDataSetChanged()
+        updateDanmakuCaptionViews()
     }
 
     fun addToWindowManager() {
@@ -257,6 +263,7 @@ class FloatingWindowHolder(
         if (autoScrollHelper.autoScrollEnabled) {
             listView.scrollToPosition(danmakuList.size - 1)
         }
+        captionView.gravity = textGravity
         captionView.text = if (twoLine && danmakuList.size >= 2) {
             val reversed = danmakuList.asReversed()
             val prevSubtitle = when (val it = reversed[1]) {
@@ -315,6 +322,7 @@ class FloatingWindowHolder(
         private var initialTouchY: Float = 0F
         private var currentTouchX: Float = 0F
         private var currentTouchY: Float = 0F
+        private var isMoved: Boolean = false
 
         private var dragStartJob: Job? = null
 
@@ -333,6 +341,7 @@ class FloatingWindowHolder(
                                 initialTouchX = event.rawX
                                 initialTouchY = event.rawY
                                 isDragging = true
+                                isMoved = false
                             } else {
                                 dragStartJob = launch {
                                     delay(longPressDuration)
@@ -345,6 +354,7 @@ class FloatingWindowHolder(
                                             initialTouchX = currentTouchX
                                             initialTouchY = currentTouchY
                                             isDragging = true
+                                            isMoved = false
                                         }
                                     }
                                 }
@@ -355,11 +365,16 @@ class FloatingWindowHolder(
                         isDragging = false
                         isTouchOutOfView = false
                         dragStartJob?.cancel()
+                        if (isMoved) {
+                            isMoved = false
+                            return true
+                        }
                     }
                     MotionEvent.ACTION_MOVE -> {
                         currentTouchX = event.rawX
                         currentTouchY = event.rawY
                         if (isDragging) {
+                            isMoved = true
                             windowLayoutParams.let {
                                 if (isLandscaped) {
                                     it.x = (initialX + (currentTouchX - initialTouchX).toInt())

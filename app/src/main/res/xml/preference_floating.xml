@@ -33,4 +33,12 @@
         app:min="@integer/floating_text_size_min"
         app:showSeekBarValue="true"/>
 
+    <androidx.preference.DropDownPreference
+        android:key="floating_text_gravity"
+        android:title="@string/text_gravity_title"
+        android:icon="@drawable/ic_format_align_left_24_text_color_primary"
+        android:entries="@array/text_gravity_entries"
+        android:entryValues="@array/text_gravity_entry_values"
+        app:useSimpleSummaryProvider="true"/>
+
 </androidx.preference.PreferenceScreen>

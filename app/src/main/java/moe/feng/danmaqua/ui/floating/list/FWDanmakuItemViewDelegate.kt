@@ -23,6 +23,8 @@ class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     inner class ViewHolder(itemView: View) : ItemBasedViewHolder<BiliChatDanmaku>(itemView) {
 
         override fun onBind() {
+            text1.gravity = fwHolder.textGravity
+
             val itemText = fwHolder.danmakuFilter.unescapeSubtitle(data)?.flattenToString()
             if (itemText != null) {
                 text1.textSize = fwHolder.textSize.toFloat()

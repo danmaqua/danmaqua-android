@@ -2,6 +2,7 @@ package moe.feng.danmaqua
 
 import android.content.Context
 import android.util.Log
+import android.view.Gravity
 import androidx.appcompat.app.AppCompatDelegate
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.runBlocking
@@ -124,6 +125,10 @@ object Danmaqua {
 
         var floatingTouchToMove: Boolean by mmkv.booleanProperty(
             key = "floating_touch_to_move", defaultValue = true
+        )
+
+        var floatingTextGravity: Int by mmkv.intProperty(
+            key = "floating_text_gravity", defaultValue = Gravity.START
         )
 
         var saveHistory: Boolean by mmkv.booleanProperty(

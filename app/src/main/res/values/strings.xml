@@ -389,5 +389,8 @@
     Special thanks to people who helped us translate VTubers\' words! Without them, this app
     would be useless.
     ]]></string>
-
+    <string name="text_gravity_start">Align left</string>
+    <string name="text_gravity_center">Align center</string>
+    <string name="text_gravity_end">Align right</string>
+    <string name="text_gravity_title">Text alignment</string>
 </resources>

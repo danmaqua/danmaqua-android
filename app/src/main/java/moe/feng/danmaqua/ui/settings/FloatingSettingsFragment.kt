@@ -2,7 +2,9 @@ package moe.feng.danmaqua.ui.settings
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.DropDownPreference
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import kotlinx.coroutines.launch
@@ -23,6 +25,7 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
     private val touchToMovePref by preference<SwitchPreference>("floating_touch_to_move")
     private val backgroundAlphaPref by preference<SeekBarPreference>("floating_background_alpha")
     private val textSizePref by preference<SeekBarPreference>("floating_text_size")
+    private val textGravityPref by preference<DropDownPreference>("floating_text_gravity")
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preference_floating)
@@ -55,6 +58,18 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
             true
         }
 
+        textGravityPref.onValueChanged { value ->
+            Settings.commit {
+                floatingTextGravity = when (value) {
+                    "start" -> Gravity.START
+                    "center" -> Gravity.CENTER
+                    "end" -> Gravity.END
+                    else -> Gravity.START
+                }
+            }
+            true
+        }
+
         updatePrefsValue()
     }
 
@@ -63,6 +78,12 @@ class FloatingSettingsFragment : BasePreferenceFragment() {
         touchToMovePref.isChecked = Settings.floatingTouchToMove
         backgroundAlphaPref.value = Settings.floatingBackgroundAlpha
         textSizePref.value = Settings.floatingTextSize
+        textGravityPref.value = when (Settings.floatingTextGravity) {
+            Gravity.START -> "start"
+            Gravity.CENTER -> "center"
+            Gravity.END -> "end"
+            else -> "start"
+        }
     }
 
     override fun onSettingsChanged() {

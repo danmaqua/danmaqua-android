@@ -8,17 +8,19 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
-import moe.feng.danmaqua.ui.common.list.viewHolderCreatorOf
+import moe.feng.danmaqua.ui.common.list.innerViewHolderCreatorOf
 
 class FWSystemMessageItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     ItemBasedSimpleViewBinder<String, FWSystemMessageItemViewDelegate.ViewHolder>(){
 
     override val viewHolderCreator: ViewHolderCreator<ViewHolder>
-        = viewHolderCreatorOf(R.layout.danmaku_fw_item_view)
+        = innerViewHolderCreatorOf(R.layout.danmaku_fw_item_view)
 
     inner class ViewHolder(itemView: View) : ItemBasedViewHolder<String>(itemView) {
 
         override fun onBind() {
+            text1.gravity = fwHolder.textGravity
+
             text1.textSize = fwHolder.textSize.toFloat()
             val latest = adapterPosition + 1 == fwHolder.listView.layoutManager?.itemCount
             text1.text = if (latest) {

@@ -15,5 +15,15 @@
         <item>@string/options_export_all_to_csv</item>
         <item>@string/options_export_filtered_to_csv</item>
     </string-array>
+    <string-array name="text_gravity_entries">
+        <item>@string/text_gravity_start</item>
+        <item>@string/text_gravity_center</item>
+        <item>@string/text_gravity_end</item>
+    </string-array>
+    <string-array name="text_gravity_entry_values">
+        <item>start</item>
+        <item>center</item>
+        <item>end</item>
+    </string-array>
 
 </resources>
