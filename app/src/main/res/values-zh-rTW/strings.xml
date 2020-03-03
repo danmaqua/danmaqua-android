@@ -367,5 +367,9 @@
     <string name="main_thanks_message"><![CDATA[
     特別感謝那些幫助我們翻譯 VTubers 發言的大佬們！沒有他們的付出，這個應用程式也將派不上用場。
     ]]></string>
+    <string name="text_gravity_start">向左對齊</string>
+    <string name="text_gravity_center">居中對齊</string>
+    <string name="text_gravity_end">向右對齊</string>
+    <string name="text_gravity_title">文本對齊方式</string>
 
 </resources>

@@ -12,6 +12,8 @@ import androidx.core.net.toUri
 
 object WindowUtils {
 
+    const val ACTION_MEIZU_SHOW_APPSEC = "com.meizu.safe.security.SHOW_APPSEC"
+
     /**
      * Check if application can draw over other apps
      * @param context Context
@@ -43,15 +45,34 @@ object WindowUtils {
      * @param activity Current activity
      * @param requestCode Request code
      */
-    fun requestOverlayPermission(activity: Activity, requestCode: Int) {
+    suspend fun requestOverlayPermission(activity: Activity, requestCode: Int) {
+        var launched = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 "package:${activity.packageName}".toUri()
             )
-            activity.startActivityForResult(intent, requestCode)
+            try {
+                activity.startActivityForResult(intent, requestCode)
+                launched = true
+            } catch (ignored: Exception) {
+
+            }
         }
-        // TODO Support third-party customize ROM?
+        if (!launched) {
+            if (BuildUtils.isFlymeOS()) {
+                val intent = Intent(ACTION_MEIZU_SHOW_APPSEC).apply {
+                    setClassName("com.meizu.safe", "com.meizu.safe.security.AppSecActivity")
+                    putExtra("packageName", activity.packageName)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                try {
+                    activity.startActivity(intent)
+                } catch (ignored: Exception) {
+
+                }
+            }
+        }
     }
 
 }

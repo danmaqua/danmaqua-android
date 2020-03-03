@@ -19,8 +19,10 @@ fun MainActivity.showOverlayPermissionDialog() {
         titleRes = R.string.overlay_permission_request_title
         messageRes = R.string.overlay_permission_request_message
         positiveButton(R.string.action_allow) {
-            WindowUtils.requestOverlayPermission(
-                this@showOverlayPermissionDialog, REQUEST_CODE_OVERLAY_PERMISSION)
+            launchWhenResumed {
+                WindowUtils.requestOverlayPermission(
+                    this@showOverlayPermissionDialog, REQUEST_CODE_OVERLAY_PERMISSION)
+            }
         }
         negativeButton(R.string.action_deny)
     }
