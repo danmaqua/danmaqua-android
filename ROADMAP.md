@@ -6,6 +6,7 @@
 - [ ] 隐藏高能弹幕/礼物弹幕
 - [ ] 自定义色彩主题
 - [ ] 导入/导出过滤规则
-- [ ] 保存弹幕历史
+- [x] 保存弹幕历史
 - [ ] 提供 Web 端弹幕机
 - [ ] 自定义弹幕/字幕源接口，允许自建同传翻译字幕服务器，或者 B 站弹幕筛选转发
+- [x] [Telegram Bot](https://github.com/danmaqua/danmaqua-telegrambot)
