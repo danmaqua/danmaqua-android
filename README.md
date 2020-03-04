@@ -15,12 +15,14 @@ Currently English version documentation is unavailable.
 - 直播弹幕列表
 - 弹幕过滤 & 按正则表达式匹配（同传翻译）内容
 - 悬浮窗
+- 弹幕记录存档
 
 ## 下载
 
-目前还在测试中，可在 [GitHub Releases](https://github.com/fython/danmaqua-android/releases) 中获取可用安装包。
+<a href="https://play.google.com/store/apps/details?id=moe.feng.danmaqua"><img width="240px" src="./.github/google-play-badge.png"></img></a>
 
-计划后续发布在 Play Store 和酷安上。
+除了 Google Play 商店，你还可以在 [酷安市场](https://www.coolapk.com/apk/256538) 或 [GitHub Releases](https://github.com/fython/danmaqua-android/releases) 中获取可用安装包。
+
 
 ## 使用方法
 
@@ -33,6 +35,10 @@ Currently English version documentation is unavailable.
 - [所有路线图：ROADMAP.md](./ROADMAP.md)
 - [没有咕的进度](https://github.com/fython/danmaqua-android/projects/1#column-7935078)
 - [协助翻译](https://fengmoe.oneskyapp.com/collaboration/project/355656)
+
+## 其它版本
+
+- [Telegram Bot](https://github.com/danmaqua/danmaqua-telegrambot) 版本
 
 ## 联系作者
 
