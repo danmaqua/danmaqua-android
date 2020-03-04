@@ -13,8 +13,8 @@ android {
         applicationId "moe.feng.danmaqua"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.1.1"
+        versionCode 7
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -47,6 +47,17 @@ android {
                     crashlyticsCollectionEnabled: "false"
             ]
             ext.enableCrashlytics = false
+        }
+    }
+
+    flavorDimensions "store"
+    productFlavors {
+        common {
+            dimension "store"
+        }
+        playstore {
+            dimension "store"
+            versionNameSuffix "-play"
         }
     }
 

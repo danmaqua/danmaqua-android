@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.core.view.isGone
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
@@ -98,6 +99,8 @@ class DrawerViewFragment : BaseFragment() {
                     .launch(requireActivity(), ExperimentSettingsFragment.ACTION)
             }
         }
+
+        donateButton.isGone = resources.getBoolean(R.bool.hide_support_us_button)
 
         historyButton.setOnClickListener {
             val intent = Intent(requireContext(), ManageHistoryActivity::class.java)

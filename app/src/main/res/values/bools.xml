@@ -3,5 +3,6 @@
 
     <bool name="base_theme_light_status_bar">true</bool>
     <bool name="danmaqua_theme_light_nav_bar">true</bool>
+    <bool name="hide_support_us_button">false</bool>
 
 </resources>
