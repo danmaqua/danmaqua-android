@@ -80,7 +80,6 @@ class MainActivity : BaseActivity(),
             }
         })
 
-    val bottomSheetVH: MainBottomSheetViewHolder = MainBottomSheetViewHolder(this)
     private lateinit var toolbarView: View
     private val avatarView by lazy { toolbarView.findViewById<ImageView>(R.id.avatarView) }
     private val usernameView by lazy { toolbarView.findViewById<TextView>(R.id.usernameView) }
@@ -125,7 +124,6 @@ class MainActivity : BaseActivity(),
         coordinator.setOnApplyWindowInsetsListener { _, insets ->
             appBarLayout.updatePadding(top = insets.systemWindowInsetTop)
             bottomAppBarBackground.updateLayoutParams { height = insets.systemWindowInsetBottom }
-            bottomSheetVH.onApplyWindowInsets(insets)
             if (insets.systemWindowInsetBottom > 0) {
                 if (!hideNavigation) setWindowFlags(hideNavigation = true)
             } else {
@@ -163,8 +161,7 @@ class MainActivity : BaseActivity(),
         TooltipCompat.setTooltipText(fab, getString(R.string.action_open_a_floating_window))
         connectButton.setOnClickListener(this::onConnectButtonClick)
         setFilterButton.onClick {
-            bottomSheetVH.show()
-            //PreferenceActivity.launch(this@MainActivity, FilterSettingsFragment.ACTION)
+            FilterSimpleMenuDialogFragment().show(supportFragmentManager, "filter_simple_menu")
         }
         backToLatestButton.setOnClickListener {
             backToLatestButton.isGone = true
@@ -185,8 +182,6 @@ class MainActivity : BaseActivity(),
                 messageAdapter.list.addAll(it)
             }
         }
-
-        bottomSheetVH.onCreate()
 
         setGestureExclusionEnabled(!drawerLayout.isDrawerOpen(GravityCompat.START))
         updateAvatarAndNameViews()
@@ -224,14 +219,12 @@ class MainActivity : BaseActivity(),
             drawerLayout.isDrawerOpen(GravityCompat.START) -> {
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
-            bottomSheetVH.isShowing() -> bottomSheetVH.hide()
             else -> super.onBackPressed()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        bottomSheetVH.onDestroy()
         service.unregister()
         eventsHelper.unregisterListeners(this, noConnectionsDialogListener)
     }

@@ -3,9 +3,7 @@ package moe.feng.danmaqua.ui.settings.dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
@@ -18,16 +16,10 @@ import moe.feng.danmaqua.util.ext.avatarUrl
 
 class ContactAuthorDialogFragment : BaseBottomSheetDialogFragment() {
 
+    override val layoutResourceId: Int = R.layout.contact_author_dialog_layout
+
     private val email: String get() = getString(R.string.about_author_email_summary)
         .filter { it != '_' }.replace('#', '@')
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.contact_author_dialog_layout, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         avatarView.avatarUrl = "https://avatars.githubusercontent.com/fython"

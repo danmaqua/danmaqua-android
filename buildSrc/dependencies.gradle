@@ -7,7 +7,7 @@ ext {
 
     deps = [
         android     : [
-            gradle_plugin: "com.android.tools.build:gradle:4.0.0-beta01"
+            gradle_plugin: "com.android.tools.build:gradle:4.1.0-alpha01"
         ],
         androidx    : [
             ktx               : [

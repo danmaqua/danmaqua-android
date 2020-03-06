@@ -11,7 +11,6 @@ class MainDrawerListener(private val mainActivity: MainActivity) : DrawerLayout.
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        mainActivity.bottomSheetVH.hide()
         if (slideOffset > 0.5F) {
             if (!mainActivity.lightNavBar) {
                 mainActivity.setWindowFlags(lightNavBar = true)

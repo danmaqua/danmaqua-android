@@ -120,6 +120,7 @@ class FloatingWindowHolder(
             y = screenHeight / 3 * 2
             gravity = Gravity.TOP or Gravity.START
             format = PixelFormat.TRANSPARENT
+            softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
                     WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
