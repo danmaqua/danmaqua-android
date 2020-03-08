@@ -79,10 +79,7 @@ class VTubersCatalogActivity : BaseActivity(), OnCatalogGroupItemClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CHOOSE_SUBSCRIPTION && resultCode == RESULT_OK) {
-            data?.getParcelableExtra<Subscription>(EXTRA_DATA)?.let {
-                setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_DATA, it) })
-                finish()
-            }
+            setResult(RESULT_OK)
         }
     }
 

@@ -82,8 +82,7 @@ class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        vtuberGroup?.let { outState.putParcelable(
-            STATE_GROUP, it) }
+        vtuberGroup?.let { outState.putParcelable(STATE_GROUP, it) }
     }
 
     override fun onCatalogSingleItem(item: VTuberSingleItem) {
@@ -129,6 +128,19 @@ class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
         }
     }
 
+    private fun addSubscription(subscription: Subscription) {
+        lifecycleScope.launch {
+            val dao = database.subscriptions()
+            if (dao.findByUid(subscription.uid) == null) {
+                if (dao.findSelected() == null) {
+                    subscription.selected = true
+                }
+                dao.add(subscription)
+            }
+        }
+        setResult(RESULT_OK)
+    }
+
     class ConfirmDialog : ConfirmSubscribeStreamerDialogFragment() {
 
         companion object {
@@ -146,10 +158,7 @@ class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
         }
 
         override fun onPositiveButtonClick() {
-            activity?.run {
-                setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_DATA, subscription) })
-                finish()
-            }
+            (activity as? VTubersGroupActivity)?.addSubscription(subscription)
         }
 
     }

@@ -19,6 +19,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.api.bili.UserApi
+import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation
@@ -136,10 +137,7 @@ class NewSubscriptionActivity : BaseActivity(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CHOOSE_SUBSCRIPTION && resultCode == RESULT_OK) {
-            data?.getParcelableExtra<Subscription>(EXTRA_DATA)?.let {
-                setResult(RESULT_OK, Intent().apply { putExtra(EXTRA_DATA, it) })
-                finish()
-            }
+            setResult(RESULT_OK)
         }
     }
 
@@ -155,10 +153,16 @@ class NewSubscriptionActivity : BaseActivity(),
     }
 
     override fun onConfirmSubscribeStreamer(subscription: Subscription) {
-        val result = Intent()
-        result.putExtra(EXTRA_DATA, subscription)
-        setResult(Activity.RESULT_OK, result)
-        finish()
+        lifecycleScope.launch {
+            val dao = database.subscriptions()
+            if (dao.findByUid(subscription.uid) == null) {
+                if (dao.findSelected() == null) {
+                    subscription.selected = true
+                }
+                dao.add(subscription)
+            }
+        }
+        setResult(RESULT_OK)
     }
 
     override fun onCancelConfirmSubscribe() {

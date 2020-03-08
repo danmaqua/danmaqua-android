@@ -125,26 +125,7 @@ class DrawerViewFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            REQUEST_CODE_NEW_SUBSCRIPTION -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val subscription = data.getParcelableExtra<Subscription>(EXTRA_DATA) ?: return
-                    lifecycleScope.launch {
-                        val dao = database.subscriptions()
-                        if (dao.findByUid(subscription.uid) == null) {
-                            if (dao.findSelected() == null) {
-                                subscription.selected = true
-                            }
-                            dao.add(subscription)
-                            if (subscription.selected) {
-                                context?.eventsHelper?.of<MainDrawerCallback>()
-                                    ?.onSubscriptionChange(subscription)
-                            }
-                            updateAdapterData()
-                        }
-                    }
-                }
-            }
-            REQUEST_CODE_MANAGE_SUBSCRIPTION -> {
+            REQUEST_CODE_NEW_SUBSCRIPTION, REQUEST_CODE_MANAGE_SUBSCRIPTION -> {
                 if (resultCode == Activity.RESULT_OK) {
                     lifecycleScope.launch {
                         val dao = database.subscriptions()
