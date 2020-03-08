@@ -393,4 +393,5 @@
     <string name="text_gravity_center">Align center</string>
     <string name="text_gravity_end">Align right</string>
     <string name="text_gravity_title">Text alignment</string>
+    <string name="dark_mode_summary_format">%s (Requires restart to apply changes)</string>
 </resources>

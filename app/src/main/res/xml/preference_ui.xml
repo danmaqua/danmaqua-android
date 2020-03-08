@@ -8,6 +8,6 @@
         android:entries="@array/dark_mode_entries"
         android:entryValues="@array/dark_mode_entry_values"
         android:icon="@drawable/ic_brightness_2_24_text_color_primary"
-        app:useSimpleSummaryProvider="true"/>
+        android:summary="@string/dark_mode_summary_format"/>
 
 </androidx.preference.PreferenceScreen>

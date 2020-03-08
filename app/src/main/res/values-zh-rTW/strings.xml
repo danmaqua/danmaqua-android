@@ -371,5 +371,6 @@
     <string name="text_gravity_center">居中對齊</string>
     <string name="text_gravity_end">向右對齊</string>
     <string name="text_gravity_title">文本對齊方式</string>
+    <string name="dark_mode_summary_format">%s（需要重啟以生效）</string>
 
 </resources>

@@ -17,6 +17,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.proxy.B23ProxyActivity
 import moe.feng.danmaqua.ui.proxy.LiveShareProxyActivity
+import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.onClick
 import moe.feng.danmaqua.util.ext.onValueChanged
 
@@ -86,12 +87,9 @@ class ExperimentSettingsFragment : BasePreferenceFragment() {
 
         setPreferenceClickListener("restart_to_intro") {
             Settings.introduced = false
-            val intent = Intent.makeRestartActivityTask(
-                ComponentName(requireContext(), MainActivity::class.java))
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            activity?.finish()
-            Runtime.getRuntime().exit(0)
+            activity?.let {
+                IntentUtils.restartApp(it)
+            }
         }
 
         val instanceId = FirebaseInstanceId.getInstance().instanceId

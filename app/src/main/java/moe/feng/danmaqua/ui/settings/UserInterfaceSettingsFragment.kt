@@ -7,6 +7,7 @@ import androidx.preference.DropDownPreference
 import moe.feng.danmaqua.Danmaqua
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.util.IntentUtils
 import moe.feng.danmaqua.util.ext.onValueChanged
 
 class UserInterfaceSettingsFragment : BasePreferenceFragment() {
@@ -35,6 +36,7 @@ class UserInterfaceSettingsFragment : BasePreferenceFragment() {
             val value = newValue.toInt()
             AppCompatDelegate.setDefaultNightMode(value)
             Danmaqua.Settings.darkMode = value
+            activity?.let { IntentUtils.restartApp(it) }
             true
         }
     }

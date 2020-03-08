@@ -1,10 +1,13 @@
 package moe.feng.danmaqua.util
 
+import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 import moe.feng.danmaqua.R
+import moe.feng.danmaqua.ui.MainActivity
 
 object IntentUtils {
 
@@ -50,6 +53,15 @@ object IntentUtils {
             .appendQueryParameter("_t", System.currentTimeMillis().toString())
             .build()
         return Intent(Intent.ACTION_VIEW, uri)
+    }
+
+    fun restartApp(activity: Activity) {
+        val intent = Intent.makeRestartActivityTask(
+            ComponentName(activity, MainActivity::class.java))
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        activity.startActivity(intent)
+        activity.finish()
+        Runtime.getRuntime().exit(0)
     }
 
 }
