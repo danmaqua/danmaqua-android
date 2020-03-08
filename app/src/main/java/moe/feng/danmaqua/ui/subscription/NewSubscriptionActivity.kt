@@ -78,7 +78,7 @@ class NewSubscriptionActivity : BaseActivity(),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                val idResultInDB = database.subscriptions().findByUid(id)
+                val idResultInDB = database.subscriptions().findByRoomId(id)
                 if (idResultInDB != null) {
                     showStreamerExistsDialog(idResultInDB.username)
                     return@launchWhenResumed

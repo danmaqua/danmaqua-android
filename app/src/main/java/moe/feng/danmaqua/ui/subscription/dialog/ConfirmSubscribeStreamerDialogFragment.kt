@@ -73,6 +73,7 @@ open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
         if (onPosClicked) {
             return
         }

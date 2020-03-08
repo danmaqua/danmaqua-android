@@ -185,8 +185,8 @@ class ManageSubscriptionActivity : BaseActivity() {
                                         value.selected = index == 0
                                         dao.update(value)
                                     }
-                                    setResult(RESULT_OK)
                                 }
+                                setResult(RESULT_OK)
                                 list.clear()
                                 list.addAll(items)
                                 adapter.notifyDataSetChanged()
