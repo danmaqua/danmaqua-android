@@ -4,9 +4,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.content.launchViewUrl
 import androidx.core.content.getSystemService
-import androidx.core.net.toUri
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.settings.dialog.ContactAuthorDialogFragment
@@ -35,10 +34,7 @@ class MainSettingsFragment : BasePreferenceFragment() {
             launchPreference(ExperimentSettingsFragment.ACTION)
         }
         setPreferenceClickListener("about_project_repo") {
-            context?.let {
-                TwaLauncher(it)
-                    .launch(getString(R.string.about_project_repo_url).toUri())
-            }
+            context?.launchViewUrl(R.string.about_project_repo_url)
         }
         setPreferenceClickListener("about_contact_author") {
             ContactAuthorDialogFragment()
@@ -56,10 +52,7 @@ class MainSettingsFragment : BasePreferenceFragment() {
             launchPreference(LicensesFragment.ACTION)
         }
         setPreferenceClickListener("about_road_map") {
-            context?.let {
-                TwaLauncher(it)
-                    .launch(getString(R.string.about_road_map_url).toUri())
-            }
+            context?.launchViewUrl(R.string.about_road_map_url)
         }
     }
 

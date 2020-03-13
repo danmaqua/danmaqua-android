@@ -5,9 +5,8 @@ import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.content.launchViewUrl
 import androidx.core.content.getSystemService
-import androidx.core.net.toUri
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.contact_author_dialog_layout.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.common.dialog.BaseBottomSheetDialogFragment
@@ -27,15 +26,11 @@ class ContactAuthorDialogFragment : BaseBottomSheetDialogFragment() {
         emailSummary.text = email
 
         weiboButton.setOnClickListener {
-            context?.let {
-                TwaLauncher(it).launch(getString(R.string.about_author_weibo_url).toUri())
-            }
+            context?.launchViewUrl(R.string.about_author_weibo_url)
             dismiss()
         }
         bilibiliButton.setOnClickListener {
-            context?.let {
-                TwaLauncher(it).launch(getString(R.string.about_author_bilibili_url).toUri())
-            }
+            context?.launchViewUrl(R.string.about_author_bilibili_url)
             dismiss()
         }
         emailButton.setOnClickListener {

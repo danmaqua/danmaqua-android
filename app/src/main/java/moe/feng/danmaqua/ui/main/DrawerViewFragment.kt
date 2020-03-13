@@ -8,14 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.*
 import androidx.content.eventsHelper
-import androidx.core.net.toUri
+import androidx.content.launchViewUrl
 import androidx.core.view.isGone
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.main_drawer_view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -112,8 +111,7 @@ class DrawerViewFragment : BaseFragment() {
                 .launch(requireActivity(), MainSettingsFragment.ACTION)
         }
         helpButton.setOnClickListener {
-            TwaLauncher(it.context)
-                .launch(getString(R.string.help_url).toUri())
+            it.context.launchViewUrl(R.string.help_url)
         }
         donateButton.setOnClickListener {
             PreferenceActivity

@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.*
-import androidx.core.net.toUri
+import androidx.content.launchViewUrl
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -83,7 +82,7 @@ class PatternTestDialogFragment : BaseDialogFragment() {
             }
             okButton()
             neutralButton(R.string.action_go_to_regexr_com) {
-                TwaLauncher(context).launch("https://regexr.com".toUri())
+                context.launchViewUrl("https://regexr.com")
             }
         }
     }

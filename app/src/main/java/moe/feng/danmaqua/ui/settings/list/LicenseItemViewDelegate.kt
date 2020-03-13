@@ -1,8 +1,7 @@
 package moe.feng.danmaqua.ui.settings.list
 
 import android.view.View
-import androidx.core.net.toUri
-import com.google.androidbrowserhelper.trusted.TwaLauncher
+import androidx.content.launchViewUrl
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.databinding.LicensesItemLayoutBinding
 import moe.feng.danmaqua.model.LicenseItem
@@ -18,7 +17,7 @@ class LicenseItemViewDelegate
         DataBindingViewHolder<LicenseItem, LicensesItemLayoutBinding>(dataBinding) {
 
         fun onCardClick(view: View) {
-            TwaLauncher(context).launch(data.url.toUri())
+            context.launchViewUrl(data.url)
         }
 
     }
