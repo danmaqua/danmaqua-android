@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.perf.FirebasePerformance
 import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import com.tencent.mmkv.MMKV
@@ -30,7 +29,6 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
     private var firebaseSdkEnabled: Boolean = true
     private val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(this) }
     private val firebaseCrashlytics by lazy { FirebaseCrashlytics.getInstance() }
-    private val firebasePerf by lazy { FirebasePerformance.getInstance() }
 
     override fun onCreate() {
         super.onCreate()
@@ -89,9 +87,6 @@ class DanmaquaApplication : Application(), SettingsChangedListener {
             Log.d(TAG, "Firebase SDK status changed to enabled=$newState")
             firebaseAnalytics.setAnalyticsCollectionEnabled(newState)
             firebaseCrashlytics.setCrashlyticsCollectionEnabled(newState)
-            if (!BuildConfig.DEBUG) {
-                firebasePerf.isPerformanceCollectionEnabled = newState
-            }
             firebaseSdkEnabled = newState
         }
     }

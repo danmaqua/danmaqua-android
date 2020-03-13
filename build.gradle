@@ -12,7 +12,6 @@ buildscript {
         classpath deps.kotlin.gradle_plugin
         classpath deps.google.gms_plugin
         classpath deps.google.firebase.crashlytics_plugin
-        classpath deps.google.firebase.perf_plugin
     }
 }
 
