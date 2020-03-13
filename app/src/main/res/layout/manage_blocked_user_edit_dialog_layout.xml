@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <moe.feng.danmaqua.ui.common.view.FixedTextInputEditText
             android:id="@android:id/edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

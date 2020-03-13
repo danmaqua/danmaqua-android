@@ -13,7 +13,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
+        <moe.feng.danmaqua.ui.common.view.FixedTextInputEditText
             android:id="@+id/regexpEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
-        <com.google.android.material.textfield.TextInputEditText
+        <moe.feng.danmaqua.ui.common.view.FixedTextInputEditText
             android:id="@+id/sampleTextEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

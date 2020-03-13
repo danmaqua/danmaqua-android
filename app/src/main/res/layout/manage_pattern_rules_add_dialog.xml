@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:errorEnabled="true">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <moe.feng.danmaqua.ui.common.view.FixedTextInputEditText
             android:id="@+id/titleEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         app:errorEnabled="true">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <moe.feng.danmaqua.ui.common.view.FixedTextInputEditText
             android:id="@+id/regexpEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

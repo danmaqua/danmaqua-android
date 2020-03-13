@@ -1,5 +1,6 @@
 package moe.feng.danmaqua.util
 
+import android.os.Build
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,9 +22,16 @@ object BuildUtils {
         return@withContext null
     }
 
+    /**
+     * It costs some time because it uses shell to get prop. So we cannot do it sync.
+     */
     suspend fun isFlymeOS(): Boolean {
         val displayId = getSystemProperty("ro.build.display.id")?.toLowerCase(Locale.getDefault())
         return !displayId.isNullOrEmpty() && displayId.contains("flyme")
+    }
+
+    fun isMeizu(): Boolean {
+        return Build.MANUFACTURER.toLowerCase(Locale.getDefault()).contains("meizu")
     }
 
 }
