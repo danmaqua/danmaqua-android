@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
-import moe.feng.danmaqua.util.ext.onValueChanged
+import androidx.preference.onValueChanged
 
 class FloatingSettingsFragment : BasePreferenceFragment() {
 

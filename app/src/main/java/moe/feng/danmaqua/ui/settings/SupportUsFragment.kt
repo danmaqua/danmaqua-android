@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.*
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
@@ -17,7 +18,6 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.util.IntentUtils
-import moe.feng.danmaqua.util.ext.*
 
 class SupportUsFragment : BaseFragment() {
 

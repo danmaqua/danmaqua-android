@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.*
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
@@ -20,8 +21,7 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.util.DanmakuFilter
-import moe.feng.danmaqua.util.ext.*
-import moe.feng.danmaqua.util.flattenToString
+import moe.feng.danmaqua.model.flattenToString
 
 class PatternTestDialogFragment : BaseDialogFragment() {
 

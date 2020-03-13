@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.*
+import androidx.content.eventsHelper
 import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.core.view.updateLayoutParams
@@ -19,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moe.feng.common.eventshelper.of
-import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.model.Subscription
@@ -35,7 +36,6 @@ import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.settings.SupportUsFragment
 import moe.feng.danmaqua.ui.subscription.ManageSubscriptionActivity
 import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity
-import moe.feng.danmaqua.util.ext.*
 
 class DrawerViewFragment : BaseFragment() {
 

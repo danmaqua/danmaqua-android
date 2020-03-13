@@ -8,10 +8,10 @@ import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.common.BaseActivity
-import moe.feng.danmaqua.util.ext.messageRes
-import moe.feng.danmaqua.util.ext.okButton
-import moe.feng.danmaqua.util.ext.showAlertDialog
-import moe.feng.danmaqua.util.ext.titleRes
+import androidx.appcompat.app.messageRes
+import androidx.appcompat.app.okButton
+import androidx.appcompat.app.showAlertDialog
+import androidx.appcompat.app.titleRes
 
 class IntroActivity : BaseActivity() {
 

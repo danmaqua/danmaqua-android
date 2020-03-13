@@ -2,11 +2,11 @@ package moe.feng.danmaqua.ui.history
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.*
 import androidx.core.os.bundleOf
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.ui.history.list.HistoryItemViewDelegate
-import moe.feng.danmaqua.util.ext.*
 
 class DeleteHistoryItemInfoDialogFragment : BaseDialogFragment() {
 

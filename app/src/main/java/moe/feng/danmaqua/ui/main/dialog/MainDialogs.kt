@@ -1,10 +1,10 @@
 package moe.feng.danmaqua.ui.main.dialog
 
+import androidx.appcompat.app.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.MainActivity.Companion.REQUEST_CODE_OVERLAY_PERMISSION
 import moe.feng.danmaqua.util.WindowUtils
-import moe.feng.danmaqua.util.ext.*
 
 fun MainActivity.showNoStreamerSelectedDialog() {
     showAlertDialog {

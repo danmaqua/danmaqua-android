@@ -8,10 +8,12 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.*
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.view.avatarUrl
 import com.drakeet.multitype.ItemViewDelegate
 import com.drakeet.multitype.MultiTypeAdapter
 import kotlinx.android.synthetic.main.manage_subscription_activity.*
@@ -22,7 +24,6 @@ import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.common.list.BaseViewHolder
 import moe.feng.danmaqua.util.ShortcutsUtils
-import moe.feng.danmaqua.util.ext.*
 import java.util.*
 
 class ManageSubscriptionActivity : BaseActivity() {

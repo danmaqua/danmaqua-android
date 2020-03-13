@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.util
+package moe.feng.danmaqua.model
 
 typealias Subtitle = Pair<String?, String>
 

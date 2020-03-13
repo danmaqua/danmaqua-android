@@ -16,7 +16,7 @@ import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.service.DanmakuListenerService
 import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.dialog.ConfirmSubscribeStreamerDialogFragment
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class LiveShareProxyActivity : BaseActivity(), OnConfirmSubscribeStreamerListener {
 

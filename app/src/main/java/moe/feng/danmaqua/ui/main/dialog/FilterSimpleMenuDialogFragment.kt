@@ -11,7 +11,7 @@ import moe.feng.danmaqua.ui.common.dialog.BaseBottomSheetDialogFragment
 import moe.feng.danmaqua.ui.settings.FilterSettingsFragment
 import moe.feng.danmaqua.ui.settings.PreferenceActivity
 import moe.feng.danmaqua.ui.settings.pattern.ManagePatternRulesFragment
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class FilterSimpleMenuDialogFragment : BaseBottomSheetDialogFragment(), SettingsChangedListener {
 

@@ -4,11 +4,11 @@ import android.app.Dialog
 import android.os.Bundle
 import android.text.format.Formatter
 import android.widget.TextView
+import androidx.appcompat.app.*
 import androidx.core.os.bundleOf
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.ui.history.list.HistoryItemViewDelegate
-import moe.feng.danmaqua.util.ext.*
 import java.text.DateFormat
 import java.util.*
 

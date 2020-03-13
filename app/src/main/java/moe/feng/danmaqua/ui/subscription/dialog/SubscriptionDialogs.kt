@@ -1,10 +1,10 @@
 package moe.feng.danmaqua.ui.subscription.dialog
 
+import androidx.appcompat.app.*
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity
-import moe.feng.danmaqua.util.ext.*
 
 fun BaseActivity.showStreamerExistsDialog(username: String) {
     showAlertDialog {

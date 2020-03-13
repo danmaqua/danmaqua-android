@@ -1,6 +1,5 @@
 package moe.feng.danmaqua.ui.subscription
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.core.os.bundleOf
@@ -21,8 +20,8 @@ import moe.feng.danmaqua.ui.subscription.dialog.ConfirmSubscribeStreamerDialogFr
 import moe.feng.danmaqua.ui.subscription.dialog.showStreamerExistsDialog
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate
 import moe.feng.danmaqua.ui.subscription.list.VTuberSingleItemViewDelegate
-import moe.feng.danmaqua.util.ext.TAG
-import moe.feng.danmaqua.util.ext.eventsHelper
+import kotlinx.TAG
+import androidx.content.eventsHelper
 
 class VTubersGroupActivity : BaseActivity(), OnCatalogSingleItemClickListener {
 

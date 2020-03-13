@@ -4,9 +4,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import moe.feng.danmaqua.model.BiliChatPacket
 import moe.feng.danmaqua.util.JsonUtils
-import moe.feng.danmaqua.util.ext.currentSliceArray
-import moe.feng.danmaqua.util.ext.getUInt
-import moe.feng.danmaqua.util.ext.slice
+import kotlinx.nio.currentSliceArray
+import kotlinx.nio.getUInt
+import kotlinx.nio.slice
 import moe.feng.danmaqua.util.ext.toJson
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer

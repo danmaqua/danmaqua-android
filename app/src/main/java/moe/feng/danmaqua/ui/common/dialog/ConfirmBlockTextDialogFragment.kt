@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.*
 import androidx.core.widget.addTextChangedListener
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedTextRule
-import moe.feng.danmaqua.util.ext.*
 
 abstract class ConfirmBlockTextDialogFragment : BaseDialogFragment() {
 

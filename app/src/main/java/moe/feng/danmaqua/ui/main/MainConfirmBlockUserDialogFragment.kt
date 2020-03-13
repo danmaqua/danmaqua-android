@@ -8,7 +8,7 @@ import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.common.dialog.ConfirmBlockUserDialogFragment
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class MainConfirmBlockUserDialogFragment : ConfirmBlockUserDialogFragment() {
 

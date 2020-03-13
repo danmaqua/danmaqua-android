@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import moe.feng.common.eventshelper.EventsHelper
 import moe.feng.danmaqua.event.SettingsChangedListener
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
 

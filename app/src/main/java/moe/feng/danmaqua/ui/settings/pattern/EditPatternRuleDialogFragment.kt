@@ -3,6 +3,7 @@ package moe.feng.danmaqua.ui.settings.pattern
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.*
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
@@ -14,7 +15,6 @@ import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.model.buildTextTranslation
 import moe.feng.danmaqua.model.chinese
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
-import moe.feng.danmaqua.util.ext.*
 import java.util.*
 
 class EditPatternRuleDialogFragment : BaseDialogFragment() {

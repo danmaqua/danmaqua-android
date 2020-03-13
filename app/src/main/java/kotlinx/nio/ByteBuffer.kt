@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.util.ext
+package kotlinx.nio
 
 import java.nio.ByteBuffer
 

@@ -1,3 +1,3 @@
-package moe.feng.danmaqua.util.ext
+package kotlinx
 
 val Any.TAG: String get() = this.javaClass.simpleName

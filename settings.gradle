@@ -1,3 +1,2 @@
-include ':library-ktx'
 include ':app'
 rootProject.name = "Danmaqua"

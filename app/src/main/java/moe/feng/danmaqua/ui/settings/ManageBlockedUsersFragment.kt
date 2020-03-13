@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.*
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.view.avatarUrl
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.manage_blocked_users_layout.*
 import kotlinx.coroutines.launch
@@ -21,7 +23,6 @@ import moe.feng.danmaqua.model.BlockedUserRule
 import moe.feng.danmaqua.model.SpaceInfo
 import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.ui.common.view.CircleImageView
-import moe.feng.danmaqua.util.ext.*
 
 class ManageBlockedUsersFragment : BaseFragment() {
 

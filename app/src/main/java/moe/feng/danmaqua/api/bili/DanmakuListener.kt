@@ -4,7 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.*
 import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.util.HttpUtils
-import moe.feng.danmaqua.util.ext.TAG
+import kotlinx.TAG
 import moe.feng.danmaqua.util.ext.toJson
 import okhttp3.Request
 import okhttp3.Response

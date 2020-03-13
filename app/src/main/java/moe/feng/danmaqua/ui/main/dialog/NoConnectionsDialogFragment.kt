@@ -6,12 +6,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import androidx.appcompat.app.*
+import androidx.content.eventsHelper
 import androidx.fragment.app.FragmentManager
 import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.NoConnectionsDialogListener
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
-import moe.feng.danmaqua.util.ext.*
 
 class NoConnectionsDialogFragment : BaseDialogFragment() {
 

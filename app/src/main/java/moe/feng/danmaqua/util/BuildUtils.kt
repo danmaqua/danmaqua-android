@@ -3,7 +3,7 @@ package moe.feng.danmaqua.util
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import moe.feng.danmaqua.util.ext.TAG
+import kotlinx.TAG
 import java.io.IOException
 import java.util.*
 

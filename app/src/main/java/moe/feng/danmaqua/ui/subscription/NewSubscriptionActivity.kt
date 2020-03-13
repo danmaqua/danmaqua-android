@@ -1,6 +1,5 @@
 package moe.feng.danmaqua.ui.subscription
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -14,12 +13,10 @@ import kotlinx.android.synthetic.main.new_subscription_activity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.api.bili.UserApi
-import moe.feng.danmaqua.event.MainDrawerCallback
 import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation
@@ -30,7 +27,7 @@ import moe.feng.danmaqua.ui.subscription.dialog.showConfirmSubscribeStreamerDial
 import moe.feng.danmaqua.ui.subscription.dialog.showSearchNoResultDialog
 import moe.feng.danmaqua.ui.subscription.dialog.showStreamerExistsDialog
 import moe.feng.danmaqua.ui.subscription.list.RecommendedStreamerItemViewDelegate
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class NewSubscriptionActivity : BaseActivity(),
     OnRecommendedStreamerItemClickListener, OnConfirmSubscribeStreamerListener {

@@ -9,7 +9,7 @@ import moe.feng.danmaqua.Danmaqua.WORK_NAME_UPDATE_PATTERN_RULES
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.PatternRulesItem
-import moe.feng.danmaqua.util.ext.TAG
+import kotlinx.TAG
 import java.util.concurrent.TimeUnit
 
 class UpdatePatternRulesWork(val context: Context, workerParams: WorkerParameters) :

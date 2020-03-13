@@ -1,6 +1,4 @@
-package moe.feng.danmaqua.util.ext
-
-import moe.feng.danmaqua.model.LicenseItem
+package moe.feng.danmaqua.model
 
 class LicenseItemBuilder {
 

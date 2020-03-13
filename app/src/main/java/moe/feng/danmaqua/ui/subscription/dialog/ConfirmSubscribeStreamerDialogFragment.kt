@@ -5,15 +5,17 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.*
+import androidx.content.eventsHelper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import androidx.view.avatarUrl
 import moe.feng.common.eventshelper.of
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.OnConfirmSubscribeStreamerListener
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
 import moe.feng.danmaqua.ui.common.view.CircleImageView
-import moe.feng.danmaqua.util.ext.*
 
 open class ConfirmSubscribeStreamerDialogFragment : BaseDialogFragment() {
 

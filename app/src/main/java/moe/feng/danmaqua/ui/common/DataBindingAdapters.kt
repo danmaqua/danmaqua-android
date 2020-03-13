@@ -10,7 +10,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import moe.feng.danmaqua.model.TextTranslation
-import moe.feng.danmaqua.util.ext.avatarUrl
+import androidx.view.avatarUrl
 
 object DataBindingAdapters {
 

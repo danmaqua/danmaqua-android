@@ -87,8 +87,6 @@ dependencies {
     implementation deps.kotlin.coroutines_core
     implementation deps.kotlin.coroutines_android
 
-    implementation project(':library-ktx')
-
     implementation deps.androidx.ktx.core
     implementation deps.androidx.ktx.fragment
     implementation deps.androidx.ktx.preference

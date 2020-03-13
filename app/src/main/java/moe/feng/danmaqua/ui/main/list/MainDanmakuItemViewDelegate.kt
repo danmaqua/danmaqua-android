@@ -6,7 +6,7 @@ import moe.feng.danmaqua.databinding.DanmakuSimpleItemViewBinding
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.common.list.*
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class MainDanmakuItemViewDelegate :
     ItemBasedSimpleViewBinder<BiliChatDanmaku, MainDanmakuItemViewDelegate.ViewHolder>() {

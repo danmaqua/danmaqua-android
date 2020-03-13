@@ -24,7 +24,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.ui.proxy.QuickStartShortcutActivity
-import moe.feng.danmaqua.util.ext.TAG
+import kotlinx.TAG
 
 object ShortcutsUtils {
 

@@ -12,7 +12,7 @@ import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.ui.common.list.ItemBasedSimpleViewBinder
 import moe.feng.danmaqua.ui.common.list.ItemBasedViewHolder
 import moe.feng.danmaqua.ui.common.list.innerViewHolderCreatorOf
-import moe.feng.danmaqua.util.flattenToString
+import moe.feng.danmaqua.model.flattenToString
 
 class FWDanmakuItemViewDelegate(val fwHolder: FloatingWindowHolder) :
     ItemBasedSimpleViewBinder<BiliChatDanmaku, FWDanmakuItemViewDelegate.ViewHolder>(){

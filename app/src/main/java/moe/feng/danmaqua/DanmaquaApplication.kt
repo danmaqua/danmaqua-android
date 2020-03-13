@@ -19,8 +19,8 @@ import moe.feng.danmaqua.Danmaqua.NOTI_CHANNEL_ID_STATUS
 import moe.feng.danmaqua.data.DanmaquaDB
 import moe.feng.danmaqua.event.SettingsChangedListener
 import moe.feng.danmaqua.util.HttpUtils
-import moe.feng.danmaqua.util.ext.TAG
-import moe.feng.danmaqua.util.ext.eventsHelper
+import kotlinx.TAG
+import androidx.content.eventsHelper
 import moe.feng.danmaqua.work.UpdatePatternRulesWork
 import okhttp3.Cache
 import java.io.File

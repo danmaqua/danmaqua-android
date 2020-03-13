@@ -7,9 +7,9 @@ import androidx.core.os.bundleOf
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.PatternRulesItem
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
-import moe.feng.danmaqua.util.ext.buildAlertDialog
-import moe.feng.danmaqua.util.ext.inflateView
-import moe.feng.danmaqua.util.ext.okButton
+import androidx.appcompat.app.buildAlertDialog
+import androidx.appcompat.app.inflateView
+import androidx.appcompat.app.okButton
 
 class ViewPatternRuleDialogFragment : BaseDialogFragment() {
 

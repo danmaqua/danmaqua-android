@@ -9,7 +9,7 @@ import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.ui.MainActivity
 import moe.feng.danmaqua.ui.common.dialog.ConfirmBlockTextDialogFragment
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class MainConfirmBlockTextDialogFragment : ConfirmBlockTextDialogFragment() {
 

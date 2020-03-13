@@ -2,6 +2,7 @@ package moe.feng.danmaqua.ui.main.dialog
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.*
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -11,7 +12,6 @@ import moe.feng.danmaqua.api.bili.RoomApi
 import moe.feng.danmaqua.databinding.RoomInfoDialogContentBinding
 import moe.feng.danmaqua.model.RoomInfo
 import moe.feng.danmaqua.ui.common.dialog.BaseDialogFragment
-import moe.feng.danmaqua.util.ext.*
 
 class RoomInfoDialogFragment : BaseDialogFragment() {
 

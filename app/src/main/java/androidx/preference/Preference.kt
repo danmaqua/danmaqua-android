@@ -1,6 +1,4 @@
-package moe.feng.danmaqua.util.ext
-
-import androidx.preference.*
+package androidx.preference
 
 inline fun <T : TwoStatePreference> T.onValueChanged(
     crossinline block: T.(value: Boolean) -> Boolean

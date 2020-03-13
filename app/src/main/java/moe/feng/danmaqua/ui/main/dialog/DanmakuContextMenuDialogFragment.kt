@@ -10,7 +10,7 @@ import moe.feng.danmaqua.R
 import moe.feng.danmaqua.event.MainDanmakuContextMenuListener
 import moe.feng.danmaqua.model.BiliChatDanmaku
 import moe.feng.danmaqua.ui.common.dialog.BaseBottomSheetDialogFragment
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class DanmakuContextMenuDialogFragment : BaseBottomSheetDialogFragment() {
 

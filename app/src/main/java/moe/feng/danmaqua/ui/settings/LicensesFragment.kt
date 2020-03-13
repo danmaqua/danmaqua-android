@@ -11,10 +11,10 @@ import moe.feng.danmaqua.Danmaqua.ACTION_PREFIX
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.ui.settings.list.LicenseItemViewDelegate
-import moe.feng.danmaqua.util.ext.apache2
-import moe.feng.danmaqua.util.ext.bsd3clause
-import moe.feng.danmaqua.util.ext.licenses
-import moe.feng.danmaqua.util.ext.mit
+import moe.feng.danmaqua.model.apache2
+import moe.feng.danmaqua.model.bsd3clause
+import moe.feng.danmaqua.model.licenses
+import moe.feng.danmaqua.model.mit
 
 class LicensesFragment : BaseFragment() {
 

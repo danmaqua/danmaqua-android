@@ -3,7 +3,7 @@ package moe.feng.danmaqua.util
 import android.util.Log
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import moe.feng.danmaqua.util.ext.TAG
+import kotlinx.TAG
 import okhttp3.*
 import java.util.regex.Pattern
 

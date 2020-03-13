@@ -8,7 +8,7 @@ import moe.feng.danmaqua.event.OnRecommendedStreamerItemClickListener
 import moe.feng.danmaqua.model.Recommendation.Item
 import moe.feng.danmaqua.ui.common.list.*
 import moe.feng.danmaqua.ui.subscription.list.RecommendedStreamerItemViewDelegate.ViewHolder
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class RecommendedStreamerItemViewDelegate :
     ItemBasedSimpleViewBinder<Item, ViewHolder>() {

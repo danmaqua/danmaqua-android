@@ -23,8 +23,8 @@ import moe.feng.danmaqua.model.BiliChatMessage
 import moe.feng.danmaqua.ui.floating.FloatingWindowHolder
 import moe.feng.danmaqua.util.DanmakuFilter
 import moe.feng.danmaqua.util.ListenerServiceNotificationHelper
-import moe.feng.danmaqua.util.ext.TAG
-import moe.feng.danmaqua.util.ext.eventsHelper
+import kotlinx.TAG
+import androidx.content.eventsHelper
 import java.io.EOFException
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock

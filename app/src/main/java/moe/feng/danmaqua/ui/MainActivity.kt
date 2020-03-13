@@ -13,7 +13,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.compoundDrawableStartRes
+import androidx.widget.compoundDrawableStartRes
 import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.*
@@ -46,10 +46,10 @@ import moe.feng.danmaqua.ui.main.*
 import moe.feng.danmaqua.ui.main.dialog.*
 import moe.feng.danmaqua.ui.main.list.MessageListAdapter
 import moe.feng.danmaqua.util.*
-import moe.feng.danmaqua.util.ext.avatarUrl
-import moe.feng.danmaqua.util.ext.eventsHelper
-import moe.feng.danmaqua.util.ext.packageVersionCode
-import moe.feng.danmaqua.util.ext.screenHeight
+import androidx.view.avatarUrl
+import androidx.content.eventsHelper
+import androidx.content.packageVersionCode
+import androidx.view.screenHeight
 
 class MainActivity : BaseActivity(),
     SettingsChangedListener, MainDanmakuContextMenuListener, MainDrawerCallback {

@@ -26,10 +26,10 @@ import moe.feng.danmaqua.ui.floating.list.FWDanmakuItemViewDelegate
 import moe.feng.danmaqua.ui.floating.list.FWSystemMessageItemViewDelegate
 import moe.feng.danmaqua.ui.common.list.AutoScrollHelper
 import moe.feng.danmaqua.util.DanmakuFilter
-import moe.feng.danmaqua.util.ext.TAG
-import moe.feng.danmaqua.util.ext.screenHeight
-import moe.feng.danmaqua.util.ext.screenWidth
-import moe.feng.danmaqua.util.flattenToString
+import kotlinx.TAG
+import androidx.view.screenHeight
+import androidx.view.screenWidth
+import moe.feng.danmaqua.model.flattenToString
 
 @SuppressLint("ClickableViewAccessibility")
 class FloatingWindowHolder(

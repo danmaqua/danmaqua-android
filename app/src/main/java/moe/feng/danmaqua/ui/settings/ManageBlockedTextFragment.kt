@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.*
 import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,6 @@ import moe.feng.danmaqua.Danmaqua.Settings
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.model.BlockedTextRule
 import moe.feng.danmaqua.ui.common.BaseFragment
-import moe.feng.danmaqua.util.ext.*
 
 class ManageBlockedTextFragment : BaseFragment() {
 

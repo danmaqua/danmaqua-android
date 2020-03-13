@@ -16,9 +16,9 @@ import moe.feng.danmaqua.ui.common.BaseFragment
 import moe.feng.danmaqua.ui.common.list.BaseViewHolder
 import moe.feng.danmaqua.ui.common.list.SimpleDiffItemCallback
 import moe.feng.danmaqua.ui.settings.list.PatternRulesItemDelegate
-import moe.feng.danmaqua.util.ext.messageRes
-import moe.feng.danmaqua.util.ext.okButton
-import moe.feng.danmaqua.util.ext.showAlertDialog
+import androidx.appcompat.app.messageRes
+import androidx.appcompat.app.okButton
+import androidx.appcompat.app.showAlertDialog
 
 class ManagePatternRulesFragment : BaseFragment(), PatternRulesItemDelegate.Callback {
 

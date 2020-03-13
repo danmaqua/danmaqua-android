@@ -1,6 +1,7 @@
-package android.widget
+package androidx.widget
 
 import android.graphics.drawable.Drawable
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 
 var TextView.compoundDrawableStart: Drawable?

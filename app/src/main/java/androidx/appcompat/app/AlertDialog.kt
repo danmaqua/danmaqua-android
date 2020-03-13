@@ -1,4 +1,4 @@
-package moe.feng.danmaqua.util.ext
+package androidx.appcompat.app
 
 import android.content.Context
 import android.content.DialogInterface
@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment

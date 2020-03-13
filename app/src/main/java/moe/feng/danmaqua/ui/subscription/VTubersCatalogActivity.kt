@@ -12,13 +12,12 @@ import moe.feng.danmaqua.Danmaqua.EXTRA_DATA
 import moe.feng.danmaqua.R
 import moe.feng.danmaqua.api.DanmaquaApi
 import moe.feng.danmaqua.event.OnCatalogGroupItemClickListener
-import moe.feng.danmaqua.model.Subscription
 import moe.feng.danmaqua.model.VTuberCatalog
 import moe.feng.danmaqua.ui.common.BaseActivity
 import moe.feng.danmaqua.ui.subscription.NewSubscriptionActivity.Companion.REQUEST_CODE_CHOOSE_SUBSCRIPTION
 import moe.feng.danmaqua.ui.subscription.list.CannotFindVTuberCatalogItemViewDelegate
 import moe.feng.danmaqua.ui.subscription.list.VTuberCatalogItemViewDelegate
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class VTubersCatalogActivity : BaseActivity(), OnCatalogGroupItemClickListener {
 

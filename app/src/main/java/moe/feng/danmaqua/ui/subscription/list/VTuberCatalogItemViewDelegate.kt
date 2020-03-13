@@ -6,7 +6,7 @@ import moe.feng.danmaqua.databinding.ViewVtubersGroupItemBinding
 import moe.feng.danmaqua.event.OnCatalogGroupItemClickListener
 import moe.feng.danmaqua.model.VTuberCatalog
 import moe.feng.danmaqua.ui.common.list.*
-import moe.feng.danmaqua.util.ext.eventsHelper
+import androidx.content.eventsHelper
 
 class VTuberCatalogItemViewDelegate :
     ItemBasedSimpleViewBinder<VTuberCatalog.Group, VTuberCatalogItemViewDelegate.ViewHolder>() {

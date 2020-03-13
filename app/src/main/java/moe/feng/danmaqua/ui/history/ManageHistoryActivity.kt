@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.*
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.DiffUtil
 import com.drakeet.multitype.MultiTypeAdapter
@@ -18,7 +19,6 @@ import moe.feng.danmaqua.ui.history.list.ToggleViewDelegate
 import moe.feng.danmaqua.ui.common.list.HeaderItemViewDelegate
 import moe.feng.danmaqua.ui.common.list.SimpleDiffItemCallback
 import moe.feng.danmaqua.util.FileUtils
-import moe.feng.danmaqua.util.ext.*
 import java.io.File
 
 class ManageHistoryActivity : BaseActivity() {
