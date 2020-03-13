@@ -131,7 +131,7 @@ class DrawerViewFragment : BaseFragment() {
                         selectedSubscription?.selected = true
                         selectedSubscription?.let { dao.update(it) }
                         context?.eventsHelper?.of<MainDrawerCallback>()
-                            ?.onSubscriptionChange(selectedSubscription)
+                            ?.onSubscriptionChange(selectedSubscription, false)
                         updateAdapterData()
                     }
                 }

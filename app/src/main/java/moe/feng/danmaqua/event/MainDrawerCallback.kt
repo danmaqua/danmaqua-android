@@ -9,6 +9,6 @@ import moe.feng.danmaqua.model.Subscription
 interface MainDrawerCallback {
 
     @EventsOnThread(MAIN_THREAD)
-    fun onSubscriptionChange(current: Subscription?)
+    fun onSubscriptionChange(current: Subscription?, hideDrawer: Boolean = true)
 
 }

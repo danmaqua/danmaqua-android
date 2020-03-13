@@ -5,6 +5,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
+import moe.feng.danmaqua.R
 import moe.feng.danmaqua.util.BuildUtils
 
 /**
@@ -17,7 +18,7 @@ class FixedTextInputEditText
 constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = R.attr.editTextStyle
 ) : TextInputEditText(context, attrs, defStyleAttr) {
 
     override fun getHint(): CharSequence? {

@@ -297,8 +297,10 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    override fun onSubscriptionChange(current: Subscription?) {
-        drawerLayout.closeDrawer(GravityCompat.START)
+    override fun onSubscriptionChange(current: Subscription?, hideDrawer: Boolean) {
+        if (hideDrawer) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
         updateAvatarAndNameViews()
         launchWhenStarted {
             if (current != null) {
