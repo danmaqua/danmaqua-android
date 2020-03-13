@@ -6,7 +6,7 @@ import moe.feng.danmaqua.model.BlockedUserRule
 @Dao
 interface BlockedUserRulesDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(vararg items: BlockedUserRule)
 
     @Update

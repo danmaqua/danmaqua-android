@@ -40,7 +40,7 @@ abstract class PatternRulesDao {
         }
     }
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun add(vararg rules: PatternRulesItem)
 
     @Update

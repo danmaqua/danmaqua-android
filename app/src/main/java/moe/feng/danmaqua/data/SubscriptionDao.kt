@@ -6,7 +6,7 @@ import moe.feng.danmaqua.model.Subscription
 @Dao
 interface SubscriptionDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(vararg items: Subscription)
 
     @Update
